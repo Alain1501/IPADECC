@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Simulateur Padhue : statut, contrat, séjour, rémunération et voies des EVC pour les médecins à diplôme hors Union européenne.">
+<meta name="description" content="Simulateur Padhue : statut, contrat, séjour, rémunération, voies des EVC et feuille de route pour les médecins à diplôme hors Union européenne.">
+<meta name="theme-color" content="#0f1138">
 <title>Simulateur Padhue</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
-img{max-width:100%}body{margin:0}
+[hidden]{display:none!important}img{max-width:100%}body{margin:0}
 :root{--bg:#f7f7fc;--surface:#ffffff;--surface-2:#f1f2fb;--ink:#0f1138;--muted:#585b7d;--line:#e0e2f0;--accent:#4a50b8;--accent-ink:#ffffff;--accent-soft:#e9eafb;--coral:#e0392f;--coral2:#ff7a59;
  --ok:#17683f;--ok-soft:#dcf0e4;--warn:#85500a;--warn-soft:#fbefd6;--bad:#a3271f;--bad-soft:#f9e1de;--hero1:#e8e9ff;--hero2:#ffe3dc;--glass:rgba(247,247,252,.8);
  --shadow:0 1px 2px rgba(20,22,63,.06),0 14px 34px -14px rgba(20,22,63,.2);--lgn:#252a5e;--lgr:#e0262c;--lgv:#7d82c4;
@@ -184,6 +185,9 @@ a.src:hover{color:var(--accent);border-color:var(--accent)}
 @media(max-width:560px){.top .sep,.top .cur{display:none}.back{padding:8px 12px;font-size:13px}.brand{font-size:17px}}
 .il{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.il:hover{text-decoration-style:solid}.il::after{content:'\2197';font-size:.8em;margin-left:2px;display:inline-block}
 
+.rmf{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;margin:.6rem 0}.rmf label{display:grid;gap:.25rem;font-weight:600;min-width:0}.rmf select,.rmf input{max-width:100%}
+.rmo{padding-left:1.2rem;display:grid;gap:.6rem}.rmo small{display:block;opacity:.85}.rmu{padding-left:1.2rem;display:grid;gap:.4rem}
+
 </style>
 </head>
 <body>
@@ -345,6 +349,11 @@ const SPECS=[
  ['Urologie',44,null]
 ];
 /*END*/
+const EXD={"Allergologie": "2027-01-08", "Anatomie et cytologie pathologique": "2026-11-20", "Anesthésie-réanimation": "2026-11-13", "Biologie médicale": "2026-11-12", "Chirurgie maxillo-faciale et stomatologie": "2026-11-12", "Chirurgie orale": "2026-12-02", "Chirurgie orthopédique et traumatologie": "2027-01-08", "Chirurgie plastique, reconstructrice et esthétique": "2026-12-02", "Chirurgie pédiatrique": "2026-11-20", "Chirurgie thoracique et cardio-vasculaire": "2026-11-20", "Chirurgie vasculaire": "2026-11-12", "Chirurgie viscérale et digestive": "2026-11-10", "Dermatologie et vénéréologie": "2026-11-13", "Endocrinologie diabétologie - nutrition": "2026-11-12", "Génétique médicale": "2026-12-02", "Gériatrie": "2027-01-12", "Gynécologie médicale": "2026-12-02", "Gynécologie obstétrique": "2026-12-01", "Hématologie": "2026-11-13", "Hépato-gastro-entérologie": "2026-11-13", "Maladies infectieuses et maladies tropicales": "2026-11-12", "Médecine cardiovasculaire": "2026-12-03", "Médecine d’urgence": "2026-11-19", "Médecine et santé au travail": "2026-11-10", "Médecine générale": "2027-01-15", "Médecine intensive-réanimation": "2026-11-12", "Médecine interne polyvalente et immunologie clinique": "2027-01-13", "Médecine légale et expertises médicales": "2026-11-12", "Médecine nucléaire": "2026-11-12", "Médecine physique et de réadaptation": "2026-12-01", "Médecine vasculaire": "2026-11-13", "Neurochirurgie": "2026-11-20", "Neurologie": "2026-12-01", "Néphrologie": "2026-11-12", "Oncologie": "2026-11-20", "Ophtalmologie": "2026-12-01", "Oto-rhino-laryngologie et chirurgie cervico-faciale": "2026-12-03", "Pneumologie": "2026-12-02", "Psychiatrie": "2026-12-10", "Pédiatrie": "2026-12-09", "Radiologie et imagerie médicale": "2026-12-08", "Rhumatologie": "2027-01-08", "Santé publique": "2026-11-10", "Urologie": "2026-12-01"};
+const EXMO=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+function exIn(n){const d=EXD[n];if(!d)return '';const k=Math.ceil((new Date(d+'T10:00:00+01:00')-Date.now())/86400000);return k>1?' (dans '+k+' jours)':(k===1?' (demain)':'');}
+function exDate(n){const d=EXD[n];if(!d)return '';const p=d.split('-');return (+p[2]===1?'1er':+p[2])+' '+EXMO[+p[1]-1]+' '+p[0];}
+
 
 const SRC={
  qcmblanc:['QCM blancs EVC (CNG)','https://www.cng.sante.fr/documents/qcm-blanc-evc-session-2025'],
@@ -769,17 +778,17 @@ function evcBlock(s){
  const eligInt=s.sit==='pact'||s.sit==='outremer'||s.exp==='oui';
  const rows=[];
  const open=new Date()<=CLOSE;
- rows.push(row('Session 2026',(open?pill('ok','Inscriptions ouvertes jusqu’au 21 juillet 2026 à 17 h'):pill('warn','Inscriptions closes depuis le 21 juillet 2026'))+'<div class="sub">Épreuves organisées le 8 octobre 2026 à Rungis. Résultats pas encore publiés : à suivre sur la page de la session du CNG. La session suivante sera ouverte par un nouvel arrêté.</div>',['fhf2026','evc2026']));
+ rows.push(row('Session 2026',(open?pill('ok','Inscriptions ouvertes jusqu’au 21 juillet 2026 à 17 h'):pill('warn','Inscriptions closes depuis le 21 juillet 2026'))+'<div class="sub">Épreuves du 10 novembre 2026 au 15 janvier 2027 selon la spécialité (plannings du CNG). Résultats pas encore publiés : à suivre sur la page de la session du CNG. La session suivante sera ouverte par un nouvel arrêté.</div>',['fhf2026','evc2026']));
  rows.push(row('Votre liste','Liste '+L+' : '+listeWhy(s),['evc2026']));
  let ext;
  if(B) ext=pill('ok','Examen')+'La moyenne aux épreuves suffit et le nombre de postes ne vous est pas opposable.';
- else if(sp[2]!=null) ext=pill('ok','Ouverte')+sp[2]+' postes en '+sp[0]+', France entière.';
+ else if(sp[2]!=null) ext=pill('ok','Ouverte')+sp[2]+' postes en '+sp[0]+', France entière. Épreuves le '+exDate(sp[0])+exIn(sp[0])+'.';
  else ext=pill('bad','Fermée')+'Aucun poste en voie externe pour '+sp[0]+' en 2026. Seules 13 spécialités sont ouvertes (1 003 postes).';
  rows.push(row('Voie externe',ext+'<div class="sub">Deux épreuves écrites anonymes le même jour : connaissances pratiques (2 h) et connaissances fondamentales (2 h), même coefficient.</div>',['evc2026']));
  let int;
  if(eligInt) int=pill('ok','Éligible')+(s.sit==='pact'?'Attestation d’exercice provisoire et contrat PACT en cours de validité.':s.sit==='outremer'?'Autorisation outre-mer et contrat de praticien contractuel en cours de validité.':'Au moins deux ans d’exercice rémunéré en équivalent temps plein, justifiés.');
  else int=pill('bad','Non éligible')+'Il faut une attestation d’exercice provisoire avec un contrat PACT, une autorisation outre-mer avec un contrat de praticien contractuel, ou deux ans d’exercice rémunéré en équivalent temps plein au cours des trois années précédant l’arrêté d’ouverture.';
- int+='<div class="sub">'+sp[1]+' postes en '+sp[0]+'. Une épreuve unique de connaissances fondamentales (2 h, QCM). <a class="il" href="https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne" target="_blank" rel="noopener noreferrer">Formulaire de l’annexe III</a> cosigné par le chef de service et le président de la CME si vous exercez en établissement.</div>';
+ int+='<div class="sub">'+sp[1]+' postes en '+sp[0]+'. Épreuve le '+exDate(sp[0])+exIn(sp[0])+'. Une épreuve unique de connaissances fondamentales (2 h, QCM). <a class="il" href="https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne" target="_blank" rel="noopener noreferrer">Formulaire de l’annexe III</a> cosigné par le chef de service et le président de la CME si vous exercez en établissement.</div>';
  if(B) int+='<div class="sub">Liste B : avec une expérience en France dans les mêmes conditions, vous passez l’épreuve unique de connaissances fondamentales (QCM).</div>';
  rows.push(row('Voie interne',int,['evc2026','reforme','internexe','internform','internplan']));
  rows.push(row('S’entraîner','Le CNG publie des QCM blancs par spécialité (session 2025) et les sujets des sessions 2023 à 2025, puis de 2009 à 2021. Aucun QCM blanc 2026 n’est publié à ce jour.',['qcmblanc','annales','annales24','annales23']));
@@ -934,14 +943,50 @@ function update(){
  });
 }
 
+
+/* ---------- feuille de route ---------- */
+let roadK='pact',roadD='';
+try{const r=JSON.parse(localStorage.getItem('ipadecc-road')||'{}');if(r.k)roadK=r.k;if(r.d)roadD=r.d;}catch(e){}
+const RMO=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],RJ=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+const OFF=[['2026-11-02','Commission d’autorisation, anatomie cytologique et pathologique','https://www.cng.sante.fr/documents/calendrier-previsionnel-cae'],['2026-11-06','Fermeture de la plateforme de choix de poste, session EVC 2025, à 14 h','https://www.cng.sante.fr/documents/resultats-evc-2025'],['2026-11-09','Commission d’autorisation, pharmacie, biologie médicale, psychiatrie, dermatologie','https://www.cng.sante.fr/documents/calendrier-previsionnel-cae'],['2026-12-17','Commission d’autorisation, chirurgiens-dentistes (dernière date du calendrier)','https://www.cng.sante.fr/documents/calendrier-previsionnel-cae']];
+function rp2(n){return (n<10?'0':'')+n;}
+function raddM(d,n){const x=new Date(d.getTime()),day=x.getDate();x.setDate(1);x.setMonth(x.getMonth()+n);x.setDate(Math.min(day,new Date(x.getFullYear(),x.getMonth()+1,0).getDate()));return x;}
+function raddD(d,n){const x=new Date(d.getTime());x.setDate(x.getDate()+n);return x;}
+function rfd(d){return RJ[d.getDay()]+' '+(d.getDate()===1?'1er':d.getDate())+' '+RMO[d.getMonth()]+' '+d.getFullYear();}
+function rymd(d){return d.getFullYear()+rp2(d.getMonth()+1)+rp2(d.getDate());}
+function rgl(t,d,det){return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&details='+encodeURIComponent(det)+'&dates='+rymd(d)+'/'+rymd(raddD(d,1));}
+function roadList(){
+ const o=document.getElementById('rm-o');if(!o)return;o.textContent='';
+ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(roadD||'');
+ try{localStorage.setItem('ipadecc-road',JSON.stringify({k:roadK,d:roadD}));}catch(e){}
+ if(!m){document.getElementById('rm-n').textContent='Entrez une date pour obtenir vos échéances. La date reste dans ce navigateur.';return;}
+ const d0=new Date(+m[1],+m[2]-1,+m[3]);
+ const rows=roadK==='pact'?[['Début de l’attestation',d0,'Début de la période de 13 mois.'],['Fin des 13 mois',raddD(raddM(d0,13),-1),'Le renouvellement est possible une seule fois.'],['Fin maximale, 26 mois',raddD(raddM(d0,26),-1),'Durée maximale, renouvellement compris.']]:
+ [['Début du PCC',d0,'Durée de 2 ans pour les médecins.'],['Saisine anticipée possible',raddM(d0,6),'Possible après 6 mois de PCC.'],['Échelon 2 possible',raddM(d0,12),'Après un an, avec l’accord du directeur de l’établissement.'],['Dépôt du dossier, repère du CNG',raddM(raddD(raddM(d0,24),-1),-2),'Le CNG indique, pour les lauréats de la session 2023, un dépôt possible deux mois avant la fin du PCC.'],['Fin du PCC',raddD(raddM(d0,24),-1),'Fin des 2 ans de parcours.']];
+ rows.forEach(r=>{const li=document.createElement('li'),b=document.createElement('b');b.textContent=rfd(r[1])+' : '+r[0];li.appendChild(b);const sm=document.createElement('small');sm.textContent=' '+r[2]+' ';const a=document.createElement('a');a.className='il';a.href=rgl(r[0],r[1],r[2]+' Repère calculé par IPADECC, à vérifier sur la source officielle.');a.target='_blank';a.rel='noopener noreferrer';a.textContent='Ajouter à Google Agenda';sm.appendChild(a);li.appendChild(sm);o.appendChild(li);});
+ document.getElementById('rm-n').textContent='Ce sont des repères calculés ici. Seules les dates notifiées par le CNG, l’ARS ou votre établissement font foi.';
+}
+function roadBlock(f){
+ const b=document.createElement('section');b.className='blk';
+ const now=Date.now();
+ const up=OFF.filter(x=>new Date(x[0]+'T00:00:00').getTime()>now);
+ b.innerHTML='<h3>Feuille de route</h3><p>Entrez votre date de départ pour obtenir vos dates clés.</p>'+
+ '<div class="rmf"><label>Situation <select id="rm-k"><option value="pact">PACT, attestation d’exercice provisoire</option><option value="pcc">Lauréat des EVC, en PCC</option></select></label> <label>Date de début <input type="date" id="rm-d"></label></div><p id="rm-n"></p><ol class="rmo" id="rm-o"></ol>'+
+ '<h4>Échéances officielles à venir</h4><ul class="rmu">'+up.map(x=>{const d=new Date(x[0]+'T00:00:00');return '<li><b>'+rfd(d)+'</b> : '+x[1]+'. <a class="il" href="'+x[2]+'" target="_blank" rel="noopener noreferrer">Source</a></li>';}).join('')+'</ul>';
+ f.appendChild(b);
+ const k=b.querySelector('#rm-k'),d=b.querySelector('#rm-d');k.value=roadK;d.value=roadD;
+ k.addEventListener('change',()=>{roadK=k.value;roadList();});d.addEventListener('input',()=>{roadD=d.value;roadList();});
+ roadList();
+}
 /* ---------- onglets de la fiche ---------- */
 let curTab='Contrat',allMode=false;
 function tabify(){
  const f=$('fiche');
+ if(f.querySelector(':scope > .blk'))roadBlock(f);
  const blks=[].slice.call(f.querySelectorAll(':scope > .blk'));
  if(!blks.length)return;
  const names=blks.map(b=>b.querySelector('h3').textContent);
- const short={'Droit de séjour':'Séjour','Pièces et documents à prévoir':'Pièces','Rémunération':'Rémunération','Voies des EVC':'EVC','Comparatif des statuts':'Comparatif','Prochaines étapes':'Étapes','Sources utilisées':'Sources'};
+ const short={'Droit de séjour':'Séjour','Pièces et documents à prévoir':'Pièces','Rémunération':'Rémunération','Voies des EVC':'EVC','Comparatif des statuts':'Comparatif','Prochaines étapes':'Étapes','Sources utilisées':'Sources','Feuille de route':'Calendrier'};
  const bar=document.createElement('div');bar.className='tabs';bar.setAttribute('role','tablist');
  const tabs=names.map((n,i)=>{const b=document.createElement('button');b.type='button';b.className='tab';b.setAttribute('role','tab');b.textContent=short[n]||n;b.dataset.n=n;return b;});
  tabs.forEach(b=>bar.appendChild(b));
@@ -984,6 +1029,5 @@ function init(){
 init();
 })();
 </script>
-
 </body>
 </html>
