@@ -182,6 +182,7 @@ a.src:hover{color:var(--accent);border-color:var(--accent)}
 @keyframes shadow{from{transform:scaleX(1);opacity:1}to{transform:scaleX(.93);opacity:.8}}
 @media (prefers-reduced-motion:reduce){.lgo *,.hero .mesh i,fieldset,.fiche>*,.tp.shown{animation:none!important}html{scroll-behavior:auto}}
 @media(max-width:560px){.top .sep,.top .cur{display:none}.back{padding:8px 12px;font-size:13px}.brand{font-size:17px}}
+.il{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.il:hover{text-decoration-style:solid}.il::after{content:'\2197';font-size:.8em;margin-left:2px;display:inline-block}
 
 </style>
 </head>
@@ -609,7 +610,7 @@ const CONTENT={
   docs:[['Renouvellement de l’attestation',['justificatifs de formation et d’expérience','engagement de vous présenter à la session suivante des EVC','engagement de l’établissement à vous employer','présentation du service'],['arsgepdf','pactcreation']]],
   steps:[
    'Surveiller la date de fin de votre attestation (13 mois, renouvelable une fois).',
-   'Préparer le dossier de la voie interne : formulaire de l’annexe III cosigné par le chef de service et le président de la CME, avec l’attestation et le contrat PACT en cours de validité.',
+   'Préparer le dossier de la voie interne : <a class="il" href="https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne" target="_blank" rel="noopener noreferrer">formulaire de l’annexe III</a> cosigné par le chef de service et le président de la CME, avec l’attestation et le contrat PACT en cours de validité.',
    'En cas de renouvellement, vous engager à vous présenter à la session suivante.'
   ]},
  laureat:{
@@ -647,7 +648,7 @@ const CONTENT={
    ['Durée','Six mois, renouvelable une fois six mois. La limite de deux ans dans un même établissement ne s’applique pas à ces praticiens.',['reforme']],
    ['Après les EVC','Avec 5 ans d’exercice dans ces territoires, vous saisissez directement la CNAE sans les deux ans de stage d’évaluation.',['reforme']]
   ], sejour:[['Titre','Le dispositif règle l’autorisation d’exercer, pas le titre de séjour. Celui-ci relève de la préfecture de votre département, selon votre situation.',['reforme','immig']]], remu:'outremer',
-  docs:[['Justificatifs à conserver',['contrat de praticien contractuel en cours de validité','justificatifs de vos années d’exercice sur le territoire, utiles pour la saisine directe de la CNAE','formulaire de l’annexe III pour la voie interne des EVC'],['reforme','internform']]],
+  docs:[['Justificatifs à conserver',['contrat de praticien contractuel en cours de validité','justificatifs de vos années d’exercice sur le territoire, utiles pour la saisine directe de la CNAE','<a class="il" href="https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne" target="_blank" rel="noopener noreferrer">formulaire de l’annexe III</a> pour la voie interne des EVC'],['reforme','internform']]],
   steps:[
    'Conserver votre contrat de praticien contractuel en cours de validité, il ouvre la voie interne des EVC.',
    'Rassembler les justificatifs de vos années d’exercice sur le territoire.',
@@ -778,7 +779,7 @@ function evcBlock(s){
  let int;
  if(eligInt) int=pill('ok','Éligible')+(s.sit==='pact'?'Attestation d’exercice provisoire et contrat PACT en cours de validité.':s.sit==='outremer'?'Autorisation outre-mer et contrat de praticien contractuel en cours de validité.':'Au moins deux ans d’exercice rémunéré en équivalent temps plein, justifiés.');
  else int=pill('bad','Non éligible')+'Il faut une attestation d’exercice provisoire avec un contrat PACT, une autorisation outre-mer avec un contrat de praticien contractuel, ou deux ans d’exercice rémunéré en équivalent temps plein au cours des trois années précédant l’arrêté d’ouverture.';
- int+='<div class="sub">'+sp[1]+' postes en '+sp[0]+'. Une épreuve unique de connaissances fondamentales (2 h, QCM). Formulaire de l’annexe III cosigné par le chef de service et le président de la CME si vous exercez en établissement.</div>';
+ int+='<div class="sub">'+sp[1]+' postes en '+sp[0]+'. Une épreuve unique de connaissances fondamentales (2 h, QCM). <a class="il" href="https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne" target="_blank" rel="noopener noreferrer">Formulaire de l’annexe III</a> cosigné par le chef de service et le président de la CME si vous exercez en établissement.</div>';
  if(B) int+='<div class="sub">Liste B : avec une expérience en France dans les mêmes conditions, vous passez l’épreuve unique de connaissances fondamentales (QCM).</div>';
  rows.push(row('Voie interne',int,['evc2026','reforme','internexe','internform','internplan']));
  rows.push(row('S’entraîner','Le CNG publie des QCM blancs par spécialité (session 2025) et les sujets des sessions 2023 à 2025, puis de 2009 à 2021. Aucun QCM blanc 2026 n’est publié à ce jour.',['qcmblanc','annales','annales24','annales23']));
@@ -792,7 +793,7 @@ function evcBlock(s){
  rows.push(row('Une seule candidature','Une seule liste, une seule voie, une seule ARS (celle de votre lieu de résidence en France, sinon l’ARS de votre choix). Les candidatures multiples entraînent le rejet définitif.',['evc2026','cng']));
  const docs=[(s.nat==='fr'||s.nat==='frn'?'pièce d’identité : carte nationale d’identité ou passeport français valide à la clôture des inscriptions':s.nat==='ue'?'pièce d’identité : carte d’identité ou passeport valide à la clôture des inscriptions':'pièce d’identité : titre de séjour ou passeport valide à la clôture des inscriptions'),'diplôme de docteur en médecine et diplôme permettant l’exercice dans le pays d’obtention (pas de quitus)',B?'preuve de votre maîtrise du français par tout moyen':'justificatif de français B2 (TCF-TEF, DELF B2, baccalauréat français ou diplôme français), sauf ressortissants francophones','traductions par un traducteur agréé si les pièces ne sont pas en français'];
  if(B) docs.push(s.nat==='fr'||s.nat==='frn'?'document officiel justifiant votre retour en France à la demande des autorités françaises':'document officiel justifiant de votre situation : '+(s.nat==='apat'?'qualité d’apatride':s.prot==='ref'?'qualité de réfugié':'bénéfice de la protection subsidiaire ou de l’asile territorial'));
- if(eligInt) docs.push('voie interne : formulaire de l’annexe III cosigné par le chef de service et le président de la CME, avec les justificatifs d’éligibilité');
+ if(eligInt) docs.push('voie interne : <a class="il" href="https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne" target="_blank" rel="noopener noreferrer">formulaire de l’annexe III</a> cosigné par le chef de service et le président de la CME, avec les justificatifs d’éligibilité');
  rows.push(row('Pièces à fournir',ul(docs),['evc2026','cng','internform']));
  rows.push(row('Après les résultats','Les lauréats nommés candidatent auprès des établissements. La période d’audition dure six mois au plus après la publication des résultats, sinon le lauréat perd le bénéfice du concours.',['evc2026']));
  return block('Voies des EVC',rows);

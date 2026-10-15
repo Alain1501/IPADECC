@@ -4,7 +4,7 @@ Site statique de l'association IPADECC (praticiens à diplôme hors Union europ�
 
 ## Contenu
 
-- `index.html` : le site à rubriques (Statuts, Démarches, EVC, Actualités, Ressources, L'association) avec menus déroulants, une page par sujet et le formulaire d'adhésion.
+- `index.html` : le site à rubriques (Statuts, Démarches, EVC, Autorisation, Actualités, Ressources, L'association) avec menus déroulants, une page par sujet et le formulaire d'adhésion.
 - `simulateur.html` : le simulateur Padhue pour les médecins. Aucune donnée n'est enregistrée ni envoyée.
 - `.nojekyll` : évite le traitement Jekyll sur GitHub Pages.
 
