@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Simulateur Padhue</title>
+<meta name="description" content="Simulateur Padhue : statut, contrat, séjour, rémunération et voies des EVC pour les médecins à diplôme hors Union européenne.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Mise en page : formulaire à gauche, fiche à instruire à droite, comme un dossier administratif.
+   Un seul accent (vert sapin), les couleurs d'état restent séparées. */
+:root{
+  --bg:#edf1ef; --surface:#ffffff; --surface-2:#f5f8f6; --ink:#14201b; --muted:#55645d; --line:#d2dbd6;
+  --accent:#1c5a49; --accent-ink:#ffffff; --accent-soft:#dcebe5;
+  --ok:#17683f; --ok-soft:#dcf0e4; --warn:#85500a; --warn-soft:#faebcf; --bad:#a3271f; --bad-soft:#f7dfdc;
+  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1512; --surface:#16201c; --surface-2:#1b2722; --ink:#e4ede8; --muted:#9bada5; --line:#2b3a34;
+    --accent:#7ccbab; --accent-ink:#0b1713; --accent-soft:#1f3a31;
+    --ok:#6fd49b; --ok-soft:#183626; --warn:#e8b45f; --warn-soft:#3a2d12; --bad:#f19a92; --bad-soft:#41201d;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1512; --surface:#16201c; --surface-2:#1b2722; --ink:#e4ede8; --muted:#9bada5; --line:#2b3a34;
+  --accent:#7ccbab; --accent-ink:#0b1713; --accent-soft:#1f3a31;
+  --ok:#6fd49b; --ok-soft:#183626; --warn:#e8b45f; --warn-soft:#3a2d12; --bad:#f19a92; --bad-soft:#41201d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1160px;margin:0 auto;padding-block:28px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(1.9rem,4vw,2.6rem);line-height:1.1;margin:0 0 10px;text-wrap:balance}
+.lead{max-width:62ch;margin:0 0 14px;color:var(--ink)}
+.notice{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:0 0 24px}
+.notice span{min-width:0}
+.layout{display:grid;grid-template-columns:minmax(0,350px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:880px){.layout{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.panel h2{font-family:var(--f-display);font-weight:600;font-size:1.3rem;margin:0 0 4px}
+.panel .sub0{color:var(--muted);font-size:13px;margin:0 0 14px}
+fieldset{border:0;margin:0 0 18px;padding:0;min-width:0}
+legend{font-weight:600;font-size:14px;padding:0;margin-bottom:8px}
+.help{font-size:12.5px;color:var(--muted);margin:-2px 0 8px}
+.opts{display:grid;gap:6px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;min-width:0}
+.opt:hover{border-color:var(--accent)}
+.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.opt:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.opt input{margin:3px 0 0;accent-color:var(--accent);flex:none}
+.opt span{display:block;min-width:0;font-size:14px}
+.opt small{display:block;color:var(--muted);font-size:12.5px;line-height:1.4;margin-top:1px}
+select{width:100%;font:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fiche{min-width:0}
+.fhead{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:6px}
+.fhead h2{font-size:1.5rem;line-height:1.2;text-wrap:balance;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-family:var(--f-mono);font-size:12px;padding:3px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink)}
+.btn{font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--accent)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.msg{font-size:12.5px;color:var(--muted)}
+.example{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:9px 12px;font-size:13px;font-weight:500;margin:12px 0 4px}
+.intro{margin:14px 0 4px;max-width:70ch}
+.blk{padding-top:16px}
+.blk h3{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 16px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border-bottom:0}
+@media (max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
+.k{font-weight:600;font-size:13.5px;min-width:0}
+.v{min-width:0;font-size:14px}
+.v ul{margin:4px 0 0;padding-left:18px}
+.v li{margin:2px 0}
+.amt{font-family:var(--f-mono);font-size:1.3rem;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.3}
+.amt span{font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:400}
+.sub{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.refs{margin-top:5px;display:flex;flex-wrap:wrap;gap:2px 12px}
+a.src{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+a.src:hover{color:var(--accent)}
+a.src:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;margin-right:6px;white-space:normal}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.steps{margin:6px 0 0;padding-left:20px}
+.steps li{margin:7px 0;padding-left:4px}
+.todo{margin:6px 0 0;padding-left:18px;color:var(--ink)}
+.todo li{margin:6px 0}
+.srclist{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px}
+.disclaimer{margin-top:20px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;max-width:80ch}
+@media (prefers-reduced-motion:no-preference){.opt{transition:border-color .12s,background-color .12s}}
+
+.cmp{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.cmp table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+.cmp th,.cmp td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp th{font-weight:600;color:var(--muted);font-size:12px;background:var(--surface)}
+.cmp tr:last-child td{border-bottom:0}
+.opt.dis{opacity:.55;cursor:not-allowed;background:var(--surface-2)}
+.opt.dis:hover{border-color:var(--line)}
+.opt .why{color:var(--warn);font-size:12px;margin-top:2px}
+.why{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.why.lock{color:var(--warn)}
+.coh{border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;background:var(--surface-2);padding:10px 14px;margin:14px 0 4px}
+.coh ul{margin:6px 0 0;padding-left:18px}
+.coh li{margin:3px 0;font-size:13.5px}
+.adj{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:8px;background:var(--warn-soft);color:var(--ink);padding:10px 14px;margin:12px 0 0;font-size:13.5px}
+.adj ul{margin:4px 0 0;padding-left:18px}
+.cmp tr.me td{background:var(--accent-soft);font-weight:500}
+.dm{margin:0}
+.fs-block{margin-top:2px}
+
+</style>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <p style="margin:0 0 14px"><a href="index.html" style="color:var(--accent);font-weight:600;text-decoration:none">← Retour au site IPADECC</a></p>
+  <p class="eyebrow">Médecins à diplôme hors Union européenne · données au 14 octobre 2026</p>
+  <h1>Simulateur Padhue</h1>
+  <p class="lead">Indiquez votre situation. Les questions s’adaptent à vos réponses et n’affichent que des combinaisons possibles. La fiche se met à jour à chaque réponse : statut, contrat, séjour, pièces à fournir, rémunération et voies des EVC, avec la source de chaque information.</p>
+  <div class="notice">
+    <span>Aucune donnée n’est enregistrée ni envoyée.</span>
+    <span>Version pour les médecins. Pharmaciens, chirurgiens-dentistes et sages-femmes viendront ensuite.</span>
+  </div>
+
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false" aria-label="Votre situation">
+      <h2>Votre situation</h2>
+      <p class="sub0">Répondez dans l’ordre. Une réponse qui rend un choix impossible le retire ou le grise, avec la raison.</p>
+
+      <fieldset id="fs-nat">
+        <legend>Votre nationalité</legend>
+        <p class="help">Elle détermine si un titre de séjour est nécessaire et les statuts qui vous sont ouverts.</p>
+        <div class="opts" id="opts-nat"></div>
+      </fieldset>
+
+      <fieldset id="fs-prot">
+        <legend>Votre statut de protection</legend>
+        <p class="help">Il détermine votre liste aux EVC et votre titre de séjour.</p>
+        <div class="opts" id="opts-prot"></div>
+      </fieldset>
+
+      <fieldset id="fs-rentre">
+        <legend>Rentré en France à la demande des autorités françaises ?</legend>
+        <p class="help">Cette situation ouvre la liste B des EVC.</p>
+        <div class="opts" id="opts-rentre"></div>
+      </fieldset>
+
+      <fieldset id="fs-sit">
+        <legend>Où en êtes-vous ?</legend>
+        <div class="opts" id="opts-sit"></div>
+      </fieldset>
+
+      <fieldset id="fs-spec">
+        <legend><label for="sel-spec">Votre spécialité</label></legend>
+        <p class="help">La spécialité de votre diplôme dans le pays d’obtention.</p>
+        <select id="sel-spec"></select>
+      </fieldset>
+
+      <fieldset id="fs-exp">
+        <legend>Exercice rémunéré en France</legend>
+        <p class="help">Au moins deux ans en équivalent temps plein dans votre profession et spécialité, au cours des trois ans précédant l’arrêté d’ouverture, avec justificatifs.</p>
+        <div class="opts" id="opts-exp"></div>
+      </fieldset>
+
+      <fieldset id="fs-tent">
+        <legend><label for="sel-tent">Présentations aux EVC depuis 2021</label></legend>
+        <p class="help">Une inscription sans présence aux épreuves ne compte pas.</p>
+        <select id="sel-tent"></select>
+      </fieldset>
+
+      <fieldset id="fs-renouv">
+        <legend><label for="sel-renouv">Votre attestation d’exercice provisoire</label></legend>
+        <select id="sel-renouv"></select>
+      </fieldset>
+
+      <fieldset id="fs-pcc">
+        <legend><label for="sel-pcc">Durée déjà effectuée du PCC</label></legend>
+        <select id="sel-pcc"></select>
+        <p class="why" id="why-pcc"></p>
+      </fieldset>
+
+      <fieldset id="fs-ech">
+        <legend><label for="sel-ech">Votre échelon de praticien associé</label></legend>
+        <p class="help">Deux échelons, un an entre chaque. Le directeur de l’établissement accorde le passage au 2e.</p>
+        <select id="sel-ech"></select>
+        <p class="why" id="why-ech"></p>
+      </fieldset>
+
+      <fieldset id="fs-sej">
+        <legend><label for="sel-sej">Votre titre de séjour actuel</label></legend>
+        <select id="sel-sej"></select>
+        <p class="why" id="why-sej"></p>
+      </fieldset>
+
+      <fieldset id="fs-garde">
+        <legend><label for="sel-garde">Gardes ou astreintes par mois</label></legend>
+        <p class="help">Nuits, dimanches et jours fériés. Pour estimer votre rémunération totale.</p>
+        <select id="sel-garde"></select>
+      </fieldset>
+    </form>
+
+    <article class="panel fiche" id="fiche" aria-live="polite"></article>
+  </div>
+
+  <p class="disclaimer">Cet outil informe, il ne remplace ni l’avis de l’ARS, du CNG ou de la préfecture, ni un conseil juridique. Les montants et les seuils changent par arrêté : vérifiez la source indiquée avant toute démarche.</p>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/*DATA*/
+// [spécialité, postes voie interne 2026, postes voie externe 2026 (null si fermée)] — arrêté du 12 juin 2026, annexes I et II
+const SPECS=[
+ ['Allergologie',2,null],
+ ['Anatomie et cytologie pathologique',20,null],
+ ['Anesthésie-réanimation',201,64],
+ ['Biologie médicale',14,null],
+ ['Chirurgie maxillo-faciale et stomatologie',5,null],
+ ['Chirurgie orale',2,null],
+ ['Chirurgie orthopédique et traumatologie',101,null],
+ ['Chirurgie plastique, reconstructrice et esthétique',6,null],
+ ['Chirurgie pédiatrique',18,null],
+ ['Chirurgie thoracique et cardio-vasculaire',21,null],
+ ['Chirurgie vasculaire',10,null],
+ ['Chirurgie viscérale et digestive',27,null],
+ ['Dermatologie et vénéréologie',19,null],
+ ['Endocrinologie diabétologie - nutrition',29,null],
+ ['Génétique médicale',2,null],
+ ['Gériatrie',236,110],
+ ['Gynécologie médicale',2,null],
+ ['Gynécologie obstétrique',54,null],
+ ['Hématologie',12,null],
+ ['Hépato-gastro-entérologie',48,null],
+ ['Maladies infectieuses et maladies tropicales',7,null],
+ ['Médecine cardiovasculaire',146,20],
+ ['Médecine d’urgence',270,72],
+ ['Médecine et santé au travail',12,61],
+ ['Médecine générale',89,35],
+ ['Médecine intensive-réanimation',2,null],
+ ['Médecine interne polyvalente et immunologie clinique',564,213],
+ ['Médecine légale et expertises médicales',4,null],
+ ['Médecine nucléaire',9,null],
+ ['Médecine physique et de réadaptation',25,37],
+ ['Médecine vasculaire',1,null],
+ ['Neurochirurgie',4,null],
+ ['Neurologie',46,null],
+ ['Néphrologie',38,null],
+ ['Oncologie',49,29],
+ ['Ophtalmologie',29,null],
+ ['Oto-rhino-laryngologie et chirurgie cervico-faciale',19,null],
+ ['Pneumologie',40,17],
+ ['Psychiatrie',450,198],
+ ['Pédiatrie',91,75],
+ ['Radiologie et imagerie médicale',116,72],
+ ['Rhumatologie',10,null],
+ ['Santé publique',2,null],
+ ['Urologie',44,null]
+];
+/*END*/
+
+const SRC={
+ qcmblanc:['QCM blancs EVC (CNG)','https://www.cng.sante.fr/documents/qcm-blanc-evc-session-2025'],
+ annales:['Annales EVC 2025 (CNG)','https://www.cng.sante.fr/documents/evc-2025-sujets-fondamentales-pratiques-qmc'],
+ annales24:['Annales EVC 2024 (CNG)','https://www.cng.sante.fr/documents/evc-2024-sujets-fondamentales-pratiques'],
+ annales23:['Annales EVC 2023 (CNG)','https://www.cng.sante.fr/documents/evc-2023-sujets-fondamentales-pratiques'],
+ internexe:['Spécialités voie interne (CNG)','https://www.cng.sante.fr/documents/evc-2026-liste-postes-ouverts-concours-interne'],
+ internform:['Formulaire voie interne, annexe III (CNG)','https://www.cng.sante.fr/documents/evc-2025-attestation-concours-interne'],
+ internplan:['Planning voie interne (CNG)','https://www.cng.sante.fr/media/4485'],
+ evc2026:['Arrêté du 12 juin 2026','https://www.fhf.fr/sites/default/files/2026-06/Arr%C3%AAt%C3%A9%20du%2012%20juin%202026%20-%20ouverture%20EVC.pdf'],
+ fhf2026:['FHF, session EVC 2026','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/padhue-ouverture-de-la-session-2026-des-epreuves-de-verification-des-connaissances'],
+ cng:['CNG, page EVC','https://www.cng.sante.fr/candidats/concours/internats/concours-medicaux/concours-medicaux-cnph-evc/epreuves-verification-connaissances-evc'],
+ reforme:['FHF, réforme EVC et PCC','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/padhue-reforme-des-evc-et-du-pcc'],
+ pactcreation:['FHF, statut PACT','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/padhue-creation-du-statut-de-praticien-associe-contractuel-temporaire-pact-et-modalites-de'],
+ pactremu:['FHF, arrêtés de rémunération PACT','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/padhue-pact-publication-des-arretes-fixant-la-remuneration-des-praticiens-associes-contractuels'],
+ aphp:['APHP, décret 2024-1191','https://affairesjuridiques.aphp.fr/textes/decret-n-2024-1191-du-19-decembre-2024-relatif-aux-modalites-de-delivrance-de-lattestation-permettant-un-exercice-provisoire-mentionnee-aux-articles-l-4111-2-1-et-l-4221-12-1-du-code-de-la-s/'],
+ hopremu:['Hopitalex, rémunération des PACT','https://www.hopitalex.com/donnees-juridiques?action=affichedoc&doc=13362'],
+ hopate:['Hopitalex, autorisations temporaires','https://www.hopitalex.com/donnees-juridiques?action=affichedoc&doc=13010'],
+ modele:['FHF, modèle de contrat PACT (juillet 2025)','https://www.fhf.fr/sites/default/files/2025-09/Mod%C3%A8le%20contrat%20PACT%20_%20juillet%202025.doc'],
+ gardes24:['FHF, arrêté du 22 décembre 2023 (gardes, au 1er janvier 2024)','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/les-majorations-des-indemnites-de-gardes-du-pm-sont-perennisees-compter-du-1er-janvier-2024'],
+ hus:['CHU de Strasbourg, stagiaire associé (mise à jour 02/03/2024)','https://www.internestrasbourg.fr/stagiaire-associe/'],
+ arr2011:['Arrêté du 16 mai 2011 (JO du 31 mai 2011, version d’origine)','https://www.legifrance.gouv.fr/loda/id/JORFTEXT000024095666/2021-12-31'],
+ arr2021:['Arrêté du 9 juillet 2021','https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000043776575'],
+ arr2023:['Arrêté du 29 juin 2023','https://www.fhf.fr/sites/default/files/2023-07/Arr%C3%AAt%C3%A9%20du%2029%20juin%202023%20modifiant%20l\'arr%C3%AAt%C3%A9%20du%208%20juillet%202022.pdf'],
+ adelyce:['Adelyce, praticien associé','https://www.adelyce.fr/blog/praticien-associe-tout-savoir-sur-ce-nouveau-statut/'],
+ talent:['FHF, carte talent','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/carte-de-sejour-pluriannuelle-talent-profession-medicale-et-de-la-pharmacie'],
+ immig:['Intérieur, immigration professionnelle','https://www.immigration.interieur.gouv.fr/limmigration-en-france/sejour-des-etrangers/limmigration-professionnelle-et-etudiante'],
+ immigatt:['Intérieur, attestation employeur','https://www.immigration.interieur.gouv.fr/Info-ressources/Actualites/L-actu-immigration/Carte-de-sejour-pluriannuelle-Talent-profession-medicale-et-de-la-pharmacie-Formulaire-d-attestation-employeur'],
+ senat:['Sénat, rapport sur les Padhue','https://www.senat.fr/rap/r25-824/r25-824-syn.pdf'],
+ arsna:['ARS Nouvelle-Aquitaine','https://www.nouvelle-aquitaine.ars.sante.fr/praticiens-diplome-hors-union-europeenne-padhue'],
+ arsge:['ARS Grand Est','https://www.grand-est.ars.sante.fr/praticiens-diplomes-hors-union-europeenne-padhue-statuts-conditions-dacces-et-demarches'],
+ outremer:['FHF, dispositif outre-mer','https://www.fhf.fr/expertises/ressources-humaines/personnel-medical/padhue-modification-du-dispositif-derogatoire-et-transitoire-relatif-certains-territoires-doutre-mer'],
+ an869:['Assemblée nationale, question 869','https://www.assemblee-nationale.fr/dyn/16/questions/QANR5L16QE869'],
+ stock:['Le Quotidien du Médecin, procédure stock','https://gynecologie-obstetrique.lequotidiendumedecin.fr/hopital/praticiens-diplome-etranger-retards-et-couacs-dans-la-mise-en-place-de-la-nouvelle-procedure'],
+ esante:['esante.gouv.fr, FAQ','https://esante.gouv.fr/faq/resultats?page=24'],
+ avocat:['Kohen Avocats, EVC 2026','https://kohenavocats.com/medecin-diplome-hors-ue-evc-autorisation-exercice-titre-sejour-2026/'],
+ minrep:['Sénat, réponse ministérielle du 18 juin 2026','https://www.senat.fr/questions/base/2025/qSEQ250504446.html']
+};
+
+Object.assign(SRC,{
+ arsgepdf:['ARS Grand Est, note PADHUE (janvier 2026)','https://www.grand-est.ars.sante.fr/media/139860/download'],
+ fhfnote:['FHF, note sur le statut de praticien associé','https://emploi.fhf.fr/sites/default/files/documents/Note%20RHH%20FHF%20statut%20de%20praticien%20associ%C3%A9.pdf'],
+ anef:['Administration numérique pour les étrangers en France','https://administration-etrangers-en-france.interieur.gouv.fr/'],
+ immigpdf:['Intérieur, formulaire d’attestation employeur (PDF)','https://www.immigration.interieur.gouv.fr/sites/dgef/files/medias/documents/2026-03/20250701_TPMP_Attestation%20employeur_v2.pdf'],
+ decret1191:['Décret n° 2024-1191 (Légifrance)','https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000050805349']
+});
+
+const PACT=31204.37, PA1=36624.45, PA2=41386.48, SUJ=346.71, FFI_N=234.80, FFI_W=256.86, STAG=1998.19;
+const CLOSE=new Date('2026-07-21T17:00:00+02:00');
+
+/* ---------- listes de choix ---------- */
+const NAT=[
+ ['etr','Nationalité étrangère, hors Union européenne','Un titre de séjour est nécessaire pour exercer.'],
+ ['ue','Citoyen de l’Union européenne','Aucun titre de séjour nécessaire.'],
+ ['fr','Française de naissance','Aucun titre de séjour nécessaire.'],
+ ['frn','Française par naturalisation','Aucun titre de séjour nécessaire.'],
+ ['apat','Apatride','Liste B des EVC, titre lié à votre protection.']
+];
+const PROT=[
+ ['non','Aucun statut de protection','Liste A des EVC.'],
+ ['ref','Réfugié','Liste B des EVC.'],
+ ['sub','Protection subsidiaire ou asile territorial','Liste B des EVC.']
+];
+const RENTRE=[['non','Non','Liste A des EVC.'],['oui','Oui','Liste B des EVC.']];
+const SIT=[
+ ['abroad','Je n’exerce pas encore en France','Depuis l’étranger, ou en France sans exercice rémunéré'],
+ ['ffi','Je suis faisant fonction d’interne (DFMS ou DFMSA)','Formation spécialisée en France'],
+ ['stagiaire','Je suis stagiaire associé','Stage de coopération temporaire'],
+ ['pact','Je suis praticien associé contractuel temporaire (PACT)','Avec attestation d’exercice provisoire'],
+ ['laureat','Je suis lauréat des EVC et je fais mon PCC','Statut de praticien associé'],
+ ['finpcc','J’ai terminé mon PCC','Dans l’attente de la commission nationale d’autorisation d’exercice'],
+ ['outremer','Je suis autorisé à exercer outre-mer','Dispositif dérogatoire et transitoire'],
+ ['stock','Mon dossier relève de l’ancienne procédure du stock','Dispositif transitoire clos']
+];
+const EXP=[['oui','Oui','Justificatifs de fonctions rémunérées sur le territoire national'],['non','Non','']];
+const SEJ_L={
+ hors:'Je ne suis pas en France',
+ vls:'Visa long séjour valant titre de séjour',
+ etud:'Titre de séjour étudiant',
+ talent:'Carte talent profession médicale et de la pharmacie',
+ asile:'Titre lié à ma protection (réfugié, apatride, protection subsidiaire)',
+ aucun:'Aucun titre de séjour nécessaire',
+ autre:'Autre titre ou récépissé'
+};
+const ECH_L={'1':'Échelon 1','2':'Échelon 2'};
+const PCC_L=[['0','Moins de 6 mois'],['6','De 6 à 12 mois'],['12','Plus de 12 mois']];
+const GARDE_L=[['0','Aucune'],['2','2 par mois'],['4','4 par mois'],['6','6 par mois'],['8','8 par mois'],['10','10 par mois']];
+const RENOUV_L=[['non','Première attestation (13 mois)'],['oui','Déjà renouvelée une fois']];
+const TENT_L=[['0','Aucune'],['1','1 présentation'],['2','2 présentations'],['3','3 présentations'],['4','4 présentations']];
+const EVCS=['abroad','ffi','stagiaire','pact','outremer'];
+const PA_SITS=['laureat','finpcc','stock'];
+const state={nat:'etr',prot:'non',rentre:'non',sit:'pact',spec:'Psychiatrie',exp:'non',tent:'1',renouv:'non',pcc:'0',ech:'1',sej:'vls',garde:'0',touched:false};
+
+/* ---------- règles de cohérence ---------- */
+const NATL={etr:'de nationalité étrangère',ue:'citoyen de l’Union européenne',fr:'de nationalité française',frn:'de nationalité française',apat:'apatride'};
+const NATC={etr:'Nationalité étrangère',ue:'Citoyen de l’Union européenne',fr:'Française',frn:'Française par naturalisation',apat:'Apatride'};
+function titreMode(s){
+ if(s.nat==='ue'||s.nat==='fr'||s.nat==='frn') return 'none';
+ if(s.nat==='apat'||(s.nat==='etr'&&s.prot!=='non')) return 'prot';
+ return 'std';
+}
+function sitReason(s,code){
+ if(code==='stagiaire'&&(s.nat!=='etr'||s.prot!=='non')) return 'Ce stage de coopération se fait avec un établissement de votre pays d’origine : il ne s’applique pas à un '+(s.nat==='etr'?'bénéficiaire de protection':s.nat==='ue'?'citoyen de l’Union européenne':s.nat==='apat'?'apatride':'Français')+'.';
+ return null;
+}
+function protReason(s,code){
+ if(s.nat==='etr') return null;
+ if(code==='non') return null;
+ return s.nat==='ue'?'Un citoyen de l’Union européenne n’a pas de statut de protection.':s.nat==='apat'?'Votre apatridie vaut déjà protection : liste B.':'Un citoyen français n’a pas de statut de protection.';
+}
+function rentreReason(s,code){
+ if(s.nat==='fr'||s.nat==='frn') return null;
+ if(code==='non') return null;
+ return 'Réservé aux personnes de nationalité française.';
+}
+function sejList(s){
+ const m=titreMode(s);
+ if(m==='none') return ['aucun'];
+ if(m==='prot') return ['asile'];
+ let l;
+ if(s.sit==='abroad') l=['hors','vls','etud','autre'];
+ else if(s.sit==='stagiaire') l=['hors','vls'];
+ else if(s.sit==='laureat'||s.sit==='finpcc'||s.sit==='stock') l=['vls','etud','talent','autre'];
+ else l=['vls','etud','autre'];
+ if(PA_SITS.includes(s.sit)&&s.ech==='1') l=l.filter(x=>x!=='talent');
+ return l;
+}
+function sejLabel(s,v){
+ if(v==='aucun') return s.nat==='ue'?'Citoyen de l’Union européenne, aucun titre nécessaire':'Nationalité française, aucun titre nécessaire';
+ return SEJ_L[v];
+}
+function echList(s){
+ if(s.sit==='finpcc') return ['2'];
+ if(s.sit==='laureat') return s.pcc==='12'?['1','2']:['1'];
+ return ['1','2'];
+}
+function normalize(s){
+ const notes=[];
+ const set=(k,v,why)=>{if(s[k]!==v){s[k]=v;notes.push(why);}};
+ if(s.nat!=='etr') set('prot','non','Votre statut de protection a été retiré : '+(s.nat==='ue'?'un citoyen de l’Union européenne':s.nat==='apat'?'une personne apatride (déjà en liste B)':'un citoyen français')+' n’a pas de statut de protection distinct.');
+ if(s.nat!=='fr'&&s.nat!=='frn') set('rentre','non','La mention « rentré à la demande des autorités françaises » a été retirée : elle est réservée aux personnes de nationalité française.');
+ if(sitReason(s,s.sit)) set('sit','abroad','Votre situation a été remplacée par « Je n’exerce pas encore en France » : '+sitReason(s,s.sit));
+ if(s.sit==='abroad') set('exp','non','Vous n’exercez pas encore en France sous statut rémunéré : l’exercice rémunéré est donc réglé sur « Non ».');
+ if(s.sit==='finpcc') set('pcc','12','Un PCC terminé dépasse 12 mois : la durée effectuée a été réglée en conséquence.');
+ const el=echList(s);
+ if(!el.includes(s.ech)) set('ech',el[0],'Votre échelon a été réglé sur l’échelon '+el[0]+' : '+(s.sit==='finpcc'?'après deux ans de PCC, le passage au 2e échelon est acquis.':'le 2e échelon s’obtient après un an, et votre PCC n’a pas encore atteint 12 mois.'));
+ const sl=sejList(s);
+ if(!sl.includes(s.sej)) set('sej',sl[0],'Votre titre de séjour a été réglé sur « '+sejLabel(s,sl[0])+' » : '+(titreMode(s)!=='std'?(titreMode(s)==='none'?'votre nationalité ne demande aucun titre.':'il découle de votre protection.'):(PA_SITS.includes(s.sit)&&s.ech==='1'&&s.sej==='talent'?'la carte talent exige l’échelon 2.':'l’option précédente ne correspond pas à votre situation.')));
+ if(s.sit==='abroad') s.garde='0';
+ return notes;
+}
+const lstOf=s=>(s.nat==='apat'||(s.nat==='etr'&&s.prot!=='non')||((s.nat==='fr'||s.nat==='frn')&&s.rentre==='oui'))?'B':'A';
+function listeWhy(s){
+ if(lstOf(s)==='A') return 'diplôme hors Union européenne, concours avec nombre de postes limité.';
+ if(s.nat==='apat') return 'apatride.';
+ if(s.nat==='etr') return s.prot==='ref'?'réfugié.':'bénéficiaire de la protection subsidiaire ou de l’asile territorial.';
+ return 'Français rentré à la demande des autorités françaises.';
+}
+
+/* ---------- aides de rendu ---------- */
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+let used=new Set();
+function src(ids){return ids.map(id=>{used.add(id);return '<a class="src" href="'+SRC[id][1]+'" target="_blank" rel="noopener noreferrer">'+SRC[id][0]+'</a>';}).join('');}
+function row(k,v,ids){return '<div class="row"><div class="k">'+k+'</div><div class="v">'+v+(ids&&ids.length?'<div class="refs">'+src(ids)+'</div>':'')+'</div></div>';}
+function block(t,rows){return '<section class="blk"><h3>'+t+'</h3>'+rows.join('')+'</section>';}
+function pill(c,t){return '<span class="pill '+c+'">'+t+'</span>';}
+function amt(k,annual,note,ids){return row(k,'<div class="amt">'+fmt(annual)+' € <span>brut par an</span></div><div class="sub">≈ '+fmt(annual/12)+' € brut par mois (÷ 12)'+(note?' · '+note:'')+'</div>',ids);}
+function ul(items){return '<ul>'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul>';}
+
+/* ---------- contenu par situation ---------- */
+const PACT_COND='Au moins trois ans d’exercice à temps plein dans la profession ou la spécialité, dont un an à temps plein au cours des trois années précédant la demande. Niveau de français B2. Engagement sur l’honneur de passer les EVC. Engagement de l’établissement à vous employer si l’attestation est délivrée. Situation régulière au regard du séjour et du travail, droits civiques, absence de condamnation incompatible avec l’exercice, aptitude physique.';
+const PACT_CONTRAT=[
+ ['Type de contrat','Contrat de droit public à durée limitée (statut de praticien associé contractuel temporaire).',['hopremu']],
+ ['Attestation','L’attestation d’exercice provisoire dure 13 mois, renouvelable une fois. Elle est délivrée pour une spécialité et un établissement. Un changement d’établissement impose un nouveau dossier.',['pactcreation','arsna']],
+ ['Renouvellement','Possible en cas d’échec aux EVC ou de motif impérieux, sous réserve de s’engager à se présenter à la session suivante. Après un échec aux EVC, la demande peut se faire trois mois avant l’expiration, l’ARS disposant de trois mois et son silence valant acceptation.',['pactcreation','arsgepdf']],
+ ['Exercice','Par délégation, sous la responsabilité directe du praticien responsable de la structure. Participation aux gardes et astreintes des internes.',['aphp']],
+ ['Conditions',PACT_COND,['arsgepdf','arsna','pactcreation']],
+ ['Congés de formation','Les PACT sont exclus des congés de formation de 8 jours ouvrables par an prévus pour les praticiens associés (décret n° 2024-1190, article 3).',['pactcreation']],
+ ['Textes','Décret n° 2024-1190 du 19 décembre 2024 (statut) et décret n° 2024-1191 du 19 décembre 2024 (attestation). Arrêtés de rémunération du 16 janvier 2025, publiés au JO du 6 mars 2025.',['pactcreation','decret1191','hopremu']],
+ ['Temps de travail','10 demi-journées par semaine. Les obligations de service ne peuvent pas dépasser 48 heures par semaine en moyenne sur 3 mois. Repos quotidien de 11 heures consécutives au minimum. Vous pouvez exercer dans plusieurs établissements, notamment au sein d’un groupement hospitalier de territoire.',['modele']],
+ ['Temps de travail additionnel','Sur la base du volontariat, indemnisé ou récupéré. Il ne peut pas augmenter votre quotité de travail de plus de 30 % sur une période de trois mois.',['modele']],
+ ['Congés et RTT','25 jours ouvrés de congé annuel et 20 jours de RTT par an, déduction faite de la journée de solidarité, réduits proportionnellement à la durée d’activité. Fractionnables sans limitation.',['modele']],
+ ['Maladie','Sur 12 mois consécutifs, 3 mois à 90 % des émoluments correspondant à votre quotité, puis 9 mois à 50 %. Ces congés ne peuvent pas dépasser la durée de validité de l’attestation.',['modele']],
+ ['Maternité, paternité, adoption','Durée prévue par la Sécurité sociale, avec la totalité des émoluments correspondant à vos obligations de service.',['modele']],
+ ['Protection sociale','Régime général de la Sécurité sociale et retraite complémentaire IRCANTEC.',['modele']],
+ ['Période d’essai','Durée fixée au contrat, renouvelable une fois pour une durée au plus égale. Pas de période d’essai en cas de renouvellement pour les mêmes fonctions.',['modele']],
+ ['Préavis','1 mois pour un contrat de moins de 6 mois, 2 mois au-delà, en cas de démission, de rupture anticipée ou de non-renouvellement.',['modele']],
+ ['Fin du contrat','La fin de validité de l’attestation met fin de plein droit au contrat. Une rupture anticipée suppose un motif : suppression ou transformation du besoin, ou refus d’une modification substantielle, après un entretien préalable. La durée d’exercice ne peut pas dépasser 26 mois.',['modele']],
+ ['Report du terme','Jusqu’à 5 mois en cas de grossesse, d’état de santé attesté par un médecin agréé ou de circonstances familiales exceptionnelles.',['reforme']]
+];
+const PACT_ENTRY=[
+ ['Employeur','Un établissement public de santé, un établissement privé à but non lucratif ou un établissement ou service social ou médico-social doit vous recruter.',['aphp']],
+ ['Demande','L’établissement dépose la demande d’attestation d’exercice provisoire auprès de l’ARS, en ligne, lors de périodes de dépôt fixées par arrêté (une à deux fois par an). Une commission rend son avis sous deux mois, prolongeable d’un mois.',['aphp','pactcreation','arsna']],
+ ['Type de contrat','Contrat de droit public à durée limitée (statut PACT).',['hopremu']],
+ ['Durée','13 mois, renouvelable une fois, soit 26 mois au plus.',['arsgepdf']],
+ ['Conditions',PACT_COND,['arsgepdf','arsna','pactcreation']],
+ ['Engagement','Le renouvellement suppose de s’engager à se présenter à la session suivante des EVC.',['pactcreation']]
+];
+const SEJ_NOTE=['Titre de séjour','Aucun texte ne crée de titre de séjour propre à ce statut. Le décret exige d’être en situation régulière au regard du séjour et du travail, et les préfectures peuvent demander l’attestation d’exercice provisoire à l’appui d’une demande de titre. La préfecture de votre département fixe la liste des pièces à fournir.',['pactcreation','arsna']];
+const SEJ_PACT=[
+ ['Condition','Être en situation régulière au regard des règles de séjour et de travail pour être recruté PACT.',['pactcreation']],
+ SEJ_NOTE,
+ ['Carte talent','Inaccessible : la rémunération PACT ('+fmt(PACT)+' €) est inférieure au seuil de '+fmt(PA2)+' €.',['talent','pactremu']]
+];
+const SEJ_PA=[
+ ['Titre','Carte de séjour pluriannuelle « talent, profession médicale et de la pharmacie », 4 ans au maximum.',['immig']],
+ ['Seuil de rémunération','Rémunération annuelle brute au moins égale au 2e échelon des praticiens associés, soit '+fmt(PA2)+' €. Seuil fixé par le décret n° 2025-539 du 13 juin 2025.',['immigatt','arr2023']],
+ ['À l’échelon 1','La rémunération de base ('+fmt(PA1)+' €) est inférieure au seuil, la carte talent n’est donc pas accessible à ce niveau. Le Sénat a recommandé d’aligner le seuil sur l’échelon 1.',['senat']],
+ ['Démarche','Demande hors ANEF, selon les modalités du département de résidence, avec l’attestation employeur dûment renseignée, signée et tamponnée.',['immigatt','immigpdf']]
+];
+const ORDRE=['Inscription à l’Ordre','Aucune inscription à l’Ordre n’est possible pendant l’attestation d’exercice provisoire, les EVC ou le PCC. Elle suit l’autorisation définitive.',['esante']];
+
+const CONTENT={
+ abroad:{
+  intro:'Vous n’avez pas encore d’autorisation d’exercer la médecine en France. Deux entrées existent : être recruté sous attestation d’exercice provisoire (PACT) avec l’engagement de passer les EVC, ou réussir les EVC.',
+  contrat:PACT_ENTRY, sejour:[SEJ_PACT[0],SEJ_NOTE], remu:'pact',
+  docs:[['Pour l’attestation d’exercice provisoire (PACT)',['justificatifs de formation et d’expérience professionnelle','justificatif du niveau de français B2','engagement sur l’honneur de passer les EVC','engagement de l’établissement à vous employer','présentation du service d’accueil'],['arsgepdf','decret1191']]],
+  steps:[
+   'Vérifier que votre diplôme est définitif. Les quitus et diplômes temporaires ne permettent pas de s’inscrire aux EVC.',
+   'Soit trouver un établissement qui demandera pour vous l’attestation d’exercice provisoire à l’ARS (PACT), en vérifiant la période de dépôt.',
+   'Soit suivre sur le site du CNG l’arrêté d’ouverture de la prochaine session EVC.'
+  ]},
+ ffi:{
+  intro:'Le faisant fonction d’interne est un statut de formation. Vous suivez en France une formation médicale spécialisée (DFMS) ou spécialisée approfondie (DFMSA). Il ne donne pas à lui seul l’autorisation d’exercer, et les ARS ne décrivent aucun lien avec les EVC.',
+  contrat:[
+   ['Statut','Candidat sélectionné et nommé faisant fonction d’interne par le directeur de l’établissement pour la durée de la formation, renouvelable tous les 6 mois.',['arsge','arsgepdf']],
+   ['Durée','DFMS : 2 à 6 semestres, soit 1 à 3 ans. DFMSA : 1 à 2 semestres, soit 6 mois à 1 an.',['arsge','arsna']],
+   ['Recrutement','Soit le contingent national géré par l’université de Strasbourg, avec inscription en septembre et début en novembre, soit des postes sous convention de coopération réservés par l’UFR et l’établissement. Les candidatures se déposent en décembre de l’année précédente. Le nombre de places est fixé chaque année par arrêté ministériel.',['arsge','arsgepdf']],
+   ['Textes','Articles R. 6153-41 à R. 6153-44 du code de la santé publique, arrêté du 3 août 2010 et circulaire n° 2013-0003.',['arsge']],
+   ['Pour exercer durablement','Passer par un statut PACT, ou réussir les EVC, puis le PCC. Le DFMS ou le DFMSA ne remplace pas ce parcours.',['pactcreation','reforme']]
+  ], sejour:[['Condition','Être en France pour exercer. Aucun texte ne crée de titre de séjour propre au faisant fonction d’interne : la préfecture de votre département fixe le titre et la liste des pièces selon votre situation.',['arsge','arsna']]], remu:'ffi',
+  docs:[['Dossier de candidature de faisant fonction d’interne',['justificatif d’identité et de nationalité','relevé détaillé de votre cursus','lettre de motivation','attestation sur l’honneur de non-détention de certains diplômes','accord de coopération interuniversitaire, le cas échéant','dépôt en décembre de l’année précédente'],['arsgepdf']]],
+  steps:[
+   'Demander à votre établissement et à votre université la durée exacte de votre formation et la date de fin de votre nomination.',
+   'Rassembler vos justificatifs de fonctions rémunérées si vous visez ensuite la voie interne des EVC.',
+   'Si vous souhaitez rester exercer en France, faire demander une attestation d’exercice provisoire par un établissement employeur (PACT).'
+  ]},
+ stagiaire:{
+  intro:'Le stagiaire associé est un statut de coopération internationale. Vous complétez votre formation en France puis vous retournez exercer dans votre pays d’origine. Ce n’est pas une voie d’installation en France.',
+  contrat:[
+   ['Statut','Formation pratique complémentaire dans le cadre d’une coopération internationale hors Union européenne. Les conditions d’exercice et de rémunération sont celles des étudiants faisant fonction d’interne, sous la responsabilité d’un praticien responsable du suivi du stage.',['arr2011','arsge']],
+   ['Conditions','Être médecin avec un diplôme permettant d’exercer dans votre pays d’obtention, et être employé par un établissement de votre pays d’origine qui accepte une convention de coopération avec l’établissement français.',['hus']],
+   ['Convention','Rédigée au plus tard 2 mois avant la prise de fonctions et visée par le préfet du département de l’établissement d’accueil. Elle est signée par le stagiaire, le directeur de l’établissement, le praticien responsable du suivi, l’organisme de la convention internationale et, le cas échéant, l’organisme qui finance la rémunération. Elle précise aussi le niveau de français B2 si contact avec les patients, l’assurance en responsabilité civile et l’absence de formation universitaire pendant le stage.',['arr2011','arsgepdf']],
+   ['Durée','6 mois renouvelable une fois pour une même convention, fractionnable. Durée maximale de 2 ans au total, toutes conventions confondues.',['arr2011']],
+   ['Délai après un DFMS ou DFMSA','Un an de délai est imposé avant un poste de stagiaire associé. Les fonctions ne peuvent pas être consécutives à une formation diplômante.',['arr2011']],
+   ['Temps de travail','Temps plein, 10 demi-journées par semaine, 48 heures maximum sur 7 jours en moyenne sur 4 mois.',['arr2011','hus','arsgepdf']],
+   ['Congés','Les congés suivent les règles des faisant fonction d’interne (articles R. 6153-12 à R. 6153-14 et R. 6153-17). Le CHU de Strasbourg indique 30 jours ouvrables par an.',['arr2011','hus']],
+   ['Limites','Pas de formation universitaire en France pendant le stage. Le CHU de Strasbourg précise que le stagiaire retourne dans son pays d’origine à la fin du stage.',['arr2011','hus']],
+   ['Textes','Arrêté du 16 mai 2011 relatif aux stagiaires associés, dans sa version consolidée sur Légifrance.',['arr2011']]
+  ], sejour:[
+   ['Titre','Visa long séjour valant titre de séjour, avec formalités auprès de l’OFII dans les trois mois suivant l’arrivée, selon le CHU de Strasbourg. La convention est visée par le préfet.',['hus','arr2011']]
+  ], remu:'stagiaire',
+  docs:[['Convention de coopération',['convention signée par le stagiaire, le directeur de l’établissement, le praticien responsable du suivi, l’organisme de la convention internationale et le financeur éventuel','visa du préfet du département de l’établissement d’accueil','justificatif du diplôme dans le pays d’origine','justificatif du niveau de français B2 si contact avec les patients','assurance en responsabilité civile'],['arr2011','arsgepdf']]],
+  steps:[
+   'Vérifier que votre convention de coopération est signée au moins 2 mois avant le début et visée par le préfet.',
+   'Anticiper la durée maximale de 2 ans et le retour dans votre pays d’origine à la fin du stage.',
+   'Si vous souhaitez ensuite exercer en France, étudier le PACT ou les EVC en conservant vos justificatifs de fonctions rémunérées.'
+  ]},
+ pact:{
+  intro:'Vous exercez sous attestation d’exercice provisoire, par délégation et sous la responsabilité directe d’un praticien de plein exercice. Ce statut est temporaire et s’accompagne de l’engagement de passer les EVC.',
+  contrat:PACT_CONTRAT, sejour:SEJ_PACT, remu:'pact',
+  docs:[['Renouvellement de l’attestation',['justificatifs de formation et d’expérience','engagement de vous présenter à la session suivante des EVC','engagement de l’établissement à vous employer','présentation du service'],['arsgepdf','pactcreation']]],
+  steps:[
+   'Surveiller la date de fin de votre attestation (13 mois, renouvelable une fois).',
+   'Préparer le dossier de la voie interne : formulaire de l’annexe III cosigné par le chef de service et le président de la CME, avec l’attestation et le contrat PACT en cours de validité.',
+   'En cas de renouvellement, vous engager à vous présenter à la session suivante.'
+  ]},
+ laureat:{
+  intro:'Vous avez réussi les EVC et vous accomplissez le parcours de consolidation des compétences (PCC) sous le statut de praticien associé, à temps plein dans la profession et la spécialité visées.',
+  contrat:[
+   ['Statut','Praticien associé. Le PCC se fait dans un établissement de santé public, privé ou privé d’intérêt collectif, une structure sanitaire (centre de santé) ou un établissement ou service social ou médico-social.',['reforme']],
+   ['Durée','Deux ans pour les médecins. Inscription en formation initiale à l’université, avec supervision par l’UFR et le coordonnateur local du DES.',['reforme']],
+   ['Saisine anticipée','Après au moins 6 mois, le responsable de la structure peut, sur rapport d’évaluation cosigné par le président de la CME, saisir la commission locale de coordination de la spécialité. Si l’avis est favorable, vous saisissez directement la CNAE.',['reforme']],
+   ['Congés de formation','8 jours ouvrables par an pour les praticiens associés, cumulables sur deux années (article R. 6152-914 du code de la santé publique, modifié par le décret n° 2024-1190).',['pactcreation']],
+   ['Suspension','Possible si la poursuite du PCC expose des patients à un danger grave.',['reforme']]
+  ], sejour:SEJ_PA, remu:'pa',
+  docs:[['Carte talent, profession médicale et de la pharmacie',['attestation employeur dûment renseignée, signée et tamponnée','les autres pièces dépendent de votre département de résidence'],['immigpdf','immigatt']]],
+  steps:[
+   'Accomplir le PCC à temps plein avec votre inscription universitaire.',
+   'Demander à votre responsable de structure si une saisine anticipée après 6 mois est envisageable pour votre dossier.',
+   'Demander votre attestation employeur avant le renouvellement de votre titre de séjour.'
+  ]},
+ finpcc:{
+  intro:'Vous avez terminé le stage d’évaluation du PCC. L’étape suivante est la saisine de la commission nationale d’autorisation d’exercice (CNAE) pour obtenir l’autorisation d’exercice définitive.',
+  contrat:[
+   ['Statut','Praticien associé jusqu’à l’autorisation définitive.',['reforme']],
+   ['Durée du stage','Deux ans pour les médecins, avec possibilité de saisine anticipée après 6 mois dans les conditions prévues.',['reforme']],
+   ['Saisine','À l’issue du stage d’évaluation, vous saisissez la CNAE pour solliciter l’autorisation d’exercice définitive. La CNAE dispose d’un an pour statuer et son silence vaut refus.',['reforme','arsgepdf']]
+  ], sejour:SEJ_PA.concat([ORDRE]), remu:'pa',
+  docs:[['Saisine de la CNAE et titre de séjour',['attestation individuelle de remise du dossier au CNG, qui vous couvre dans l’attente','attestation employeur pour la carte talent, signée et tamponnée'],['arsgepdf','immigpdf']]],
+  steps:[
+   'Saisir la CNAE à l’issue du stage d’évaluation.',
+   'Après l’autorisation définitive, vous inscrire à l’Ordre des médecins.',
+   'Vérifier la date de fin de votre contrat et de votre titre de séjour.'
+  ]},
+ outremer:{
+  intro:'Vous bénéficiez du dispositif dérogatoire et transitoire propre à certains territoires d’outre-mer, prolongé jusqu’en 2030 et étendu à Mayotte.',
+  contrat:[
+   ['Contrat','Contrat de droit public de praticien contractuel (article R. 6152-338 du code de la santé publique) pour remplacer un praticien absent ou faire face à un accroissement temporaire d’activité.',['reforme','outremer']],
+   ['Durée','Six mois, renouvelable une fois six mois. La limite de deux ans dans un même établissement ne s’applique pas à ces praticiens.',['reforme']],
+   ['Après les EVC','Avec 5 ans d’exercice dans ces territoires, vous saisissez directement la CNAE sans les deux ans de stage d’évaluation.',['reforme']]
+  ], sejour:[['Titre','Le dispositif règle l’autorisation d’exercer, pas le titre de séjour. Celui-ci relève de la préfecture de votre département, selon votre situation.',['reforme','immig']]], remu:'outremer',
+  docs:[['Justificatifs à conserver',['contrat de praticien contractuel en cours de validité','justificatifs de vos années d’exercice sur le territoire, utiles pour la saisine directe de la CNAE','formulaire de l’annexe III pour la voie interne des EVC'],['reforme','internform']]],
+  steps:[
+   'Conserver votre contrat de praticien contractuel en cours de validité, il ouvre la voie interne des EVC.',
+   'Rassembler les justificatifs de vos années d’exercice sur le territoire.',
+   'Suivre sur le site du CNG l’arrêté d’ouverture de la prochaine session EVC.'
+  ]},
+ stock:{
+  intro:'La procédure dite du stock était transitoire. Les praticiens dont le dossier n’avait pas été examiné ont été affectés sur le statut de praticien associé au 1er janvier 2023, et la date limite de passage en commission nationale a été repoussée au 30 avril 2023.',
+  contrat:[
+   ['Statut','Praticien associé depuis le 1er janvier 2023 pour les praticiens du stock dont le dossier n’avait pas été examiné.',['an869']],
+   ['Indemnité différentielle','Versée si le changement de statut fait baisser les émoluments perçus.',['adelyce']],
+   ['Votre dossier','Le dispositif est clos. Pour connaître l’état de votre dossier, contactez le CNG.',['stock','cng']]
+  ], sejour:SEJ_PA, remu:'pa',
+  docs:[['Carte talent, profession médicale et de la pharmacie',['attestation employeur dûment renseignée, signée et tamponnée','les autres pièces dépendent de votre département de résidence'],['immigpdf','immigatt']]],
+  steps:[
+   'Écrire au CNG pour vérifier l’état de votre dossier.',
+   'Vérifier votre statut actuel et votre rémunération par rapport à la grille des praticiens associés.',
+   'Demander votre attestation employeur avant le renouvellement de votre titre de séjour.'
+  ]}
+};
+
+function gardeRows(s,base,prec,rate,txt){
+ const n=parseInt(s.garde,10)||0;
+ rate=rate||SUJ;
+ if(!n) return [];
+ const g=n*12*rate, tot=base+g;
+ const r=[row('Gardes et astreintes',txt||('Indemnité de sujétion de '+fmt(SUJ)+' € bruts par nuit, dimanche ou jour férié, et '+fmt(173.36)+' € par demi-nuit ou samedi après-midi, pour les praticiens associés. Montants en vigueur depuis le 1er janvier 2024.'),['gardes24'])];
+ r.push(row('Estimation des gardes','Avec '+n+' par mois, cela ajoute environ '+fmt(g)+' € bruts par an, au tarif de '+fmt(rate)+' € par garde.',['gardes24']));
+ r.push(amt('Total estimé avec gardes',tot,'base + gardes, hors primes éventuelles',['gardes24']));
+ if(prec) r.push(row('Précarité estimée','10 % du total des émoluments bruts, soit environ '+fmt(tot*0.1)+' € sur la durée du contrat en cours. Le calcul exact dépend de la durée de votre contrat.',['pactremu']));
+ return r;
+}
+const FFI_TXT='Indemnité de garde des internes et faisant fonction d’interne : '+fmt(FFI_N)+' € bruts pour une nuit du lundi au vendredi, '+fmt(FFI_W)+' € pour une nuit de week-end, un dimanche ou un jour férié. L’estimation ci-dessous retient '+fmt(FFI_N)+' € par garde, hors majoration des week-ends et jours fériés.';
+const STAG_BASE=['Régime de rémunération','L’arrêté du 16 mai 2011 applique au stagiaire associé les conditions de rémunération du faisant fonction d’interne. Le CHU de Strasbourg publie pour ce régime, dans sa page mise à jour le 2 mars 2024 :<div class="sub">Traitement de base : <b>1 478,78 €</b> · Indemnité de sujétion : <b>435,18 €</b> · Majoration logement ou nourriture : <b>28,02 à 84,22 €</b> selon la situation</div><div class="amt">'+fmt(STAG)+' € <span>brut par mois, taux plein</span></div><div class="sub">Soit environ '+fmt(STAG*12)+' € bruts par an. Net indiqué : 1 608,31 € par mois.</div>',['arr2011','hus']];
+function remuBlock(type,s){
+ if(type==='pact'){
+  const rows=[
+   amt('PACT',PACT,'10 demi-journées par semaine',['pactremu']),
+   row('Prime d’exercice territorial','Les PACT en bénéficient dans les mêmes conditions.',['pactremu']),
+   row('Indemnité de précarité','10 % du total des émoluments bruts dus au titre du contrat en cours. Elle est versée en une fois au plus tard un mois après le terme du contrat et n’est pas soumise aux cotisations IRCANTEC.',['hopremu']),
+   row('Temps de travail additionnel','277,30 € par période, dans le cadre du schéma territorial de permanence et de continuité des soins, ou récupération sous réserve de la continuité du service.',['hopremu']),
+   row('Textes de rémunération','Arrêtés du 16 janvier 2025, publiés au Journal officiel du 6 mars 2025. Le montant retenu dépasse légèrement la proposition initiale de 80 % de l’échelon 1 des praticiens associés.',['hopremu','pactremu'])
+  ];
+  const g=gardeRows(s,PACT,true);
+  if(g.length) return block('Rémunération',rows.concat(g));
+  rows.push(row('Gardes et astreintes','Indemnité de sujétion de '+fmt(SUJ)+' € bruts pour une nuit, un dimanche ou un jour férié, et '+fmt(173.36)+' € pour une demi-nuit ou un samedi après-midi, comme les praticiens associés (arrêté du 22 décembre 2023, au 1er janvier 2024). Indiquez votre nombre de gardes pour une estimation.',['gardes24']));
+  return block('Rémunération',rows);
+ }
+ if(type==='ffi'||type==='stagiaire'){
+  const base=[type==='ffi'?['Régime de rémunération','Le régime du faisant fonction d’interne est celui auquel l’arrêté du 16 mai 2011 renvoie pour le stagiaire associé. Le CHU de Strasbourg publie pour ce régime, dans sa page mise à jour le 2 mars 2024 : <b>'+fmt(STAG)+' € bruts par mois</b> au taux plein, soit environ '+fmt(STAG*12)+' € bruts par an (traitement de base 1 478,78 €, indemnité de sujétion 435,18 €, majoration logement ou nourriture de 28,02 à 84,22 €).',['arr2011','hus']]:STAG_BASE];
+  const rows=base.map(r=>row(r[0],r[1],r[2]));
+  const g=gardeRows(s,STAG*12,false,FFI_N,FFI_TXT);
+  return block('Rémunération',rows.concat(g).concat(g.length?[]:[row('Gardes et astreintes',FFI_TXT+' Indiquez votre nombre de gardes pour une estimation.',['gardes24'])]));
+ }
+ if(type==='pa'){
+  const e=s.ech==='2'?PA2:PA1;
+  const rows=[
+   amt('Échelon 1',PA1,'première année',['arr2023','fhfnote']),
+   amt('Échelon 2',PA2,'après un an, sur décision du directeur de l’établissement',['arr2023','fhfnote']),
+   row('Votre échelon','Échelon '+s.ech+', soit '+fmt(e)+' € bruts par an.',['arr2023'])
+  ].concat(gardeRows(s,e,false));
+  rows.push(row('Indemnités','Indemnité différentielle si le changement de statut fait baisser les émoluments, indemnités de permanence des soins, indemnités pour travail additionnel et prime d’exercice territorial, le cas échéant.',['adelyce']));
+  return block('Rémunération',rows);
+ }
+ const rows=[
+  amt('Seuil minimum',PA2,'émoluments bruts annuels des praticiens contractuels',['arr2023']),
+  row('Votre montant','Il figure dans votre contrat, dans la limite fixée par l’arrêté selon le motif de recrutement.',['hopate'])
+ ];
+ return block('Rémunération',rows.concat(gardeRows(s,PA2,false)));
+}
+
+function sejourExtra(s){
+ const rows=[];
+ const t={
+  hors:'Vous n’êtes pas en France. Il faut un visa long séjour pour venir exercer, à demander auprès du consulat de France de votre pays.',
+  vls:'Visa long séjour valant titre de séjour. À son échéance, la demande de titre suivante se dépose en préfecture selon votre contrat et votre statut.',
+  etud:'Titre étudiant. Le changement de titre pour exercer sous contrat se demande en préfecture.',
+  talent:'Carte talent profession médicale. Son renouvellement suppose une rémunération au moins égale au seuil de '+fmt(PA2)+' €. L’attestation employeur est à fournir, hors ANEF.',
+  asile:'Titre lié à votre protection (réfugié, apatride, protection subsidiaire ou asile territorial). La carte talent n’est pas la voie de séjour applicable dans votre cas. Pour les EVC, vous relevez de la liste B si votre diplôme est hors Union européenne.',
+  aucun:s.nat==='ue'?'Citoyen de l’Union européenne : aucun titre de séjour n’est nécessaire pour exercer en France. Les démarches de titre et le seuil de la carte talent ne vous concernent pas.':'Nationalité française'+(s.nat==='frn'?' par naturalisation':'')+' : aucun titre de séjour n’est nécessaire. Les démarches de titre et le seuil de la carte talent ne vous concernent pas.',
+  autre:'Autre titre ou récépissé. Vérifiez en préfecture qu’il vous autorise à exercer sous le contrat envisagé.'
+ }[s.sej];
+ rows.push(['Votre titre actuel',t,s.sej==='talent'?['immigatt']:s.sej==='asile'?['evc2026']:s.sej==='aucun'?[]:['immig']]);
+ if(PA_SITS.includes(s.sit)&&titreMode(s)==='std'){
+  const e=s.ech==='2'?PA2:PA1;
+  rows.push(['Votre cas',e>=PA2?pill('ok','Seuil atteint')+'Échelon 2 : '+fmt(PA2)+' € bruts par an, égal au seuil de la carte talent.':pill('warn','Seuil non atteint')+'Échelon 1 : '+fmt(PA1)+' € bruts par an, soit '+fmt(PA2-PA1)+' € de moins que le seuil de '+fmt(PA2)+' €. Le passage à l’échelon 2 ouvre la carte talent.',['immigatt','arr2023']]);
+ }
+ if(titreMode(s)==='std') rows.push(['Renouveler vos documents','Titre de séjour : le dépôt se fait selon la procédure de votre préfecture, avant l’expiration, et les pièces dépendent du titre. Passeport ou pièce d’identité : la démarche relève de votre consulat ou de votre ambassade en France. Diplômes : conservez les originaux et les traductions par traducteur agréé, demandés par le CNG et les ARS.',['immig','anef']]);
+ else if(titreMode(s)==='prot') rows.push(['Renouveler vos documents','Titre lié à la protection : le renouvellement se fait selon la procédure de votre préfecture, avant l’expiration, et les pièces dépendent du titre. Diplômes : conservez les originaux et les traductions par traducteur agréé, demandés par le CNG et les ARS.',['immig','anef']]);
+ else if(s.nat==='ue') rows.push(['Renouveler vos documents','Carte d’identité ou passeport de votre pays : démarche auprès de votre administration nationale ou de votre consulat. Diplômes : conservez les originaux et les traductions par traducteur agréé, demandés par le CNG et les ARS.',['cng']]);
+ else rows.push(['Renouveler vos documents','Carte nationale d’identité et passeport français : démarche en mairie. Diplômes : conservez les originaux et les traductions par traducteur agréé, demandés par le CNG et les ARS.',['cng']]);
+ return rows;
+}
+function compare(s){
+ const T=[
+  ['Faisant fonction d’interne','Formation : DFMS 1 à 3 ans, DFMSA 6 mois à 1 an','≈ 23 978 € (1 998,19 € par mois, CHU de Strasbourg)','Pas de titre propre, situation régulière','Voie interne si 2 ans de fonctions rémunérées justifiés'],
+  ['Stagiaire associé','6 mois renouvelable une fois, 2 ans au plus','≈ 23 978 € (régime du faisant fonction d’interne)','Visa long séjour valant titre de séjour','Voie interne si 2 ans de fonctions rémunérées justifiés'],
+  ['PACT','13 mois renouvelable une fois','31 204,37 €','Pas de titre propre, situation régulière','Voie interne ouverte'],
+  ['Praticien associé, échelon 1','PCC, 2 ans pour les médecins','36 624,45 €','Carte talent indisponible, seuil à l’échelon 2','Déjà lauréat'],
+  ['Praticien associé, échelon 2','PCC, 2 ans pour les médecins','41 386,48 €','Carte talent, 4 ans au plus','Déjà lauréat'],
+  ['Outre-mer','6 mois renouvelable une fois','Au moins 41 386,48 € (praticien contractuel)','Relève de la préfecture','Voie interne ouverte']
+ ];
+ const me=s.sit==='ffi'?0:s.sit==='stagiaire'?1:s.sit==='pact'||s.sit==='abroad'?2:s.sit==='outremer'?5:s.ech==='2'?4:3;
+ return '<section class="blk"><h3>Comparatif des statuts</h3><div class="cmp"><table><thead><tr><th>Statut</th><th>Durée</th><th>Brut par an</th><th>Séjour</th><th>EVC</th></tr></thead><tbody>'+T.map((x,i)=>'<tr'+(i===me?' class="me"':'')+'>'+x.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</tbody></table></div><p class="help" style="margin-top:8px">La ligne de votre situation est surlignée.</p></section>';
+}
+function pccRow(s){
+ const m=s.pcc;
+ const t=m==='0'?pill('warn','Moins de 6 mois')+'La saisine anticipée n’est pas encore possible. Il reste jusqu’à 24 mois de PCC, et le passage à l’échelon 2 n’est possible qu’après un an.':
+  m==='6'?pill('ok','Saisine anticipée possible')+'Après au moins 6 mois, votre responsable peut saisir la commission locale, sur rapport d’évaluation cosigné par le président de la CME. Sans saisine anticipée, il reste jusqu’à 18 mois.':
+  pill('ok','Saisine anticipée possible')+'Plus de la moitié du PCC est effectuée. Il reste au plus 12 mois sans saisine anticipée, et le passage à l’échelon 2 est possible.';
+ return ['Votre avancement',t,['reforme']];
+}
+
+function evcBlock(s){
+ if(s.sit==='laureat'||s.sit==='finpcc') return block('Voies des EVC',[row('Résultat','Vous avez déjà réussi les EVC. Aucune nouvelle inscription n’est nécessaire.',['reforme'])]);
+ if(s.sit==='stock') return block('Voies des EVC',[row('Dispositif','Votre dossier relève d’une procédure distincte, close. Les EVC ne s’appliquent pas à ce dispositif. Pour toute question, contactez le CNG.',['cng'])]);
+ const sp=SPECS.find(x=>x[0]===s.spec)||SPECS[0];
+ const L=lstOf(s), B=L==='B';
+ const eligInt=s.sit==='pact'||s.sit==='outremer'||s.exp==='oui';
+ const rows=[];
+ const open=new Date()<=CLOSE;
+ rows.push(row('Session 2026',(open?pill('ok','Inscriptions ouvertes jusqu’au 21 juillet 2026 à 17 h'):pill('warn','Inscriptions closes depuis le 21 juillet 2026'))+'<div class="sub">Épreuves organisées le 8 octobre 2026 à Rungis. Résultats pas encore publiés : à suivre sur la page de la session du CNG. La session suivante sera ouverte par un nouvel arrêté.</div>',['fhf2026','evc2026']));
+ rows.push(row('Votre liste','Liste '+L+' : '+listeWhy(s),['evc2026']));
+ let ext;
+ if(B) ext=pill('ok','Examen')+'La moyenne aux épreuves suffit et le nombre de postes ne vous est pas opposable.';
+ else if(sp[2]!=null) ext=pill('ok','Ouverte')+sp[2]+' postes en '+sp[0]+', France entière.';
+ else ext=pill('bad','Fermée')+'Aucun poste en voie externe pour '+sp[0]+' en 2026. Seules 13 spécialités sont ouvertes (1 003 postes).';
+ rows.push(row('Voie externe',ext+'<div class="sub">Deux épreuves écrites anonymes le même jour : connaissances pratiques (2 h) et connaissances fondamentales (2 h), même coefficient.</div>',['evc2026']));
+ let int;
+ if(eligInt) int=pill('ok','Éligible')+(s.sit==='pact'?'Attestation d’exercice provisoire et contrat PACT en cours de validité.':s.sit==='outremer'?'Autorisation outre-mer et contrat de praticien contractuel en cours de validité.':'Au moins deux ans d’exercice rémunéré en équivalent temps plein, justifiés.');
+ else int=pill('bad','Non éligible')+'Il faut une attestation d’exercice provisoire avec un contrat PACT, une autorisation outre-mer avec un contrat de praticien contractuel, ou deux ans d’exercice rémunéré en équivalent temps plein au cours des trois années précédant l’arrêté d’ouverture.';
+ int+='<div class="sub">'+sp[1]+' postes en '+sp[0]+'. Une épreuve unique de connaissances fondamentales (2 h, QCM). Formulaire de l’annexe III cosigné par le chef de service et le président de la CME si vous exercez en établissement.</div>';
+ if(B) int+='<div class="sub">Liste B : avec une expérience en France dans les mêmes conditions, vous passez l’épreuve unique de connaissances fondamentales (QCM).</div>';
+ rows.push(row('Voie interne',int,['evc2026','reforme','internexe','internform','internplan']));
+ rows.push(row('S’entraîner','Le CNG publie des QCM blancs par spécialité (session 2025) et les sujets des sessions 2023 à 2025, puis de 2009 à 2021. Aucun QCM blanc 2026 n’est publié à ce jour.',['qcmblanc','annales','annales24','annales23']));
+ const n=parseInt(s.tent,10), rest=4-n;
+ let tent;
+ if(rest<=0) tent=pill('bad','Épuisées')+'Vous avez utilisé vos quatre présentations : vous ne pouvez plus vous inscrire aux EVC.'+(s.sit==='pact'?' Le renouvellement d’une attestation suppose de s’engager à se présenter à la session suivante, ce qui n’est plus possible.':'');
+ else if(rest===1) tent=pill('warn','Dernière tentative')+'Une présentation restante sur quatre.';
+ else tent=pill('ok',rest+' restantes')+rest+' présentations restantes sur quatre depuis la session 2021.';
+ tent+='<div class="sub">Une inscription sans présence aux épreuves n’est pas comptée selon le CNG. Une note inférieure ou égale à 6 sur 20 à une épreuve est éliminatoire.</div>';
+ rows.push(row('Tentatives',tent,['cng','arr2021']));
+ rows.push(row('Une seule candidature','Une seule liste, une seule voie, une seule ARS (celle de votre lieu de résidence en France, sinon l’ARS de votre choix). Les candidatures multiples entraînent le rejet définitif.',['evc2026','cng']));
+ const docs=[(s.nat==='fr'||s.nat==='frn'?'pièce d’identité : carte nationale d’identité ou passeport français valide à la clôture des inscriptions':s.nat==='ue'?'pièce d’identité : carte d’identité ou passeport valide à la clôture des inscriptions':'pièce d’identité : titre de séjour ou passeport valide à la clôture des inscriptions'),'diplôme de docteur en médecine et diplôme permettant l’exercice dans le pays d’obtention (pas de quitus)',B?'preuve de votre maîtrise du français par tout moyen':'justificatif de français B2 (TCF-TEF, DELF B2, baccalauréat français ou diplôme français), sauf ressortissants francophones','traductions par un traducteur agréé si les pièces ne sont pas en français'];
+ if(B) docs.push(s.nat==='fr'||s.nat==='frn'?'document officiel justifiant votre retour en France à la demande des autorités françaises':'document officiel justifiant de votre situation : '+(s.nat==='apat'?'qualité d’apatride':s.prot==='ref'?'qualité de réfugié':'bénéfice de la protection subsidiaire ou de l’asile territorial'));
+ if(eligInt) docs.push('voie interne : formulaire de l’annexe III cosigné par le chef de service et le président de la CME, avec les justificatifs d’éligibilité');
+ rows.push(row('Pièces à fournir',ul(docs),['evc2026','cng','internform']));
+ rows.push(row('Après les résultats','Les lauréats nommés candidatent auprès des établissements. La période d’audition dure six mois au plus après la publication des résultats, sinon le lauréat perd le bénéfice du concours.',['evc2026']));
+ return block('Voies des EVC',rows);
+}
+
+function cohFiche(s,notes){
+ const c=[];
+ const L=lstOf(s);
+ if(EVCS.includes(s.sit)) c.push('Votre statut personnel vous place en liste '+L+' des EVC.');
+ const m=titreMode(s);
+ c.push(m==='std'?'Titre retenu : '+sejLabel(s,s.sej).toLowerCase()+', compatible avec votre situation.':m==='none'?'Votre nationalité ne demande aucun titre de séjour : les règles de la carte talent ne vous concernent pas.':'Votre titre de séjour découle de votre protection : la carte talent n’est pas la voie applicable.');
+ c.push('Nationalité retenue : '+NATC[s.nat].toLowerCase()+(s.nat==='etr'&&s.prot!=='non'?', '+(s.prot==='ref'?'réfugié':'protection subsidiaire ou asile territorial'):'')+'.');
+ if(PA_SITS.includes(s.sit)&&m==='std') c.push(s.ech==='2'?'À l’échelon 2, la rémunération atteint le seuil de la carte talent.':'À l’échelon 1, la rémunération est sous le seuil de la carte talent, qui n’est donc pas proposée.');
+ if(s.sit==='pact'&&m==='std') c.push('Un PACT doit être en situation régulière : l’option « Je ne suis pas en France » n’est pas proposée.');
+ if(s.sit==='stagiaire') c.push('Le stage de coopération est réservé aux ressortissants étrangers sans statut de protection : votre profil le permet.');
+ if(s.sit==='laureat'&&s.pcc!=='12') c.push('Le 2e échelon s’obtient après un an : il n’est pas proposé avant 12 mois de PCC.');
+ if(EVCS.includes(s.sit)){
+  const rest=4-parseInt(s.tent,10);
+  c.push(rest>0?rest+' présentation'+(rest>1?'s':'')+' aux EVC restante'+(rest>1?'s':'')+' sur quatre.':'Quatre présentations utilisées : plus d’inscription possible aux EVC.');
+ }
+ let h='<div class="coh"><p style="margin:0">'+pill('ok','Combinaison cohérente')+'Aucun choix impossible n’est proposé. Ce que cela implique pour vous :</p>'+ul(c)+'</div>';
+ if(notes.length) h+='<div class="adj"><b>Ajustement automatique</b>'+ul(notes)+'</div>';
+ return h;
+}
+function docsBlock(c){
+ return block('Pièces et documents à prévoir',c.docs.map(d=>row(d[0],ul(d[1]),d[2])));
+}
+let lastNotes=[];
+function build(s,notes){
+ used=new Set();
+ const c=CONTENT[s.sit];
+ const lab=SIT.find(x=>x[0]===s.sit)[1];
+ const evc=EVCS.includes(s.sit);
+ let h='<div class="fhead"><div><p class="eyebrow">Fiche de situation</p><h2>'+lab+'</h2><div class="chips">';
+ h+='<span class="chip">'+NATC[s.nat]+(s.nat==='etr'&&s.prot!=='non'?', '+(s.prot==='ref'?'réfugié':'protection subsidiaire ou asile'):'')+'</span>';
+ if(evc){h+='<span class="chip">Liste '+lstOf(s)+'</span><span class="chip">'+s.spec+'</span>';}
+ h+='<span class="chip">Médecin</span></div></div><div class="actions"><button type="button" class="btn ghost" id="copy">Copier le résumé</button><span class="msg" id="msg" role="status"></span></div></div>';
+ if(!s.touched) h+='<div class="example">Réponses d’exemple affichées. Modifiez le formulaire pour obtenir votre fiche.</div>';
+ h+=cohFiche(s,notes);
+ h+='<p class="intro">'+c.intro+'</p>';
+ let ct=c.contrat.slice();
+ if(s.sit==='laureat') ct.push(pccRow(s));
+ if(s.sit==='pact') ct.push(s.renouv==='oui'?['Votre attestation','Déjà renouvelée une fois, elle ne peut plus l’être. Préparez la voie interne des EVC avant son terme.',['pactcreation']]:['Votre attestation','Première attestation de 13 mois. Elle peut être renouvelée une fois, en cas d’échec aux EVC ou de motif impérieux.',['pactcreation']]);
+ h+=block('Contrat',ct.map(r=>row(r[0],r[1],r[2])));
+ const mode=titreMode(s);
+ let sj=c.sejour;
+ if(mode!=='std') sj=(s.sit==='finpcc'?[ORDRE]:[]);
+ h+=block('Droit de séjour',sj.concat(sejourExtra(s)).map(r=>row(r[0],r[1],r[2])));
+ h+=docsBlock(c);
+ h+=remuBlock(c.remu,s);
+ h+=evcBlock(s);
+ h+=compare(s);
+ h+=block('Prochaines étapes',['<ol class="steps">'+c.steps.map(x=>'<li>'+x+'</li>').join('')+'</ol>']);
+ const ids=Array.from(used);
+ h+='<section class="blk"><h3>Sources utilisées</h3><div class="srclist">'+ids.map(id=>'<a class="src" href="'+SRC[id][1]+'" target="_blank" rel="noopener noreferrer">'+SRC[id][0]+'</a>').join('')+'</div></section>';
+ return h;
+}
+
+/* ---------- formulaire ---------- */
+function buildRadios(container,name,items,key){
+ $(container).innerHTML=items.map(it=>{
+  const id=name+'-'+it[0];
+  return '<label class="opt" for="'+id+'"><input type="radio" id="'+id+'" name="'+name+'" value="'+it[0]+'"><span>'+it[1]+(it[2]?'<small>'+it[2]+'</small>':'')+'<small class="why" hidden></small></span></label>';
+ }).join('');
+ $(container).addEventListener('change',e=>{
+  if(e.target&&e.target.name===name&&!e.target.disabled){state[key]=e.target.value;state.touched=true;update();}
+ });
+}
+function syncRadios(name,value,reason){
+ document.querySelectorAll('input[name="'+name+'"]').forEach(inp=>{
+  const why=reason?reason(inp.value):null;
+  inp.disabled=!!why;
+  inp.checked=(inp.value===value);
+  const lab=inp.closest('.opt');
+  lab.classList.toggle('on',inp.checked);
+  lab.classList.toggle('dis',!!why);
+  const w=lab.querySelector('.why');
+  w.hidden=!why; w.textContent=why||'';
+ });
+}
+const selKey={};
+function fillSelect(id,items,value){
+ const sel=$(id), key=items.map(x=>x[0]).join('|');
+ if(selKey[id]!==key){sel.innerHTML=items.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('');selKey[id]=key;}
+ sel.value=value;
+}
+function selectNode(node){
+ try{const r=document.createRange();r.selectNodeContents(node);const sl=window.getSelection();sl.removeAllRanges();sl.addRange(r);}catch(e){}
+}
+function whyText(id,t,lock){const n=$(id);n.textContent=t||'';n.hidden=!t;n.className='why'+(lock?' lock':'');}
+
+function update(){
+ const notes=normalize(state);
+ const s=state;
+ syncRadios('nat',s.nat,null);
+ syncRadios('prot',s.prot,c=>protReason(s,c));
+ syncRadios('rentre',s.rentre,c=>rentreReason(s,c));
+ syncRadios('sit',s.sit,c=>sitReason(s,c));
+ syncRadios('exp',s.exp,null);
+ const evc=EVCS.includes(s.sit);
+ $('fs-prot').hidden=s.nat!=='etr';
+ $('fs-rentre').hidden=!(s.nat==='fr'||s.nat==='frn');
+ $('fs-spec').hidden=!evc;
+ $('fs-tent').hidden=!evc;
+ $('fs-exp').hidden=!['ffi','stagiaire'].includes(s.sit);
+ $('fs-renouv').hidden=s.sit!=='pact';
+ $('fs-pcc').hidden=!['laureat','finpcc'].includes(s.sit);
+ $('fs-ech').hidden=!PA_SITS.includes(s.sit);
+ $('fs-garde').hidden=s.sit==='abroad';
+ fillSelect('sel-spec',SPECS.slice().sort((a,b)=>a[0].localeCompare(b[0],'fr')).map(x=>[x[0],x[0]]),s.spec);
+ fillSelect('sel-tent',TENT_L,s.tent);
+ fillSelect('sel-renouv',RENOUV_L,s.renouv);
+ fillSelect('sel-pcc',s.sit==='finpcc'?[['12','Deux ans accomplis']]:PCC_L,s.pcc);
+ const el=echList(s);
+ fillSelect('sel-ech',el.map(v=>[v,ECH_L[v]]),s.ech);
+ whyText('why-pcc',s.sit==='finpcc'?'Un PCC terminé représente deux ans accomplis.':'',true);
+ whyText('why-ech',s.sit==='finpcc'?'Après deux ans de PCC, seul le 2e échelon est cohérent.':(s.sit==='laureat'&&s.pcc!=='12'?'Le 2e échelon s’obtient après un an : il n’est pas proposé avant 12 mois de PCC.':''),el.length===1||s.pcc!=='12');
+ const sl=sejList(s);
+ fillSelect('sel-sej',sl.map(v=>[v,sejLabel(s,v)]),s.sej);
+ let sw='';
+ const md=titreMode(s);
+ if(md==='none') sw=s.nat==='ue'?'Un citoyen de l’Union européenne n’a pas besoin de titre de séjour.':'Un citoyen français n’a pas besoin de titre de séjour.';
+ else if(md==='prot') sw='Votre titre découle de votre statut de protection.';
+ else if(s.sit==='pact') sw='Un PACT doit être en situation régulière : l’option « Je ne suis pas en France » n’est pas proposée, ni la carte talent (rémunération sous le seuil).';
+ else if(['ffi','outremer'].includes(s.sit)) sw='Vous exercez en France : l’option « Je ne suis pas en France » n’est pas proposée.';
+ else if(s.sit==='stagiaire') sw='Seuls le visa long séjour ou l’absence de titre (vous n’êtes pas encore arrivé) sont cohérents avec un stage de coopération.';
+ else if(PA_SITS.includes(s.sit)) sw=s.ech==='1'?'La carte talent n’est pas proposée à l’échelon 1 : le seuil est l’échelon 2.':'La carte talent est proposée : l’échelon 2 atteint le seuil.';
+ else sw='La carte talent profession médicale suppose un statut de praticien associé, elle n’est pas proposée ici.';
+ whyText('why-sej',sw,true);
+ fillSelect('sel-garde',GARDE_L,s.garde);
+ $('fiche').innerHTML=build(s,notes);
+ $('copy').addEventListener('click',function(){
+  const txt=$('fiche').innerText;
+  const done=m=>{$('msg').textContent=m;};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(txt).then(()=>done('Résumé copié.')).catch(()=>{selectNode($('fiche'));done('Copie impossible ici. Le texte est sélectionné, copiez-le avec le clavier.');});
+  }else{selectNode($('fiche'));done('Copie impossible ici. Le texte est sélectionné, copiez-le avec le clavier.');}
+ });
+}
+function bindSel(k){
+ $('sel-'+k).addEventListener('change',e=>{state[k]=e.target.value;state.touched=true;update();});
+}
+function init(){
+ ['spec','tent','renouv','pcc','ech','sej','garde'].forEach(bindSel);
+ buildRadios('opts-nat','nat',NAT,'nat');
+ buildRadios('opts-prot','prot',PROT,'prot');
+ buildRadios('opts-rentre','rentre',RENTRE,'rentre');
+ buildRadios('opts-sit','sit',SIT,'sit');
+ buildRadios('opts-exp','exp',EXP,'exp');
+ update();
+}
+init();
+})();
+</script>
+
+</body>
+</html>
