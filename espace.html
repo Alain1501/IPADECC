@@ -40,6 +40,7 @@ h3{font-size:17px;font-weight:700;margin-bottom:8px}
 .tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 form{display:grid;gap:14px;min-width:0}
 .f2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+[hidden]{display:none!important}
 label{display:grid;gap:5px;font-weight:600;font-size:14px;min-width:0}
 label small{font-weight:400;color:var(--muted)}
 input,select{font:inherit;font-size:16px;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;min-width:0}
@@ -54,6 +55,7 @@ label.ck input{width:20px;height:20px;margin-top:2px;flex:none}
 dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px}
 dt{color:var(--muted)}
 dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+ul.ech{margin:0;padding:0;list-style:none;display:grid;gap:10px}ul.ech li{padding:12px 14px;border:1px solid var(--line);border-radius:12px}ul.ech li.past{opacity:.55}ul.ech small{display:block;color:var(--muted)}
 ul.go{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 ul.go a{display:block;padding:11px 14px;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink);font-weight:600}
 ul.go a:hover{border-color:var(--accent)}
@@ -90,7 +92,8 @@ tr:last-child td{border-bottom:0}
 var CFG=window.IPADECC_CFG||{};
 var EXD={"Allergologie": "2027-01-08", "Anatomie et cytologie pathologique": "2026-11-20", "Anesthésie-réanimation": "2026-11-13", "Biologie médicale": "2026-11-12", "Chirurgie maxillo-faciale et stomatologie": "2026-11-12", "Chirurgie orale": "2026-12-02", "Chirurgie orthopédique et traumatologie": "2027-01-08", "Chirurgie plastique, reconstructrice et esthétique": "2026-12-02", "Chirurgie pédiatrique": "2026-11-20", "Chirurgie thoracique et cardio-vasculaire": "2026-11-20", "Chirurgie vasculaire": "2026-11-12", "Chirurgie viscérale et digestive": "2026-11-10", "Dermatologie et vénéréologie": "2026-11-13", "Endocrinologie diabétologie - nutrition": "2026-11-12", "Génétique médicale": "2026-12-02", "Gériatrie": "2027-01-12", "Gynécologie médicale": "2026-12-02", "Gynécologie obstétrique": "2026-12-01", "Hématologie": "2026-11-13", "Hépato-gastro-entérologie": "2026-11-13", "Maladies infectieuses et maladies tropicales": "2026-11-12", "Médecine cardiovasculaire": "2026-12-03", "Médecine d’urgence": "2026-11-19", "Médecine et santé au travail": "2026-11-10", "Médecine générale": "2027-01-15", "Médecine intensive-réanimation": "2026-11-12", "Médecine interne polyvalente et immunologie clinique": "2027-01-13", "Médecine légale et expertises médicales": "2026-11-12", "Médecine nucléaire": "2026-11-12", "Médecine physique et de réadaptation": "2026-12-01", "Médecine vasculaire": "2026-11-13", "Neurochirurgie": "2026-11-20", "Neurologie": "2026-12-01", "Néphrologie": "2026-11-12", "Oncologie": "2026-11-20", "Ophtalmologie": "2026-12-01", "Oto-rhino-laryngologie et chirurgie cervico-faciale": "2026-12-03", "Pneumologie": "2026-12-02", "Psychiatrie": "2026-12-10", "Pédiatrie": "2026-12-09", "Radiologie et imagerie médicale": "2026-12-08", "Rhumatologie": "2027-01-08", "Santé publique": "2026-11-10", "Urologie": "2026-12-01"};
 var SPECS=Object.keys(EXD).sort(function(a,b){return a.localeCompare(b,'fr');});
-var STATUT={candidat:'Candidat aux EVC',laureat_pact:'Lauréat des EVC, en PACT',laureat_pcc:'Lauréat des EVC, en PCC',autre:'Autre situation'};
+var STATUT={abroad:'Je n’exerce pas encore en France',ffi:'Faisant fonction d’interne (DFMS ou DFMSA)',stagiaire:'Stagiaire associé',pact:'Praticien associé contractuel temporaire (PACT)',laureat:'Lauréat des EVC, en PCC',finpcc:'PCC terminé, en attente de la commission nationale',outremer:'Autorisé à exercer outre-mer',stock:'Dossier relevant de l’ancienne procédure du stock'};
+var EVCS=['abroad','ffi','stagiaire','pact','outremer'],ANNEE=['laureat','finpcc'],DEBUT=['pact','laureat'];
 var VOIE={interne:'Voie interne',externe:'Voie externe'};
 var VALID={en_attente:'En attente de validation',valide:'Validé',refuse:'Refusé'};
 var app=document.getElementById('app');
@@ -116,6 +119,12 @@ function field(lbl,input,hint){return h('label',null,[lbl,input,hint?h('small',{
 function inp(id,type,val,extra){var o={id:id,name:id,type:type};if(val!=null)o.value=val;if(extra)for(var k in extra)o[k]=extra[k];return h('input',o);}
 function sel(id,opts,val,blank){var s=h('select',{id:id,name:id});if(blank!=null)s.appendChild(h('option',{value:'',text:blank}));opts.forEach(function(o){var op=h('option',{value:o[0],text:o[1]});if(val===o[0])op.selected=true;s.appendChild(op);});return s;}
 function statutOpts(){return Object.keys(STATUT).map(function(k){return [k,STATUT[k]];});}
+function wrap(id,el){el.id=id;return el;}
+function vis(p){var s=V(p+'-statut');var w=function(k){return document.getElementById(p+'-w-'+k);};
+ if(w('voie'))w('voie').hidden=EVCS.indexOf(s)<0;
+ if(w('an'))w('an').hidden=ANNEE.indexOf(s)<0;
+ if(w('deb')){w('deb').hidden=DEBUT.indexOf(s)<0;var l=w('deb').firstChild;if(l)l.nodeValue=s==='laureat'?'Date de début de votre PCC':'Date de début de votre attestation d’exercice provisoire';}}
+function keep(p){var s=V(p+'-statut');return {voie:EVCS.indexOf(s)>-1&&V(p+'-voie')?V(p+'-voie'):null,annee_evc:ANNEE.indexOf(s)>-1&&V(p+'-an')?parseInt(V(p+'-an'),10):null,date_debut:DEBUT.indexOf(s)>-1&&V(p+'-deb')?V(p+'-deb'):null};}
 function specOpts(){return SPECS.map(function(s){return [s,s];});}
 function voieOpts(){return [['interne',VOIE.interne],['externe',VOIE.externe]];}
 function V(id){var e=document.getElementById(id);return e?e.value.trim():'';}
@@ -171,24 +180,24 @@ function authView(){
    h('h2',{text:'Mot de passe oublié'}),field('Adresse électronique',inp('r-email','email',null,{autocomplete:'username',required:true})),
    h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Recevoir le lien'}),h('button',{class:'btn',type:'button',onclick:function(){show('in');},text:'Retour'})]),m]);}
  function signupForm(){var m=h('p',{class:'msg',role:'status'});
-  return h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
+  var f=h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
    var em=V('s-email'),pw=document.getElementById('s-pw').value,pw2=document.getElementById('s-pw2').value;
    if(!V('s-prenom')||!V('s-nom')||!em){say(m,'Renseignez votre prénom, votre nom et votre adresse électronique.','err');return;}
    if(pw.length<10){say(m,'Le mot de passe doit compter au moins 10 caractères.','err');return;}
    if(pw!==pw2){say(m,'Les deux mots de passe ne sont pas identiques.','err');return;}
    if(!document.getElementById('s-ok').checked){say(m,'Acceptez l’utilisation de vos informations pour continuer.','err');return;}
    say(m,'Création du compte…');
-   sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin+location.pathname,data:{prenom:V('s-prenom'),nom:V('s-nom'),naissance:V('s-nai'),statut:V('s-statut'),voie:V('s-voie'),specialite:V('s-spec'),annee_evc:V('s-an'),consentement:'true'}}}).then(function(r){
+   sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin+location.pathname,data:{prenom:V('s-prenom'),nom:V('s-nom'),naissance:V('s-nai'),statut:V('s-statut'),voie:keep('s').voie||'',specialite:V('s-spec'),annee_evc:keep('s').annee_evc||'',date_debut:keep('s').date_debut||'',consentement:'true'}}}).then(function(r){
     if(r.error){say(m,errTxt(r.error),'err');return;}
     if(r.data&&r.data.session)return;
     body.textContent='';body.appendChild(h('div',null,[h('h2',{text:'Presque terminé'}),h('p',{text:'Un courriel de confirmation vient de vous être envoyé. Cliquez sur le lien qu’il contient, puis connectez-vous. Votre adhésion sera ensuite examinée par le bureau.'})]));});}},[
    h('div',{class:'f2'},[field('Prénom',inp('s-prenom','text',null,{autocomplete:'given-name',maxlength:80,required:true})),field('Nom',inp('s-nom','text',null,{autocomplete:'family-name',maxlength:80,required:true}))]),
    h('div',{class:'f2'},[field('Adresse électronique',inp('s-email','email',null,{autocomplete:'username',required:true})),field('Date de naissance',inp('s-nai','date',null,{autocomplete:'bday',max:todayIso()}))]),
-   h('div',{class:'f2'},[field('Situation',sel('s-statut',statutOpts(),'candidat')),field('Voie',sel('s-voie',voieOpts(),'','Je ne sais pas encore'))]),
-   h('div',{class:'f2'},[field('Spécialité',sel('s-spec',specOpts(),'','Non précisée')),field('Année d’EVC',inp('s-an','number',null,{min:2000,max:2100,inputmode:'numeric'}),'Facultatif')]),
+   h('div',{class:'f2'},[field('Où en êtes-vous ?',sel('s-statut',statutOpts(),'abroad')),field('Spécialité',sel('s-spec',specOpts(),'','Non précisée'))]),
+   h('div',{class:'f2'},[wrap('s-w-voie',field('Voie des EVC',sel('s-voie',voieOpts(),'','Je ne sais pas encore'))),wrap('s-w-an',field('Année d’EVC',inp('s-an','number',null,{min:2000,max:2100,inputmode:'numeric'}))),wrap('s-w-deb',field('Date de début',inp('s-deb','date',null)))]),
    h('div',{class:'f2'},[field('Mot de passe',inp('s-pw','password',null,{autocomplete:'new-password',minlength:10,required:true}),'10 caractères au moins'),field('Confirmer le mot de passe',inp('s-pw2','password',null,{autocomplete:'new-password',required:true}))]),
    h('label',{class:'ck'},[h('input',{type:'checkbox',id:'s-ok'}),'J’accepte que ces informations soient utilisées par IPADECC pour gérer mon adhésion et mon suivi.']),
-   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Créer mon compte'})]),m]);}
+   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Créer mon compte'})]),m]);setTimeout(function(){var e=document.getElementById('s-statut');if(e){e.addEventListener('change',function(){vis('s');});vis('s');}},0);return f;}
 }
 function newPassView(){
  clear();var m=h('p',{class:'msg',role:'status'});
@@ -219,17 +228,32 @@ function cotisInfo(){
  if(me.cotisation_jusqu>=todayIso())return {t:'À jour jusqu’au '+fmtD(me.cotisation_jusqu),k:'ok',ok:true};
  return {t:'Expirée depuis le '+fmtD(me.cotisation_jusqu),k:'warn',ok:false};
 }
+function addM(d,n){var x=new Date(d.getTime());var day=x.getDate();x.setDate(1);x.setMonth(x.getMonth()+n);var last=new Date(x.getFullYear(),x.getMonth()+1,0).getDate();x.setDate(Math.min(day,last));return x;}
+function addD(d,n){var x=new Date(d.getTime());x.setDate(x.getDate()+n);return x;}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function echeance(){
- var out=[];
- if(me.statut==='candidat'){
+ var out=[],s=me.statut;
+ if(EVCS.indexOf(s)>-1){
   var d=EXD[me.specialite||''];
-  if(!me.specialite)out.push('Indiquez votre spécialité dans votre profil pour voir la date de votre épreuve.');
-  else if(!d)out.push('La date de votre spécialité ne figure pas dans le calendrier du site. Consultez les plannings du CNG.');
-  else{var n=daysTo(d);if(n>1)out.push('Épreuve de '+me.specialite+' le '+fmtD(d)+', dans '+n+' jours.');else if(n===1)out.push('Épreuve de '+me.specialite+' demain, le '+fmtD(d)+'.');else if(daysTo(d,'T20:00:00+01:00')>=0)out.push('Épreuve de '+me.specialite+' aujourd’hui.');else out.push('Les épreuves 2026 de votre spécialité sont passées. Les prochaines dates seront publiées par le CNG.');}
- }else if(me.statut==='laureat_pact'||me.statut==='laureat_pcc'){
-  out.push('Vous êtes lauréat des EVC'+(me.annee_evc?' '+me.annee_evc:'')+(me.statut==='laureat_pact'?' et en PACT.':' et en PCC.'));
+  if(!me.specialite)out.push({t:'Indiquez votre spécialité dans votre profil pour voir la date de votre épreuve aux EVC.'});
+  else if(!d)out.push({t:'La date de votre spécialité ne figure pas dans le calendrier du site. Consultez les plannings du CNG.'});
+  else{var n=daysTo(d);var base='Épreuve des EVC 2026 en '+me.specialite;
+   if(n>1)out.push({t:base+' le '+fmtD(d)+', dans '+n+' jours.',n:'Date d’après les plannings du CNG. Vérifiez toujours votre convocation.'});
+   else if(n===1)out.push({t:base+' demain, le '+fmtD(d)+'.',n:'Date d’après les plannings du CNG. Vérifiez toujours votre convocation.'});
+   else if(daysTo(d,'T20:00:00+01:00')>=0)out.push({t:base+' aujourd’hui.'});
+   else out.push({t:'Les épreuves 2026 de votre spécialité sont passées. Les prochaines dates seront publiées par le CNG.'});}
  }
- if(me.date_commission){var c=daysTo(me.date_commission);out.push(c>1?'Commission le '+fmtD(me.date_commission)+', dans '+c+' jours.':c===1?'Commission demain, le '+fmtD(me.date_commission)+'.':c===0?'Commission aujourd’hui.':'Commission du '+fmtD(me.date_commission)+' passée.');}
+ if(s==='pact'||s==='laureat'){
+  if(!me.date_debut)out.push({t:s==='pact'?'Renseignez la date de début de votre attestation dans votre profil pour obtenir vos échéances.':'Renseignez la date de début de votre PCC dans votre profil pour obtenir vos échéances.'});
+  else{var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(me.date_debut);var d0=new Date(+m[1],+m[2]-1,+m[3]),rows;
+   if(s==='pact')rows=[['Début de l’attestation',d0,'Début de la période de 13 mois.'],['Fin des 13 mois',addD(addM(d0,13),-1),'Le renouvellement est possible une seule fois.'],['Fin maximale (26 mois)',addD(addM(d0,26),-1),'Durée maximale de la PACT, renouvellement compris.']];
+   else rows=[['Début du PCC',d0,'Durée de 2 ans pour les médecins.'],['Saisine anticipée possible',addM(d0,6),'Possible après 6 mois de PCC.'],['Échelon 2 possible',addM(d0,12),'Après un an, avec l’accord du directeur de l’établissement.'],['Dépôt du dossier, repère du CNG',addM(addD(addM(d0,24),-1),-2),'Le CNG indique, pour les lauréats de la session 2023, un dépôt possible deux mois avant la fin du PCC.'],['Fin du PCC',addD(addM(d0,24),-1),'Fin des 2 ans de parcours.']];
+   rows.forEach(function(r){out.push({t:fmtD(iso(r[1]))+' : '+r[0],n:r[2],past:iso(r[1])<todayIso()});});
+   out.push({n:'Dates calculées par le site IPADECC. Ce sont des repères : seules les dates notifiées par le CNG, l’ARS ou votre établissement font foi.',note:true});}
+ }
+ if(s==='finpcc')out.push({t:'Votre PCC est terminé. Votre dossier relève de la commission nationale d’autorisation d’exercice. Consultez le calendrier des commissions.'});
+ if(s==='outremer')out.push({n:'Le dispositif d’autorisation outre-mer est dérogatoire et transitoire. Consultez la rubrique Autorisation d’exercice du site.',note:true});
+ if(s==='stock')out.push({t:'Votre dossier relève de l’ancienne procédure du stock, un dispositif transitoire clos. Consultez la rubrique Autorisation d’exercice du site.'});
  return out;
 }
 function nomComplet(){return ((me.prenom||'')+' '+(me.nom||'')).trim()||me.email;}
@@ -241,14 +265,17 @@ function monView(vue){
  if(me.validation==='valide'){
   var g=h('div',{class:'grid'});
   g.appendChild(h('section',{class:'card'},[h('h2',{text:'Mon adhésion'}),h('dl',null,[h('dt',{text:'Numéro d’adhérent'}),h('dd',{text:String(me.numero)}),h('dt',{text:'Cotisation'}),h('dd',null,[h('span',{class:'pill '+c.k,text:c.t})]),h('dt',{text:'Adresse'}),h('dd',{text:me.email})])]));
-  g.appendChild(h('section',{class:'card'},[h('h2',{text:'Mon parcours'}),h('dl',null,[h('dt',{text:'Situation'}),h('dd',{text:STATUT[me.statut]||''}),h('dt',{text:'Voie'}),h('dd',{text:VOIE[me.voie]||'Non précisée'}),h('dt',{text:'Spécialité'}),h('dd',{text:me.specialite||'Non précisée'}),h('dt',{text:'Année d’EVC'}),h('dd',{text:me.annee_evc?String(me.annee_evc):'Non précisée'})])]));
+  g.appendChild(h('section',{class:'card'},[h('h2',{text:'Mon parcours'}),h('dl',null,[].concat([h('dt',{text:'Situation'}),h('dd',{text:STATUT[me.statut]||''}),h('dt',{text:'Spécialité'}),h('dd',{text:me.specialite||'Non précisée'})],EVCS.indexOf(me.statut)>-1?[h('dt',{text:'Voie des EVC'}),h('dd',{text:VOIE[me.voie]||'Non précisée'})]:[],ANNEE.indexOf(me.statut)>-1?[h('dt',{text:'Année d’EVC'}),h('dd',{text:me.annee_evc?String(me.annee_evc):'Non précisée'})]:[],DEBUT.indexOf(me.statut)>-1?[h('dt',{text:me.statut==='laureat'?'Début du PCC':'Début de l’attestation'}),h('dd',{text:me.date_debut?fmtD(me.date_debut):'Non précisée'})]:[]))]));
   vue.appendChild(g);
   var ech=echeance();
   var links=[['index.html#calendrier-evc','Calendrier des EVC 2026'],['index.html#calendrier-commissions','Commissions'],['index.html#calendrier-route','Feuille de route'],['index.html#demarches-checklist','Ma checklist de démarches'],['simulateur.html','Simulateur Padhue']];
   var gl=h('ul',{class:'go'});links.forEach(function(l){gl.appendChild(h('li',null,[h('a',{href:l[0],text:l[1]})]));});
   var e2=h('section',{class:'card'},[h('h2',{text:'Mes prochaines échéances'})]);
-  if(ech.length)ech.forEach(function(t){e2.appendChild(h('p',{class:'big',text:t}));});else e2.appendChild(h('p',{text:'Renseignez votre situation et votre spécialité dans votre profil pour voir vos échéances.'}));
-  if(me.statut==='candidat'&&me.specialite&&EXD[me.specialite])e2.appendChild(h('p',{class:'sub',text:'Date d’après les plannings du CNG. Vérifiez toujours votre convocation.'}));
+  var ul=h('ul',{class:'ech'});
+  var notes=[];
+  ech.forEach(function(x){if(x.note){notes.push(x.n);return;}ul.appendChild(h('li',{class:x.past?'past':''},[x.t?h('b',{text:x.t}):null,x.n?h('small',{text:x.n}):null]));});
+  if(ul.children.length)e2.appendChild(ul);else if(!notes.length)e2.appendChild(h('p',{text:'Renseignez votre situation dans votre profil pour voir vos échéances.'}));
+  notes.forEach(function(n){e2.appendChild(h('p',{class:'sub',text:n}));});
   vue.appendChild(e2);
   vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Pour avancer'}),gl]));
   var pr=h('section',{class:'card pr'});
@@ -268,15 +295,17 @@ function monView(vue){
 }
 function profileCard(){
  var m=h('p',{class:'msg',role:'status'});
- return h('section',{class:'card'},[h('h2',{text:'Mon profil'}),h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
+ var f=h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
   if(!V('p-prenom')||!V('p-nom')){say(m,'Le prénom et le nom sont obligatoires.','err');return;}
-  var upd={prenom:V('p-prenom'),nom:V('p-nom'),naissance:V('p-nai')||null,statut:V('p-statut'),voie:V('p-voie')||null,specialite:V('p-spec')||null,annee_evc:V('p-an')?parseInt(V('p-an'),10):null,date_commission:V('p-com')||null};
+  var upd=Object.assign({prenom:V('p-prenom'),nom:V('p-nom'),naissance:V('p-nai')||null,statut:V('p-statut'),specialite:V('p-spec')||null},keep('p'));
   say(m,'Enregistrement…');sb.from('membres').update(upd).eq('id',me.id).select().single().then(function(r){if(r.error){say(m,errTxt(r.error),'err');return;}me=r.data;memberShell();});}},[
   h('div',{class:'f2'},[field('Prénom',inp('p-prenom','text',me.prenom,{maxlength:80,autocomplete:'given-name'})),field('Nom',inp('p-nom','text',me.nom,{maxlength:80,autocomplete:'family-name'}))]),
-  h('div',{class:'f2'},[field('Date de naissance',inp('p-nai','date',me.naissance||'',{max:todayIso()})),field('Situation',sel('p-statut',statutOpts(),me.statut))]),
-  h('div',{class:'f2'},[field('Voie',sel('p-voie',voieOpts(),me.voie||'','Non précisée')),field('Spécialité',sel('p-spec',specOpts(),me.specialite||'','Non précisée'))]),
-  h('div',{class:'f2'},[field('Année d’EVC',inp('p-an','number',me.annee_evc||'',{min:2000,max:2100,inputmode:'numeric'}),'Facultatif'),field('Date de ma commission',inp('p-com','date',me.date_commission||''),'Facultatif')]),
-  h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer mon profil'})]),m])]);
+  h('div',{class:'f2'},[field('Date de naissance',inp('p-nai','date',me.naissance||'',{max:todayIso()})),field('Spécialité',sel('p-spec',specOpts(),me.specialite||'','Non précisée'))]),
+  field('Où en êtes-vous ?',sel('p-statut',statutOpts(),me.statut)),
+  h('div',{class:'f2'},[wrap('p-w-voie',field('Voie des EVC',sel('p-voie',voieOpts(),me.voie||'','Non précisée'))),wrap('p-w-an',field('Année d’EVC',inp('p-an','number',me.annee_evc||'',{min:2000,max:2100,inputmode:'numeric'}))),wrap('p-w-deb',field('Date de début',inp('p-deb','date',me.date_debut||'')))]),
+  h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer mon profil'})]),m]);
+ setTimeout(function(){var e=document.getElementById('p-statut');if(e){e.addEventListener('change',function(){vis('p');});vis('p');}},0);
+ return h('section',{class:'card'},[h('h2',{text:'Mon profil'}),f]);
 }
 function passCard(){
  var m=h('p',{class:'msg',role:'status'});
@@ -334,19 +363,19 @@ function drawAdmin(box,m,vue){
    h('h3',{text:'Modifier le membre n° '+x.numero}),
    h('div',{class:'f2'},[field('Prénom',inp('e-prenom','text',x.prenom,{maxlength:80})),field('Nom',inp('e-nom','text',x.nom,{maxlength:80}))]),
    h('div',{class:'f2'},[field('Adresse électronique',inp('e-email','email',x.email,{readonly:true,disabled:true})),field('Date de naissance',inp('e-nai','date',x.naissance||''))]),
-   h('div',{class:'f2'},[field('Situation',sel('e-statut',statutOpts(),x.statut)),field('Voie',sel('e-voie',voieOpts(),x.voie||'','Non précisée'))]),
-   h('div',{class:'f2'},[field('Spécialité',sel('e-spec',specOpts(),x.specialite||'','Non précisée')),field('Année d’EVC',inp('e-an','number',x.annee_evc||'',{min:2000,max:2100}))]),
-   h('div',{class:'f2'},[field('Date de commission',inp('e-com','date',x.date_commission||'')),field('Fin de cotisation',inp('e-cot','date',x.cotisation_jusqu||''))]),
+   h('div',{class:'f2'},[field('Situation',sel('e-statut',statutOpts(),x.statut)),field('Spécialité',sel('e-spec',specOpts(),x.specialite||'','Non précisée'))]),
+   h('div',{class:'f2'},[wrap('e-w-voie',field('Voie des EVC',sel('e-voie',voieOpts(),x.voie||'','Non précisée'))),wrap('e-w-an',field('Année d’EVC',inp('e-an','number',x.annee_evc||'',{min:2000,max:2100}))),wrap('e-w-deb',field('Date de début',inp('e-deb','date',x.date_debut||'')))]),
+   field('Fin de cotisation',inp('e-cot','date',x.cotisation_jusqu||'')),
    field('Adhésion',sel('e-val',[['en_attente',VALID.en_attente],['valide',VALID.valide],['refuse',VALID.refuse]],x.validation)),
    h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer'}),h('button',{class:'btn',type:'button',onclick:function(){edit.textContent='';},text:'Fermer'})]),mm]);
   if(x.id!==me.id){del=h('button',{class:'btn d',type:'button',onclick:function(){
    if(!del.dataset.sure){del.dataset.sure='1';del.textContent='Confirmer la suppression définitive';return;}
    say(mm,'Suppression…');sb.rpc('supprimer_membre',{cible:x.id}).then(function(r){if(r.error){say(mm,errTxt(r.error),'err');return;}allMembers=allMembers.filter(function(y){return y.id!==x.id;});vue.textContent='';adminView(vue);});},text:'Supprimer ce membre'});
    form.querySelector('.row').appendChild(del);}
-  edit.appendChild(form);form.scrollIntoView({behavior:'smooth',block:'nearest'});
+  edit.appendChild(form);var es=document.getElementById('e-statut');es.addEventListener('change',function(){vis('e');});vis('e');form.scrollIntoView({behavior:'smooth',block:'nearest'});
  }
  function save(x,mm){
-  var upd={prenom:V('e-prenom'),nom:V('e-nom'),naissance:V('e-nai')||null,statut:V('e-statut'),voie:V('e-voie')||null,specialite:V('e-spec')||null,annee_evc:V('e-an')?parseInt(V('e-an'),10):null,date_commission:V('e-com')||null,cotisation_jusqu:V('e-cot')||null,validation:V('e-val')};
+  var upd=Object.assign({prenom:V('e-prenom'),nom:V('e-nom'),naissance:V('e-nai')||null,statut:V('e-statut'),specialite:V('e-spec')||null,cotisation_jusqu:V('e-cot')||null,validation:V('e-val')},keep('e'));
   say(mm,'Enregistrement…');
   sb.from('membres').update(upd).eq('id',x.id).select().single().then(function(r){if(r.error){say(mm,errTxt(r.error),'err');return;}
    for(var i=0;i<allMembers.length;i++)if(allMembers[i].id===x.id)allMembers[i]=r.data;
@@ -354,7 +383,7 @@ function drawAdmin(box,m,vue){
    say(mm,'Enregistré.','ok');list();drawStats();});
  }
  function exportCsv(){
-  var cols=['numero','email','nom','prenom','naissance','statut','voie','specialite','annee_evc','validation','cotisation_jusqu','date_commission','derniere_connexion','cree_le'];
+  var cols=['numero','email','nom','prenom','naissance','statut','voie','specialite','annee_evc','validation','cotisation_jusqu','date_debut','derniere_connexion','cree_le'];
   function cell(v){v=v==null?'':String(v);if(/^[=+\-@\t\r]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';}
   var lines=[cols.join(';')].concat(allMembers.map(function(x){return cols.map(function(c){return cell(x[c]);}).join(';');}));
   download('membres-ipadecc.csv','﻿'+lines.join('\r\n'),'text/csv');
