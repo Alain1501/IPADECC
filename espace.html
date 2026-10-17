@@ -10,80 +10,141 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <title>Espace membres IPADECC</title>
 <style>
-:root{--bg:#f7f7fc;--surface:#ffffff;--ink:#0f1138;--muted:#585b7d;--line:#e2e3ef;--accent:#e0392f;--accent2:#ff7a59;--accent-ink:#ffffff;--violet:#6e73ad;--tint:#eceefa;--ok:#1d7a4a;--okbg:#e4f5ec;--warn:#9a5b00;--warnbg:#fff1d6;--shadow:0 1px 2px rgba(20,22,63,.06),0 12px 32px -12px rgba(20,22,63,.18);--head:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0c20;--surface:#14163a;--ink:#eef0ff;--muted:#a3a7cf;--line:#272a58;--accent:#ff6b5f;--accent2:#ff9a7a;--accent-ink:#1a0a09;--violet:#9aa0e0;--tint:#1a1d46;--ok:#6fdca0;--okbg:#12301f;--warn:#ffc86b;--warnbg:#3a2a0c;--shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px -12px rgba(0,0,0,.6);color-scheme:dark}}
+:root{--bg:#f7f7fc;--surface:#ffffff;--ink:#0f1138;--muted:#585b7d;--line:#e2e3ef;--accent:#e0392f;--accent2:#ff7a59;--accent-ink:#ffffff;--violet:#6e73ad;--tint:#eceefa;--ok:#1d7a4a;--okbg:#e4f5ec;--warn:#9a5b00;--warnbg:#fff1d6;--hero1:#e8e9ff;--hero2:#ffe3dc;--glass:rgba(247,247,252,.82);--shadow:0 1px 2px rgba(20,22,63,.06),0 14px 36px -14px rgba(20,22,63,.2);--lgn:#252a5e;--lgr:#e0262c;--lgv:#7d82c4;--head:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0c20;--surface:#14163a;--ink:#eef0ff;--muted:#a3a7cf;--line:#272a58;--accent:#ff6b5f;--accent2:#ff9a7a;--accent-ink:#1a0a09;--violet:#9aa0e0;--tint:#1a1d46;--ok:#6fdca0;--okbg:#12301f;--warn:#ffc86b;--warnbg:#3a2a0c;--hero1:#1c1f5c;--hero2:#4a1f2a;--glass:rgba(11,12,32,.82);--shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -14px rgba(0,0,0,.6);--lgn:#dfe3ff;--lgr:#ff5a55;--lgv:#a9aef0;color-scheme:dark}}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0;text-wrap:balance}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-height:100vh;background-image:radial-gradient(60vmax 40vmax at 100% -10%,var(--hero2),transparent 60%),radial-gradient(60vmax 40vmax at -10% 0%,var(--hero1),transparent 60%);background-repeat:no-repeat}
+h1,h2,h3{font-family:var(--head);line-height:1.12;margin:0;text-wrap:balance}
 a{color:var(--accent)}
-.top{max-width:1040px;margin:0 auto;padding:14px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.top .lg{font-family:var(--head);font-weight:800;font-size:22px;letter-spacing:.02em;color:var(--ink);text-decoration:none}
-.top .lg b{color:var(--accent)}
-main{max-width:1040px;margin:0 auto;padding-block:8px 56px;min-width:0}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);min-width:0}
-.card+.card,.grid+.card,.card+.grid{margin-top:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.grid>.card{margin:0}
-h1{font-size:clamp(28px,5vw,40px);font-weight:800}
-h2{font-size:21px;font-weight:700;margin-bottom:10px}
-h3{font-size:17px;font-weight:700;margin-bottom:8px}
-.sub{color:var(--muted);margin:6px 0 20px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:14px;font:600 15px var(--body);text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:calc(50% - 50vw);padding-inline:max(16px,env(safe-area-inset-left,0px));background:var(--glass);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.top>div{max-width:1080px;margin:0 auto;padding:10px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font:800 20px var(--head)}
+.brand .lg{width:50px;display:block}
+.lgo{display:block;width:100%;height:auto;overflow:visible}
+.lgo .f path,.lgo .l{fill:var(--lgn)}.lgo .hv1{fill:var(--lgv)}.lgo .hv2{fill:var(--lgr)}.lgo .ecg path{stroke:var(--lgr);fill:none}.lgo .e0,.lgo .e1{stroke-dasharray:none}.lgo .e0{stroke-width:9;opacity:.8}.lgo .e1{stroke-width:25}.lgo .e2{display:none}
+main{max-width:1080px;margin:0 auto;padding-block:24px 64px;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:14px;font:600 15px var(--body);text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 .btn.p{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:var(--accent-ink)}
 .btn.d{border-color:var(--accent);color:var(--accent)}
-.btn:disabled{opacity:.5;cursor:default}
-.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.btn.s{padding:7px 14px;font-size:14px;border-radius:999px}
+.btn:disabled{opacity:.5;cursor:default;transform:none;box-shadow:none}
+.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
-.tabs button{font:600 15px var(--body);padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-form{display:grid;gap:14px;min-width:0}
-.f2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-[hidden]{display:none!important}
-label{display:grid;gap:5px;font-weight:600;font-size:14px;min-width:0}
-label small{font-weight:400;color:var(--muted)}
-input,select{font:inherit;font-size:16px;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,28px);box-shadow:var(--shadow);min-width:0}
+.stack{display:grid;gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+h1{font-size:clamp(30px,5vw,46px);font-weight:800}
+h2{font-size:22px;font-weight:700;margin-bottom:12px}
+h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.sub{color:var(--muted);margin:6px 0 0}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 13px;border-radius:999px;font-size:13.5px;font-weight:600;background:var(--tint);color:var(--violet)}
+.pill.ok{background:var(--okbg);color:var(--ok)}.pill.warn{background:var(--warnbg);color:var(--warn)}
+/* accueil non connecté */
+.welcome{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:860px){.welcome{grid-template-columns:1fr}}
+.pitch{padding:clamp(8px,2vw,24px) 0}
+.pitch .tag{display:inline-block;padding:7px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--violet);margin-bottom:18px}
+.pitch h1 em{font-style:normal;color:var(--accent)}
+.pitch p.lead{color:var(--muted);font-size:18px;margin:16px 0 22px;max-width:520px}
+.perks{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.perks li{display:flex;gap:14px;align-items:flex-start}
+.perks .ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;color:var(--accent)}
+.perks b{display:block}.perks span{color:var(--muted);font-size:15px}
+svg.i{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* formulaires */
+.tabs{display:flex;gap:6px;padding:5px;background:var(--tint);border-radius:999px;margin:0 0 20px;width:max-content;max-width:100%;overflow-x:auto}
+.tabs button{font:600 15px var(--body);padding:9px 18px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,22,63,.15)}
+form,.fgrid{display:grid;gap:16px;min-width:0}
+.f2{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+label,.lab{display:grid;gap:6px;font-weight:600;font-size:14.5px;min-width:0}
+.hint{font-weight:400;color:var(--muted);font-size:13.5px}
+.err{color:var(--accent);font-weight:600;font-size:14px;min-height:0}
+input,select{font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;min-width:0}
+input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--accent)}
+.pw{position:relative}.pw input{padding-right:84px}.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--violet);font:600 14px var(--body);padding:8px 10px;cursor:pointer;border-radius:8px}
+.meter{height:6px;border-radius:99px;background:var(--tint);overflow:hidden}.meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s,background .25s}
 label.ck{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:15px}
-label.ck input{width:20px;height:20px;margin-top:2px;flex:none}
-.msg{margin:0;min-height:1.4em;font-size:15px}
-.msg.err{color:var(--accent);font-weight:600}
-.msg.ok{color:var(--ok);font-weight:600}
-.pill{display:inline-block;padding:3px 12px;border-radius:999px;font-size:13.5px;font-weight:600;background:var(--tint);color:var(--violet)}
-.pill.ok{background:var(--okbg);color:var(--ok)}
-.pill.warn{background:var(--warnbg);color:var(--warn)}
-dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px}
-dt{color:var(--muted)}
-dd{margin:0;font-weight:600;overflow-wrap:anywhere}
-ul.ech{margin:0;padding:0;list-style:none;display:grid;gap:10px}ul.ech li{padding:12px 14px;border:1px solid var(--line);border-radius:12px}ul.ech li.past{opacity:.55}ul.ech small{display:block;color:var(--muted)}
-ul.go{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-ul.go a{display:block;padding:11px 14px;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink);font-weight:600}
-ul.go a:hover{border-color:var(--accent)}
-.big{font-family:var(--head);font-size:clamp(24px,4vw,32px);font-weight:800}
-details{margin-top:16px}
-summary{cursor:pointer;font-weight:600}
-details p,details ul{color:var(--muted);font-size:15px}
-.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
-table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
-th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
-th{background:var(--tint);font-weight:700}
-tr:last-child td{border-bottom:0}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
-.stat{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
-.stat b{display:block;font-family:var(--head);font-size:28px}
-.bar2{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-.bar2 input{max-width:320px}.bar2 select{max-width:220px}
-.attest{border:2px solid var(--ink);border-radius:8px;padding:clamp(20px,4vw,40px);background:#fff;color:#000;font-family:Georgia,'Times New Roman',serif}
-.attest h2{font-family:Georgia,serif;text-align:center;font-size:24px;margin-bottom:24px;text-transform:uppercase;letter-spacing:.06em}
-.attest p{margin:0 0 14px}
-.attest .sig{margin-top:36px;text-align:right}
+label.ck input{width:20px;height:20px;margin-top:3px;flex:none;padding:0}
+.msg{margin:0;min-height:1.4em;font-size:15px}.msg.err{color:var(--accent);font-weight:600}.msg.ok{color:var(--ok);font-weight:600}
+/* étapes */
+.steps{display:flex;gap:8px;margin:0 0 6px}
+.steps i{flex:1;height:6px;border-radius:99px;background:var(--tint)}.steps i.on{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.stepl{font-size:13.5px;color:var(--muted);margin:0 0 14px;font-weight:600}
+/* cartes de choix */
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{font-weight:700;font-size:17px;margin-bottom:10px;padding:0}
+.choices{display:grid;gap:10px}
+.choice{position:relative;display:block}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice span.c{display:block;padding:13px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface);cursor:pointer;transition:border-color .15s,box-shadow .15s,background .15s}
+.choice b{display:block;font-weight:600;font-size:15.5px}.choice small{display:block;color:var(--muted);font-weight:400;font-size:13.5px;line-height:1.4;margin-top:2px}
+.choice input:checked+span.c{border-color:var(--accent);background:var(--tint);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.choice input:focus-visible+span.c{outline:3px solid var(--violet);outline-offset:2px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg .choice{flex:1 1 130px}.seg .choice span.c{text-align:center;padding:11px 12px}
+.reveal{display:grid;gap:16px;animation:rv .3s ease both}
+@keyframes rv{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.reveal{animation:none}.btn{transition:none}}
+.peek{border-radius:16px;padding:14px 16px;background:linear-gradient(135deg,var(--hero1),var(--hero2));border:1px solid var(--line)}
+.peek b{display:block}.peek span{color:var(--muted);font-size:14.5px}
+/* tableau de bord */
+.hero{border-radius:26px;padding:clamp(20px,4vw,34px);background:linear-gradient(135deg,var(--hero1),var(--hero2));border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero h1{font-size:clamp(28px,4.6vw,42px)}
+.hero .row{margin-top:16px}
+.nav{display:flex;gap:6px;padding:5px;background:var(--tint);border-radius:999px;margin:18px 0 0;width:max-content;max-width:100%;overflow-x:auto}
+.nav button{font:600 15px var(--body);padding:9px 18px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.nav button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,22,63,.15)}
+.next{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}
+@media(max-width:520px){.next{grid-template-columns:1fr}}
+.big{font:800 clamp(52px,9vw,84px)/1 var(--head);color:var(--accent);letter-spacing:-.02em}
+.big small{display:block;font:600 16px var(--body);color:var(--muted);letter-spacing:0;margin-top:4px}
+.bar{height:10px;border-radius:99px;background:var(--tint);overflow:hidden;margin:8px 0 4px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px}
+.tl{list-style:none;margin:6px 0 0;padding:0 0 0 26px;position:relative;display:grid;gap:14px}
+.tl:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl li{position:relative}.tl li:before{content:"";position:absolute;left:-26px;top:5px;width:16px;height:16px;border-radius:50%;background:var(--surface);border:2px solid var(--violet)}
+.tl li.past:before{background:var(--violet)}.tl li.nx:before{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 22%,transparent)}
+.tl b{display:block}.tl small{display:block;color:var(--muted)}.tl .when{color:var(--accent);font-weight:600;font-size:14px}.tl li.past{opacity:.6}
+.complete{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.links a{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--ink);font-weight:600;background:var(--surface)}
+.links a:hover{border-color:var(--accent)}.links .ic{flex:none;width:38px;height:38px;border-radius:11px;background:var(--tint);color:var(--accent);display:grid;place-items:center}
+dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 18px}dt{color:var(--muted)}dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 @media(max-width:560px){dl{grid-template-columns:1fr}dt{margin-top:6px}}
-@media print{body>*:not(main),main>*:not(#vue),#vue>*:not(.pr),.pr>*:not(.attest){display:none!important}body{background:#fff;padding:0}.card,.pr{border:0;box-shadow:none;padding:0;margin:0}}
+.wait{display:grid;gap:14px;margin:12px 0 0;padding:0;list-style:none}
+.wait li{display:flex;gap:14px;align-items:flex-start}.wait .n{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--tint);color:var(--violet)}.wait li.done .n{background:var(--okbg);color:var(--ok)}.wait li.cur .n{background:var(--accent);color:var(--accent-ink)}
+details{margin-top:16px}summary{cursor:pointer;font-weight:600}details p,details ul{color:var(--muted);font-size:15px}
+.attest{border:2px solid var(--ink);border-radius:8px;padding:clamp(20px,4vw,40px);background:#fff;color:#000;font-family:Georgia,'Times New Roman',serif}
+.attest h2{font-family:Georgia,serif;text-align:center;font-size:24px;margin-bottom:24px;text-transform:uppercase;letter-spacing:.06em}.attest p{margin:0 0 14px}.attest .sig{margin-top:36px;text-align:right}
+/* administration */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}.stat b{display:block;font:800 32px var(--head)}.stat span{color:var(--muted);font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chips button{font:600 14px var(--body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bar2{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.bar2 input{max-width:340px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:14.5px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:var(--tint);font-weight:700}tr:last-child td{border-bottom:0}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,12,40,.55);display:grid;place-items:center;padding:16px;overflow:auto}
+.modal .card{width:min(640px,100%);max-height:calc(100vh - 32px);overflow:auto}
+@media print{body{background:#fff!important}body *{visibility:hidden}#att,#att *{visibility:visible}#att{position:absolute;left:0;top:0;width:100%}}
 </style>
 </head>
 <body>
-<div class="top"><a class="lg" href="index.html">IPADE<b>CC</b></a><a class="btn" href="index.html">Retour au site</a></div>
+<header class="top"><div><a class="brand" href="index.html" aria-label="IPADECC, retour au site"><span class="lg"><svg class="lgo"  viewBox="230 100 1560 1260" role="img" aria-label="Logo IPADECC" xmlns="http://www.w3.org/2000/svg">
+<g class="f f-h1"><path d="M793,127 786,129 771,138 759,152 753,171 753,181 756,194 764,209 779,221 790,226 802,228 820,226 837,217 850,202 856,183 855,165 847,147 833,134 814,126Z"/></g><g class="f f-h2"><path d="M1181,131 1159,139 1148,149 1140,162 1136,183 1143,208 1157,223 1175,231 1195,232 1213,226 1229,212 1237,196 1238,174 1232,157 1217,140 1204,133 1196,131Z"/></g>
+<g class="f f-ad"><path fill-rule="evenodd" d="M1382,195 1376,194 1318,224 1253,245 1196,253 1161,253 1114,246 1066,231 1024,210 1009,200 1001,189 995,189 973,202 937,219 898,233 841,246 817,248 755,246 717,238 674,223 645,208 624,194 617,192 615,194 617,201 650,234 669,249 703,271 750,291 759,300 764,310 769,331 770,357 765,396 749,464 726,534 697,608 676,654 672,668 677,670 681,667 742,577 779,508 805,448 810,449 814,455 846,541 898,663 903,668 907,667 908,662 885,588 862,494 849,416 845,348 842,347 829,356 823,356 812,348 786,320 776,295 775,284 779,273 786,266 798,261 815,265 825,273 830,281 836,280 843,272 855,266 871,267 883,278 890,278 926,261 950,246 973,228 997,204 1001,205 1035,239 1066,263 1094,279 1133,295 1146,310 1151,327 1153,344 1152,371 1138,446 1111,531 1089,589 1073,621 1068,639 1056,664 1056,668 1061,670 1068,663 1121,585 1158,518 1183,460 1189,451 1193,451 1197,457 1198,464 1235,560 1282,667 1288,668 1289,659 1263,574 1240,476 1229,396 1227,346 1223,346 1214,351 1207,351 1194,343 1172,318 1168,305 1168,291 1172,282 1185,274 1195,274 1211,282 1219,282 1230,278 1242,278 1254,286 1279,279 1320,258 1351,235 1380,204Z"/></g>
+<g class="f f-ch"><path fill-rule="evenodd" d="M1127,321 1123,321 1102,333 1061,349 1034,355 1003,358 981,357 952,352 927,344 906,334 891,324 887,325 887,328 904,345 928,364 969,383 977,391 983,408 981,447 974,479 953,544 930,601 922,616 923,621 925,621 934,610 972,551 994,507 1001,488 1005,483 1011,487 1019,512 1054,598 1063,617 1068,619 1064,600 1059,588 1045,536 1037,499 1037,491 1031,460 1030,426 1028,423 1022,425 1011,423 990,400 985,383 989,372 998,365 1011,366 1020,374 1035,368 1042,368 1053,374 1061,374 1103,350 1121,333 1127,325ZM988,284 981,290 974,301 973,316 977,329 986,338 1001,344 1012,343 1023,338 1030,331 1036,319 1036,306 1031,294 1021,284 1013,281 998,281Z"/></g>
+<g class="f f-sh"><path d="M1301,700 1297,697 1279,693 1230,687 1051,679 904,680 791,685 707,695 695,699 695,703 720,710 773,716 865,721 978,723 1132,721 1195,718 1283,709 1301,703Z"/></g>
+<path class="hv hv1" d="M786,267 780,273 776,284 777,295 781,308 790,324 812,347 823,355 829,355 842,346 848,348 850,342 865,329 866,326 876,317 881,309 883,290 886,279 883,279 875,270 871,268 852,268 843,273 836,281 830,282 821,270 811,264 798,262Z"/><path class="hv hv2" d="M1179,282 1174,288 1172,296 1176,316 1191,334 1207,346 1215,346 1225,339 1230,340 1232,336 1246,322 1253,310 1255,303 1255,290 1249,289 1242,283 1233,282 1219,288 1212,288 1195,279 1185,279Z"/>
+<g class="lt"><path class="l l0" fill-rule="evenodd" d="M265,814 259,819 259,1061 263,1066 267,1067 292,1067 296,1066 300,1060 300,819 294,814Z"/><path class="l l1" fill-rule="evenodd" d="M422,815 419,818 419,843 422,847 470,848 483,850 496,856 506,865 512,878 512,899 505,914 498,921 489,926 479,929 459,931 422,931 419,935 419,961 422,964 482,964 513,955 529,945 544,927 549,916 552,903 551,869 548,859 537,841 519,826 495,817 480,814ZM374,814 369,818 369,1065 372,1067 406,1068 411,1066 409,959 410,820 409,817 404,814Z"/><path class="l l2" fill-rule="evenodd" d="M782,815 779,821 779,1040 775,1047 775,1052 783,1065 788,1067 815,1067 823,1063 827,1063 835,1067 879,1067 927,1061 932,1054 953,1042 973,1024 988,1002 1000,973 1003,957 1003,923 995,892 986,874 972,855 957,841 941,830 921,821 892,814 835,814 830,817 829,841 832,847 883,848 897,850 917,858 930,867 944,882 954,899 962,931 962,949 957,973 950,988 942,1000 927,1015 906,1027 890,1031 832,1032 830,1034 829,1052 824,1055 820,1050 820,818 816,814Z"/><path class="l l3" fill-rule="evenodd" d="M1103,1037 1103,1063 1109,1067 1222,1067 1226,1066 1230,1061 1230,1036 1228,1033 1223,1031 1109,1031 1106,1032ZM1103,926 1103,953 1108,957 1215,957 1220,956 1224,952 1224,926 1220,922 1107,922ZM1103,818 1103,844 1107,849 1225,849 1230,843 1230,819 1227,815 1223,814 1109,814ZM1058,814 1054,816 1052,821 1052,1060 1057,1066 1090,1067 1095,1063 1095,818 1090,814Z"/><path class="l l4" fill-rule="evenodd" d="M1497,1027 1480,1007 1475,1004 1470,1005 1455,1018 1442,1026 1422,1033 1407,1036 1406,1068 1408,1070 1426,1069 1456,1060 1486,1043 1497,1032ZM1406,813 1407,843 1438,852 1454,861 1471,875 1476,875 1481,871 1497,852 1496,846 1475,829 1457,820 1418,809 1410,809ZM1385,809 1358,816 1338,825 1319,838 1301,856 1287,877 1275,907 1272,927 1272,953 1275,972 1282,993 1293,1013 1311,1035 1330,1050 1351,1061 1376,1069 1394,1071 1398,1068 1398,1038 1394,1034 1382,1033 1363,1026 1352,1019 1338,1006 1327,991 1319,974 1313,941 1318,908 1326,890 1335,877 1348,864 1361,855 1380,847 1394,845 1397,842 1398,813 1394,809Z"/><path class="l l5" fill-rule="evenodd" d="M1757,1027 1738,1005 1730,1005 1715,1018 1700,1027 1682,1033 1669,1035 1666,1039 1666,1066 1669,1070 1679,1070 1699,1066 1716,1060 1746,1043 1757,1032ZM1667,812 1666,840 1669,844 1701,853 1713,860 1731,875 1738,874 1757,853 1757,847 1744,835 1717,820 1700,814 1677,809 1671,809ZM1646,809 1627,813 1600,824 1583,835 1562,855 1545,881 1536,905 1533,919 1532,949 1533,962 1542,993 1556,1017 1569,1033 1592,1051 1616,1063 1637,1069 1656,1070 1659,1066 1658,1037 1654,1034 1646,1034 1627,1028 1614,1020 1600,1008 1591,997 1583,983 1576,963 1573,945 1577,913 1583,897 1593,880 1607,865 1621,855 1634,849 1654,845 1658,842 1658,813 1654,809Z"/></g>
+<g class="ecg" fill="none" stroke-linejoin="round" stroke-linecap="round">
+<path class="e0" d="M300,1064 L496,1064 L532,1048 L548,1004 L560,1048 L574,1136 L624,800 L688,1324 L724,1012 L752,1080 L768,1056 L792,1048 L1040,1064" pathLength="1000"/>
+<path class="e1" d="M496,1064 L532,1048 L548,1004 L560,1048 L574,1136 L624,800 L688,1324 L724,1012 L752,1080 L768,1056 L792,1048" pathLength="1000"/>
+<path class="e2" d="M300,1064 L496,1064 L532,1048 L548,1004 L560,1048 L574,1136 L624,800 L688,1324 L724,1012 L752,1080 L768,1056 L792,1048 L1040,1064" pathLength="1000"/>
+</g></svg></span>IPADECC</a><a class="btn s" href="index.html">Retour au site</a></div></header>
 <main id="app" aria-live="polite"></main>
+<datalist id="specs"></datalist>
 <script src="config.js"></script>
 <script src="vendor/supabase.js"></script>
 <script>
@@ -92,20 +153,37 @@ tr:last-child td{border-bottom:0}
 var CFG=window.IPADECC_CFG||{};
 var EXD={"Allergologie": "2027-01-08", "Anatomie et cytologie pathologique": "2026-11-20", "Anesthésie-réanimation": "2026-11-13", "Biologie médicale": "2026-11-12", "Chirurgie maxillo-faciale et stomatologie": "2026-11-12", "Chirurgie orale": "2026-12-02", "Chirurgie orthopédique et traumatologie": "2027-01-08", "Chirurgie plastique, reconstructrice et esthétique": "2026-12-02", "Chirurgie pédiatrique": "2026-11-20", "Chirurgie thoracique et cardio-vasculaire": "2026-11-20", "Chirurgie vasculaire": "2026-11-12", "Chirurgie viscérale et digestive": "2026-11-10", "Dermatologie et vénéréologie": "2026-11-13", "Endocrinologie diabétologie - nutrition": "2026-11-12", "Génétique médicale": "2026-12-02", "Gériatrie": "2027-01-12", "Gynécologie médicale": "2026-12-02", "Gynécologie obstétrique": "2026-12-01", "Hématologie": "2026-11-13", "Hépato-gastro-entérologie": "2026-11-13", "Maladies infectieuses et maladies tropicales": "2026-11-12", "Médecine cardiovasculaire": "2026-12-03", "Médecine d’urgence": "2026-11-19", "Médecine et santé au travail": "2026-11-10", "Médecine générale": "2027-01-15", "Médecine intensive-réanimation": "2026-11-12", "Médecine interne polyvalente et immunologie clinique": "2027-01-13", "Médecine légale et expertises médicales": "2026-11-12", "Médecine nucléaire": "2026-11-12", "Médecine physique et de réadaptation": "2026-12-01", "Médecine vasculaire": "2026-11-13", "Neurochirurgie": "2026-11-20", "Neurologie": "2026-12-01", "Néphrologie": "2026-11-12", "Oncologie": "2026-11-20", "Ophtalmologie": "2026-12-01", "Oto-rhino-laryngologie et chirurgie cervico-faciale": "2026-12-03", "Pneumologie": "2026-12-02", "Psychiatrie": "2026-12-10", "Pédiatrie": "2026-12-09", "Radiologie et imagerie médicale": "2026-12-08", "Rhumatologie": "2027-01-08", "Santé publique": "2026-11-10", "Urologie": "2026-12-01"};
 var SPECS=Object.keys(EXD).sort(function(a,b){return a.localeCompare(b,'fr');});
-var STATUT={abroad:'Je n’exerce pas encore en France',ffi:'Faisant fonction d’interne (DFMS ou DFMSA)',stagiaire:'Stagiaire associé',pact:'Praticien associé contractuel temporaire (PACT)',laureat:'Lauréat des EVC, en PCC',finpcc:'PCC terminé, en attente de la commission nationale',outremer:'Autorisé à exercer outre-mer',stock:'Dossier relevant de l’ancienne procédure du stock'};
-var EVCS=['abroad','ffi','stagiaire','pact','outremer'],ANNEE=['laureat','finpcc'],DEBUT=['pact','laureat'];
+var STATUTS=[
+ ['abroad','Je n’exerce pas encore en France','Depuis l’étranger, ou en France sans exercice rémunéré'],
+ ['ffi','Faisant fonction d’interne','DFMS ou DFMSA, formation spécialisée en France'],
+ ['stagiaire','Stagiaire associé','Stage de coopération temporaire'],
+ ['pact','Praticien associé contractuel temporaire (PACT)','Avec attestation d’exercice provisoire'],
+ ['laureat','Lauréat des EVC, en PCC','Parcours de consolidation des compétences, statut de praticien associé'],
+ ['finpcc','PCC terminé','Dans l’attente de la commission nationale d’autorisation d’exercice'],
+ ['outremer','Autorisé à exercer outre-mer','Dispositif dérogatoire et transitoire'],
+ ['stock','Ancienne procédure du stock','Dispositif transitoire clos']];
+var STATUT={};STATUTS.forEach(function(s){STATUT[s[0]]=s[1];});
 var VOIE={interne:'Voie interne',externe:'Voie externe'};
 var VALID={en_attente:'En attente de validation',valide:'Validé',refuse:'Refusé'};
+var EVCS=['abroad','ffi','stagiaire','pact','outremer'],ANNEE=['laureat','finpcc'],DEBUT=['pact','laureat'];
+var YEARS=[2026,2025,2024,2023,2022,2021];
+var ICON={cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',road:'<path d="M5 21 9 3M19 21 15 3M12 6v3M12 12v3M12 18v2"/>',book:'<path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h10"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 7h6M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01"/>',check:'<path d="m5 12 5 5 9-10"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0M16 4.5a3.5 3.5 0 0 1 0 7M18 20a6 6 0 0 0-3-5"/>',bell:'<path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/>'};
+function ico(n){var s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('class','i');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('aria-hidden','true');s.innerHTML=ICON[n]||'';return s;}
 var app=document.getElementById('app');
-var sb=null,session=null,me=null,recovery=false,tab='mon',prevLogin=null,loginMarked=false,allMembers=[];
+var sb=null,session=null,me=null,recovery=false,tab='accueil',prevLogin=null,loginMarked=false,allMembers=[],wz=null;
 
 function h(t,a,c){var e=document.createElement(t);if(a){for(var k in a){var v=a[k];if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k==='text')e.textContent=v;else if(k.slice(0,2)==='on')e.addEventListener(k.slice(2),v);else if(v===true)e.setAttribute(k,'');else e.setAttribute(k,v);}}(c||[]).forEach(function(x){if(x==null)return;e.appendChild(typeof x==='string'?document.createTextNode(x):x);});return e;}
-function clear(){while(app.firstChild)app.removeChild(app.firstChild);}
+function clear(n){n=n||app;while(n.firstChild)n.removeChild(n.firstChild);}
 function say(el,txt,kind){el.textContent=txt||'';el.className='msg'+(kind?' '+kind:'');}
 function fmtD(iso){if(!iso)return '';var d=new Date(String(iso).slice(0,10)+'T12:00:00');return d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});}
 function fmtT(iso){if(!iso)return '';return new Date(iso).toLocaleString('fr-FR',{timeZone:'Europe/Paris',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function todayIso(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function daysTo(iso,t){return Math.ceil((new Date(iso+(t||'T10:00:00+01:00'))-Date.now())/864e5);}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function addM(d,n){var x=new Date(d.getTime());var day=x.getDate();x.setDate(1);x.setMonth(x.getMonth()+n);var last=new Date(x.getFullYear(),x.getMonth()+1,0).getDate();x.setDate(Math.min(day,last));return x;}
+function addD(d,n){var x=new Date(d.getTime());x.setDate(x.getDate()+n);return x;}
+function parseIso(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
+function dans(n){return n>1?'dans '+n+' jours':n===1?'demain':n===0?'aujourd’hui':'passé';}
 function errTxt(e){var m=((e&&(e.message||e.code))||'').toLowerCase();
  if(m.indexOf('invalid login')>-1)return 'Adresse ou mot de passe incorrect.';
  if(m.indexOf('not confirmed')>-1)return 'Confirmez d’abord votre adresse avec le courriel reçu.';
@@ -115,275 +193,337 @@ function errTxt(e){var m=((e&&(e.message||e.code))||'').toLowerCase();
  if(m.indexOf('same')>-1&&m.indexOf('password')>-1)return 'Choisissez un mot de passe différent de l’ancien.';
  if(m.indexOf('fetch')>-1||m.indexOf('network')>-1)return 'Connexion impossible pour le moment. Vérifiez votre réseau.';
  return 'Opération impossible pour le moment. Réessayez dans un instant.';}
-function field(lbl,input,hint){return h('label',null,[lbl,input,hint?h('small',{text:hint}):null]);}
+/* lecture d'un champ par id, ou d'un groupe de boutons radio de même nom */
+function V(id){var e=document.getElementById(id);if(e)return e.value.trim();var r=document.querySelector('input[name="'+id+'"]:checked');return r?r.value:'';}
+function statutVal(p){return V(p+'-statut');}
+function field(lbl,input,hint,errId){return h('label',null,[lbl,input,hint?h('span',{class:'hint',text:hint}):null,errId?h('span',{class:'err',id:errId,role:'alert'}):null]);}
 function inp(id,type,val,extra){var o={id:id,name:id,type:type};if(val!=null)o.value=val;if(extra)for(var k in extra)o[k]=extra[k];return h('input',o);}
-function sel(id,opts,val,blank){var s=h('select',{id:id,name:id});if(blank!=null)s.appendChild(h('option',{value:'',text:blank}));opts.forEach(function(o){var op=h('option',{value:o[0],text:o[1]});if(val===o[0])op.selected=true;s.appendChild(op);});return s;}
-function statutOpts(){return Object.keys(STATUT).map(function(k){return [k,STATUT[k]];});}
-function wrap(id,el){el.id=id;return el;}
-function vis(p){var s=V(p+'-statut');var w=function(k){return document.getElementById(p+'-w-'+k);};
- if(w('voie'))w('voie').hidden=EVCS.indexOf(s)<0;
- if(w('an'))w('an').hidden=ANNEE.indexOf(s)<0;
- if(w('deb')){w('deb').hidden=DEBUT.indexOf(s)<0;var l=w('deb').firstChild;if(l)l.nodeValue=s==='laureat'?'Date de début de votre PCC':'Date de début de votre attestation d’exercice provisoire';}}
-function keep(p){var s=V(p+'-statut');return {voie:EVCS.indexOf(s)>-1&&V(p+'-voie')?V(p+'-voie'):null,annee_evc:ANNEE.indexOf(s)>-1&&V(p+'-an')?parseInt(V(p+'-an'),10):null,date_debut:DEBUT.indexOf(s)>-1&&V(p+'-deb')?V(p+'-deb'):null};}
-function specOpts(){return SPECS.map(function(s){return [s,s];});}
-function voieOpts(){return [['interne',VOIE.interne],['externe',VOIE.externe]];}
-function V(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+function bad(id,txt){var e=document.getElementById(id);var m=document.getElementById(id+'-e');if(e)e.setAttribute('aria-invalid',txt?'true':'false');if(m)m.textContent=txt||'';if(txt&&e)e.focus();return !txt;}
+function ok1(id){var e=document.getElementById(id);var m=document.getElementById(id+'-e');if(e)e.removeAttribute('aria-invalid');if(m)m.textContent='';}
+function choice(name,val,title,desc,checked,onch){var i=h('input',{type:'radio',name:name,value:val});if(checked)i.checked=true;if(onch)i.addEventListener('change',onch);return h('label',{class:'choice'},[i,h('span',{class:'c'},[h('b',{text:title}),desc?h('small',{text:desc}):null])]);}
+function pwField(id,lbl,autoc,meter){var i=inp(id,'password',null,{autocomplete:autoc,minlength:10});var b=h('button',{type:'button','aria-label':'Afficher ou masquer le mot de passe',onclick:function(){var v=i.type==='password';i.type=v?'text':'password';b.textContent=v?'Masquer':'Afficher';},text:'Afficher'});
+ var m=meter?h('div',{class:'meter','aria-hidden':'true'},[h('i')]):null;var t=meter?h('span',{class:'hint'}):null;
+ if(meter)i.addEventListener('input',function(){var v=i.value,s=0;if(v.length>=10)s++;if(v.length>=14)s++;if(/[a-z]/.test(v)&&/[A-Z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;var w=[0,20,40,60,80,100][v.length?Math.max(1,Math.min(5,s)):0];m.firstChild.style.width=w+'%';t.textContent=!v.length?'10 caractères au moins':v.length<10?'Encore '+(10-v.length)+' caractère'+(10-v.length>1?'s':'')+' au minimum':s<=2?'Correct. Ajoutez des chiffres, majuscules ou symboles pour le renforcer.':'Solide';});
+ else i.addEventListener('input',function(){});
+ return h('label',null,[lbl,h('div',{class:'pw'},[i,b]),m,t||null,h('span',{class:'err',id:id+'-e',role:'alert'})]);}
+
+/* ---------- Calcul des échéances ---------- */
+function echeance(m){
+ var s=m.statut,out={items:[],next:null,progress:null,note:null,text:null};
+ if(EVCS.indexOf(s)>-1){
+  var d=EXD[m.specialite||''];
+  if(!m.specialite)out.text='Indiquez votre spécialité pour voir la date de votre épreuve aux EVC.';
+  else if(!d)out.text='La date de votre spécialité ne figure pas dans le calendrier du site. Consultez les plannings du CNG.';
+  else{var n=daysTo(d);
+   if(n>=0){out.next={n:n,label:'avant votre épreuve des EVC en '+m.specialite,date:fmtD(d),sub:'Épreuve le '+fmtD(d)+'. Date d’après les plannings du CNG, vérifiez toujours votre convocation.'};}
+   else out.text='Les épreuves 2026 de votre spécialité sont passées. Les prochaines dates seront publiées par le CNG.';}
+ }
+ if(s==='pact'||s==='laureat'){
+  var d0=parseIso(m.date_debut);
+  if(!d0){out.hint=s==='pact'?'Ajoutez la date de début de votre attestation pour obtenir vos échéances.':'Ajoutez la date de début de votre PCC pour obtenir vos échéances.';}
+  else{var rows;
+   if(s==='pact')rows=[['Début de l’attestation',d0,'Début de la période de 13 mois.'],['Fin des 13 mois',addD(addM(d0,13),-1),'Le renouvellement est possible une seule fois.'],['Fin maximale (26 mois)',addD(addM(d0,26),-1),'Durée maximale de la PACT, renouvellement compris.']];
+   else rows=[['Début du PCC',d0,'Durée de 2 ans pour les médecins.'],['Saisine anticipée possible',addM(d0,6),'Possible après 6 mois de PCC.'],['Échelon 2 possible',addM(d0,12),'Après un an, avec l’accord du directeur de l’établissement.'],['Dépôt du dossier, repère du CNG',addM(addD(addM(d0,24),-1),-2),'Le CNG indique, pour les lauréats de la session 2023, un dépôt possible deux mois avant la fin du PCC.'],['Fin du PCC',addD(addM(d0,24),-1),'Fin des 2 ans de parcours.']];
+   var t0=iso(new Date());
+   rows.forEach(function(r){var di=iso(r[1]);out.items.push({t:r[0],d:di,n:r[2],past:di<t0});});
+   var fut=out.items.filter(function(x){return !x.past;});
+   if(fut.length){fut[0].nx=true;if(!out.next){var nn=daysTo(fut[0].d,'T09:00:00+01:00');out.next={n:Math.max(0,nn),label:'avant : '+fut[0].t.charAt(0).toLowerCase()+fut[0].t.slice(1),date:fmtD(fut[0].d),sub:fut[0].n};}}
+   var tot=s==='pact'?13:24,el=(Date.now()-d0.getTime())/(30.44*864e5);
+   out.progress={pct:Math.max(0,Math.min(100,Math.round(100*el/tot))),label:Math.max(0,Math.min(tot,Math.floor(el)))+' mois écoulés sur '+tot+(s==='pact'?' de la première période':' de PCC')};
+   out.note='Dates calculées par le site IPADECC. Ce sont des repères : seules les dates notifiées par le CNG, l’ARS ou votre établissement font foi.';}
+ }
+ if(s==='finpcc')out.text='Votre PCC est terminé. Votre dossier relève de la commission nationale d’autorisation d’exercice. Consultez le calendrier des commissions.';
+ if(s==='outremer')out.text='Le dispositif d’autorisation outre-mer est dérogatoire et transitoire. Consultez la rubrique Autorisation d’exercice du site.';
+ if(s==='stock')out.text='Votre dossier relève de l’ancienne procédure du stock, un dispositif transitoire clos. Consultez la rubrique Autorisation d’exercice du site.';
+ return out;
+}
+function gcal(t,d,det){var x=parseIso(d);if(!x)return null;var y=function(z){return z.getFullYear()+String(z.getMonth()+1).padStart(2,'0')+String(z.getDate()).padStart(2,'0');};return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t)+'&details='+encodeURIComponent(det+' Repère calculé par le site IPADECC, à vérifier auprès de la source officielle.')+'&dates='+y(x)+'/'+y(addD(x,1));}
+function completeness(m){var it=[['Date de naissance',!!m.naissance],['Spécialité',!!m.specialite]];
+ if(EVCS.indexOf(m.statut)>-1)it.push(['Voie des EVC',!!m.voie]);if(ANNEE.indexOf(m.statut)>-1)it.push(['Année d’EVC',!!m.annee_evc]);if(DEBUT.indexOf(m.statut)>-1)it.push([m.statut==='laureat'?'Début du PCC':'Début de l’attestation',!!m.date_debut]);
+ var n=it.filter(function(x){return x[1];}).length;return {pct:Math.round(100*n/it.length),missing:it.filter(function(x){return !x[1];}).map(function(x){return x[0];})};}
+
+/* ---------- Champs adaptatifs, partagés par inscription, profil et administration ---------- */
+function parcours(p,v,live){
+ var box=h('div',{class:'fgrid'});
+ var peek=h('div',{class:'peek',hidden:true});
+ function vals(){var s=statutVal(p);return {statut:s,specialite:specOk(V(p+'-spec')),voie:V(p+'-voie')||null,annee_evc:V(p+'-an')?parseInt(V(p+'-an'),10):null,date_debut:V(p+'-deb')||null};}
+ function specOk(x){return SPECS.indexOf(x)>-1?x:'';}
+ var det=h('div',{class:'reveal'});
+ function refresh(){
+  var s=statutVal(p);det.textContent='';
+  if(!s){return;}
+  var old=det.dataset.keep?JSON.parse(det.dataset.keep):{};
+  var sp=h('label',null,['Votre spécialité',inp(p+'-spec','text',v.specialite||'',{list:'specs',autocomplete:'off',placeholder:'Ex. : Psychiatrie'}),h('span',{class:'hint',text:'La spécialité de votre diplôme dans le pays d’obtention.'}),h('span',{class:'err',id:p+'-spec-e',role:'alert'})]);
+  det.appendChild(sp);
+  if(EVCS.indexOf(s)>-1){var g=h('div',{class:'seg'});[['','Je ne sais pas encore'],['interne','Voie interne'],['externe','Voie externe']].forEach(function(x){g.appendChild(choice(p+'-voie',x[0],x[1],null,(v.voie||'')===x[0],update));});det.appendChild(h('div',{class:'lab'},['Voie des EVC',g]));}
+  if(ANNEE.indexOf(s)>-1){var so=h('select',{id:p+'-an',name:p+'-an'});so.appendChild(h('option',{value:'',text:'Choisir'}));YEARS.forEach(function(y){var o=h('option',{value:String(y),text:String(y)});if(v.annee_evc===y)o.selected=true;so.appendChild(o);});so.addEventListener('change',update);det.appendChild(h('label',null,['Année de réussite aux EVC',so]));}
+  if(DEBUT.indexOf(s)>-1){var di=inp(p+'-deb','date',v.date_debut||'');di.addEventListener('input',update);det.appendChild(h('label',null,[s==='laureat'?'Date de début de votre PCC':'Date de début de votre attestation d’exercice provisoire',di,h('span',{class:'hint',text:'Le site calcule vos échéances à partir de cette date.'})]));}
+  var sinp=document.getElementById(p+'-spec');sinp.addEventListener('input',update);sinp.addEventListener('change',update);
+  update();}
+ function update(){
+  if(!live){return;}
+  var x=vals(),e=echeance(x);var t='';
+  if(e.next)t=e.next.n+' jours '+e.next.label+'. '+e.next.sub;else if(e.text)t=e.text;else if(e.hint)t=e.hint;
+  peek.hidden=!t;peek.textContent='';if(t){peek.appendChild(h('b',{text:'Ce que vous verrez dans votre espace'}));peek.appendChild(h('span',{text:t}));}}
+ var sc=h('fieldset',null,[h('legend',{text:'Où en êtes-vous ?'})]);var ch=h('div',{class:'choices'});
+ STATUTS.forEach(function(s){ch.appendChild(choice(p+'-statut',s[0],s[1],s[2],v.statut===s[0],function(){v.voie=null;refresh();}));});sc.appendChild(ch);sc.appendChild(h('span',{class:'err',id:p+'-statut-e',role:'alert'}));
+ box.appendChild(sc);box.appendChild(det);if(live)box.appendChild(peek);
+ refresh();
+ return box;
+}
+function keep(p){var s=statutVal(p),sp=V(p+'-spec');return {statut:s,specialite:SPECS.indexOf(sp)>-1?sp:null,voie:EVCS.indexOf(s)>-1&&V(p+'-voie')?V(p+'-voie'):null,annee_evc:ANNEE.indexOf(s)>-1&&V(p+'-an')?parseInt(V(p+'-an'),10):null,date_debut:DEBUT.indexOf(s)>-1&&V(p+'-deb')?V(p+'-deb'):null};}
+function checkParcours(p){if(!statutVal(p)){var e=document.getElementById(p+'-statut-e');if(e)e.textContent='Choisissez votre situation.';return false;}var sp=V(p+'-spec');if(sp&&SPECS.indexOf(sp)<0){bad(p+'-spec','Choisissez une spécialité de la liste.');return false;}ok1(p+'-spec');var e2=document.getElementById(p+'-statut-e');if(e2)e2.textContent='';return true;}
 
 /* ---------- Démarrage ---------- */
 function start(){
- if(!CFG.url||!CFG.key||!window.supabase){clear();app.appendChild(h('section',{class:'card'},[h('h1',{text:'Espace membres'}),h('p',{class:'sub',text:'L’espace membres n’est pas encore ouvert.'}),h('a',{class:'btn p',href:'index.html',text:'Retour au site'})]));return;}
+ var dl=document.getElementById('specs');SPECS.forEach(function(s){dl.appendChild(h('option',{value:s}));});
+ if(!CFG.url||!CFG.key||!window.supabase){clear();app.appendChild(h('section',{class:'card'},[h('h1',{text:'Espace membres'}),h('p',{class:'sub',text:'L’espace membres n’est pas encore ouvert.'}),h('p',null,[h('a',{class:'btn p',href:'index.html',text:'Retour au site'})])]));return;}
  sb=window.supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
- sb.auth.onAuthStateChange(function(ev,s){session=s;if(ev==='PASSWORD_RECOVERY')recovery=true;if(ev==='SIGNED_OUT'){me=null;loginMarked=false;allMembers=[];tab='mon';try{sessionStorage.removeItem('ipadecc_prev');}catch(x){}}setTimeout(render,0);});
+ sb.auth.onAuthStateChange(function(ev,s){session=s;if(ev==='PASSWORD_RECOVERY')recovery=true;if(ev==='SIGNED_OUT'){me=null;loginMarked=false;allMembers=[];tab='accueil';try{sessionStorage.removeItem('ipadecc_prev');}catch(x){}}setTimeout(render,0);});
  sb.auth.getSession().then(function(r){session=r&&r.data?r.data.session:null;render();}).catch(function(){render();});
 }
 function render(){
  if(!session){authView();return;}
  if(recovery){newPassView();return;}
  sb.from('membres').select('*').eq('id',session.user.id).single().then(function(r){
-  if(r.error||!r.data){clear();app.appendChild(h('section',{class:'card'},[h('h1',{text:'Espace membres'}),h('p',{class:'sub',text:'Votre fiche est introuvable pour le moment.'}),h('button',{class:'btn',type:'button',onclick:function(){sb.auth.signOut();},text:'Se déconnecter'})]));return;}
-  me=r.data;markLogin();memberShell();});
+  if(r.error||!r.data){clear();app.appendChild(h('section',{class:'card'},[h('h1',{text:'Espace membres'}),h('p',{class:'sub',text:'Votre fiche est introuvable pour le moment.'}),h('p',null,[h('button',{class:'btn',type:'button',onclick:function(){sb.auth.signOut();},text:'Se déconnecter'})])]));return;}
+  me=r.data;markLogin();shell();});
 }
 function markLogin(){
- if(loginMarked)return;
- var k='ipadecc_prev';
+ if(loginMarked)return;var k='ipadecc_prev';
  try{var st=sessionStorage.getItem(k);if(st!==null){prevLogin=st||null;loginMarked=true;return;}}catch(e){}
- prevLogin=me.derniere_connexion||null;loginMarked=true;
- try{sessionStorage.setItem(k,prevLogin||'');}catch(e){}
+ prevLogin=me.derniere_connexion||null;loginMarked=true;try{sessionStorage.setItem(k,prevLogin||'');}catch(e){}
  sb.from('membres').update({derniere_connexion:new Date().toISOString()}).eq('id',me.id).then(function(){});
 }
 
-/* ---------- Connexion, inscription ---------- */
+/* ---------- Connexion et inscription ---------- */
 function authView(){
- clear();var mode='in';
- var box=h('section',{class:'card'});
- var tabs=h('div',{class:'tabs',role:'tablist'});
- var body=h('div');
- function show(m){mode=m;[].forEach.call(tabs.children,function(b){b.setAttribute('aria-selected',b.dataset.m===m?'true':'false');});body.textContent='';body.appendChild(m==='in'?loginForm():m==='up'?signupForm():forgotForm());}
- [['in','Connexion'],['up','Créer mon compte']].forEach(function(t){tabs.appendChild(h('button',{type:'button',role:'tab','data-m':t[0],'aria-selected':'false',onclick:function(){show(t[0]);},text:t[1]}));});
- box.appendChild(h('h1',{text:'Espace membres'}));
- box.appendChild(h('p',{class:'sub',text:'Suivez votre parcours et gérez vos informations.'}));
- box.appendChild(tabs);box.appendChild(body);app.appendChild(box);
+ clear();wz={step:1,d:{statut:'',voie:null,specialite:'',annee_evc:null,date_debut:null}};
+ var pitch=h('div',{class:'pitch'},[h('span',{class:'tag',text:'Espace réservé aux adhérents'}),
+  h('h1',null,['Votre parcours, ',h('em',{text:'suivi pas à pas.'})]),
+  h('p',{class:'lead',text:'Retrouvez vos échéances, vos dates clés et votre attestation d’adhésion, au même endroit.'}),
+  h('ul',{class:'perks'},[
+   perk('cal','Vos échéances calculées','Date de votre épreuve aux EVC, étapes de votre PACT ou de votre PCC.'),
+   perk('doc','Votre attestation d’adhésion','À imprimer ou à enregistrer en PDF dès que votre cotisation est à jour.'),
+   perk('lock','Vos données sous votre contrôle','Vous les modifiez, les téléchargez ou supprimez votre compte quand vous voulez.')])]);
+ var tabs=h('div',{class:'tabs',role:'tablist'}),body=h('div');
+ var card=h('section',{class:'card'},[tabs,body]);
+ function show(m){[].forEach.call(tabs.children,function(b){b.setAttribute('aria-selected',b.dataset.m===m?'true':'false');});clear(body);body.appendChild(m==='in'?loginForm(show):m==='up'?wizard():forgotForm(show));}
+ [['in','Connexion'],['up','Créer mon compte']].forEach(function(t){tabs.appendChild(h('button',{type:'button',role:'tab','data-m':t[0],'aria-selected':'false',onclick:function(){wz.step=1;show(t[0]);},text:t[1]}));});
+ app.appendChild(h('div',{class:'welcome'},[pitch,card]));
  app.appendChild(h('details',null,[h('summary',{text:'Protection de vos données'}),
   h('p',{text:'Les informations demandées servent uniquement à gérer votre adhésion à IPADECC et à vous montrer votre suivi. Aucune pièce d’identité n’est demandée ni conservée.'}),
-  h('ul',null,[h('li',{text:'Données enregistrées : adresse électronique, nom, prénom, date de naissance, statut, voie, spécialité, année d’EVC, date de commission, état de la cotisation et dates de connexion.'}),
-  h('li',{text:'Vous consultez et modifiez vos informations depuis votre espace, vous téléchargez une copie de vos données et vous supprimez votre compte quand vous le souhaitez.'}),
-  h('li',{text:'Seuls vous et l’administrateur de l’association voyez votre fiche.'})]),
+  h('ul',null,[h('li',{text:'Données enregistrées : adresse électronique, nom, prénom, date de naissance, situation, spécialité, voie, année d’EVC, date de début de PACT ou de PCC, état de la cotisation et dates de connexion.'}),
+   h('li',{text:'Vous consultez et modifiez vos informations depuis votre espace, vous téléchargez une copie de vos données et vous supprimez votre compte quand vous le souhaitez.'}),
+   h('li',{text:'Seuls vous et l’administrateur de l’association voyez votre fiche.'})]),
   h('p',null,[h('a',{href:'index.html#association-contact',text:'Contacter l’association'})])]));
  show('in');
- function loginForm(){var m=h('p',{class:'msg',role:'status'});
-  var f=h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var em=V('l-email'),pw=document.getElementById('l-pw').value;if(!em||!pw){say(m,'Renseignez votre adresse et votre mot de passe.','err');return;}say(m,'Connexion en cours…');sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');});}},[
-   field('Adresse électronique',inp('l-email','email',null,{autocomplete:'username',required:true})),
-   field('Mot de passe',inp('l-pw','password',null,{autocomplete:'current-password',required:true})),
-   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Se connecter'}),h('button',{class:'btn',type:'button',onclick:function(){show('forgot');},text:'Mot de passe oublié'})]),m]);return f;}
- function forgotForm(){var m=h('p',{class:'msg',role:'status'});
-  return h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var em=V('r-email');if(!em){say(m,'Renseignez votre adresse électronique.','err');return;}say(m,'Envoi en cours…');sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');else say(m,'Si cette adresse correspond à un compte, un courriel vient d’être envoyé avec un lien pour choisir un nouveau mot de passe.','ok');});}},[
-   h('h2',{text:'Mot de passe oublié'}),field('Adresse électronique',inp('r-email','email',null,{autocomplete:'username',required:true})),
-   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Recevoir le lien'}),h('button',{class:'btn',type:'button',onclick:function(){show('in');},text:'Retour'})]),m]);}
- function signupForm(){var m=h('p',{class:'msg',role:'status'});
-  var f=h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
-   var em=V('s-email'),pw=document.getElementById('s-pw').value,pw2=document.getElementById('s-pw2').value;
-   if(!V('s-prenom')||!V('s-nom')||!em){say(m,'Renseignez votre prénom, votre nom et votre adresse électronique.','err');return;}
-   if(pw.length<10){say(m,'Le mot de passe doit compter au moins 10 caractères.','err');return;}
-   if(pw!==pw2){say(m,'Les deux mots de passe ne sont pas identiques.','err');return;}
-   if(!document.getElementById('s-ok').checked){say(m,'Acceptez l’utilisation de vos informations pour continuer.','err');return;}
-   say(m,'Création du compte…');
-   sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin+location.pathname,data:{prenom:V('s-prenom'),nom:V('s-nom'),naissance:V('s-nai'),statut:V('s-statut'),voie:keep('s').voie||'',specialite:V('s-spec'),annee_evc:keep('s').annee_evc||'',date_debut:keep('s').date_debut||'',consentement:'true'}}}).then(function(r){
-    if(r.error){say(m,errTxt(r.error),'err');return;}
-    if(r.data&&r.data.session)return;
-    body.textContent='';body.appendChild(h('div',null,[h('h2',{text:'Presque terminé'}),h('p',{text:'Un courriel de confirmation vient de vous être envoyé. Cliquez sur le lien qu’il contient, puis connectez-vous. Votre adhésion sera ensuite examinée par le bureau.'})]));});}},[
-   h('div',{class:'f2'},[field('Prénom',inp('s-prenom','text',null,{autocomplete:'given-name',maxlength:80,required:true})),field('Nom',inp('s-nom','text',null,{autocomplete:'family-name',maxlength:80,required:true}))]),
-   h('div',{class:'f2'},[field('Adresse électronique',inp('s-email','email',null,{autocomplete:'username',required:true})),field('Date de naissance',inp('s-nai','date',null,{autocomplete:'bday',max:todayIso()}))]),
-   h('div',{class:'f2'},[field('Où en êtes-vous ?',sel('s-statut',statutOpts(),'abroad')),field('Spécialité',sel('s-spec',specOpts(),'','Non précisée'))]),
-   h('div',{class:'f2'},[wrap('s-w-voie',field('Voie des EVC',sel('s-voie',voieOpts(),'','Je ne sais pas encore'))),wrap('s-w-an',field('Année d’EVC',inp('s-an','number',null,{min:2000,max:2100,inputmode:'numeric'}))),wrap('s-w-deb',field('Date de début',inp('s-deb','date',null)))]),
-   h('div',{class:'f2'},[field('Mot de passe',inp('s-pw','password',null,{autocomplete:'new-password',minlength:10,required:true}),'10 caractères au moins'),field('Confirmer le mot de passe',inp('s-pw2','password',null,{autocomplete:'new-password',required:true}))]),
-   h('label',{class:'ck'},[h('input',{type:'checkbox',id:'s-ok'}),'J’accepte que ces informations soient utilisées par IPADECC pour gérer mon adhésion et mon suivi.']),
-   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Créer mon compte'})]),m]);setTimeout(function(){var e=document.getElementById('s-statut');if(e){e.addEventListener('change',function(){vis('s');});vis('s');}},0);return f;}
+}
+function perk(i,t,d){return h('li',null,[h('span',{class:'ic'},[ico(i)]),h('div',null,[h('b',{text:t}),h('span',{text:d})])]);}
+function loginForm(show){var m=h('p',{class:'msg',role:'status'});
+ return h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var em=V('l-email'),pw=document.getElementById('l-pw').value;if(!em||!pw){say(m,'Renseignez votre adresse et votre mot de passe.','err');return;}say(m,'Connexion en cours…');sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');});}},[
+  field('Adresse électronique',inp('l-email','email',null,{autocomplete:'username',required:true})),
+  pwField('l-pw','Mot de passe','current-password',false),
+  h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Se connecter'}),h('button',{class:'btn',type:'button',onclick:function(){show('forgot');},text:'Mot de passe oublié'})]),m]);}
+function forgotForm(show){var m=h('p',{class:'msg',role:'status'});
+ return h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var em=V('r-email');if(!em){say(m,'Renseignez votre adresse électronique.','err');return;}say(m,'Envoi en cours…');sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');else say(m,'Si cette adresse correspond à un compte, un courriel vient d’être envoyé avec un lien pour choisir un nouveau mot de passe.','ok');});}},[
+  h('h2',{text:'Mot de passe oublié'}),field('Adresse électronique',inp('r-email','email',null,{autocomplete:'username',required:true})),
+  h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Recevoir le lien'}),h('button',{class:'btn',type:'button',onclick:function(){show('in');},text:'Retour'})]),m]);}
+
+function wizard(){
+ var box=h('div'),d=wz.d;
+ function head(n){return [h('div',{class:'steps','aria-hidden':'true'},[1,2,3].map(function(i){return h('i',{class:i<=n?'on':''});})),h('p',{class:'stepl',text:'Étape '+n+' sur 3'})];}
+ function go(n){wz.step=n;draw();window.scrollTo({top:0,behavior:'smooth'});}
+ function draw(){clear(box);
+  if(wz.step===1){head(1).forEach(function(x){box.appendChild(x);});
+   var p=parcours('s',d,true);var e=h('p',{class:'msg',role:'status'});
+   box.appendChild(h('form',{novalidate:true,onsubmit:function(ev){ev.preventDefault();if(!checkParcours('s'))return;Object.assign(d,keep('s'));go(2);}},[p,h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Continuer'})]),e]));}
+  else if(wz.step===2){head(2).forEach(function(x){box.appendChild(x);});
+   box.appendChild(h('form',{novalidate:true,onsubmit:function(ev){ev.preventDefault();var ok=true;
+     if(!V('s-prenom'))ok=bad('s-prenom','Indiquez votre prénom.')&&ok;else ok1('s-prenom');
+     if(ok&&!V('s-nom'))ok=bad('s-nom','Indiquez votre nom.')&&ok;else if(ok)ok1('s-nom');
+     if(!ok)return;d.prenom=V('s-prenom');d.nom=V('s-nom');d.naissance=V('s-nai');go(3);}},[
+    h('h2',{text:'Qui êtes-vous ?'}),
+    h('div',{class:'f2'},[field('Prénom',inp('s-prenom','text',d.prenom||'',{autocomplete:'given-name',maxlength:80}),null,'s-prenom-e'),field('Nom',inp('s-nom','text',d.nom||'',{autocomplete:'family-name',maxlength:80}),null,'s-nom-e')]),
+    field('Date de naissance',inp('s-nai','date',d.naissance||'',{autocomplete:'bday',max:todayIso()}),'Facultatif'),
+    h('div',{class:'row'},[h('button',{class:'btn',type:'button',onclick:function(){d.prenom=V('s-prenom');d.nom=V('s-nom');d.naissance=V('s-nai');go(1);},text:'Retour'}),h('button',{class:'btn p',type:'submit',text:'Continuer'})])]));}
+  else{head(3).forEach(function(x){box.appendChild(x);});var m=h('p',{class:'msg',role:'status'});
+   box.appendChild(h('form',{novalidate:true,onsubmit:function(ev){ev.preventDefault();
+     var em=V('s-email'),pw=document.getElementById('s-pw').value,pw2=document.getElementById('s-pw2').value;
+     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){bad('s-email','Indiquez une adresse électronique valide.');return;}ok1('s-email');
+     if(pw.length<10){bad('s-pw','Le mot de passe doit compter au moins 10 caractères.');return;}ok1('s-pw');
+     if(pw!==pw2){bad('s-pw2','Les deux mots de passe ne sont pas identiques.');return;}ok1('s-pw2');
+     if(!document.getElementById('s-ok').checked){say(m,'Acceptez l’utilisation de vos informations pour continuer.','err');return;}
+     say(m,'Création du compte…');
+     sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin+location.pathname,data:{prenom:d.prenom,nom:d.nom,naissance:d.naissance||'',statut:d.statut,voie:d.voie||'',specialite:d.specialite||'',annee_evc:d.annee_evc||'',date_debut:d.date_debut||'',consentement:'true'}}}).then(function(r){
+      if(r.error){say(m,errTxt(r.error),'err');return;}if(r.data&&r.data.session)return;
+      clear(box);box.appendChild(h('div',{class:'stack'},[h('h2',{text:'Presque terminé'}),h('p',{text:'Un courriel de confirmation vient de vous être envoyé. Cliquez sur le lien qu’il contient, puis connectez-vous. Votre adhésion sera ensuite examinée par le bureau.'}),h('p',{class:'hint',text:'Pensez à regarder dans les courriers indésirables.'})]));});}},[
+    h('h2',{text:'Votre compte'}),
+    field('Adresse électronique',inp('s-email','email',null,{autocomplete:'username'}),null,'s-email-e'),
+    pwField('s-pw','Mot de passe','new-password',true),pwField('s-pw2','Confirmer le mot de passe','new-password',false),
+    h('label',{class:'ck'},[h('input',{type:'checkbox',id:'s-ok'}),'J’accepte que ces informations soient utilisées par IPADECC pour gérer mon adhésion et mon suivi.']),
+    h('div',{class:'row'},[h('button',{class:'btn',type:'button',onclick:function(){go(2);},text:'Retour'}),h('button',{class:'btn p',type:'submit',text:'Créer mon compte'})]),m]));}
+ }
+ draw();return box;
 }
 function newPassView(){
  clear();var m=h('p',{class:'msg',role:'status'});
- app.appendChild(h('section',{class:'card'},[h('h1',{text:'Nouveau mot de passe'}),h('p',{class:'sub',text:'Choisissez votre nouveau mot de passe.'}),
-  h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var a=document.getElementById('n-pw').value,b=document.getElementById('n-pw2').value;if(a.length<10){say(m,'Le mot de passe doit compter au moins 10 caractères.','err');return;}if(a!==b){say(m,'Les deux mots de passe ne sont pas identiques.','err');return;}say(m,'Enregistrement…');sb.auth.updateUser({password:a}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');else{recovery=false;render();}});}},[
-   field('Nouveau mot de passe',inp('n-pw','password',null,{autocomplete:'new-password',minlength:10,required:true}),'10 caractères au moins'),
-   field('Confirmer',inp('n-pw2','password',null,{autocomplete:'new-password',required:true})),
+ app.appendChild(h('section',{class:'card',style:'max-width:520px;margin:0 auto'},[h('h1',{text:'Nouveau mot de passe'}),h('p',{class:'sub',text:'Choisissez votre nouveau mot de passe.'}),
+  h('form',{novalidate:true,style:'margin-top:18px',onsubmit:function(e){e.preventDefault();var a=document.getElementById('n-pw').value,b=document.getElementById('n-pw2').value;if(a.length<10){say(m,'Le mot de passe doit compter au moins 10 caractères.','err');return;}if(a!==b){say(m,'Les deux mots de passe ne sont pas identiques.','err');return;}say(m,'Enregistrement…');sb.auth.updateUser({password:a}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');else{recovery=false;render();}});}},[
+   pwField('n-pw','Nouveau mot de passe','new-password',true),pwField('n-pw2','Confirmer','new-password',false),
    h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer'})]),m])]));
 }
 
 /* ---------- Espace du membre ---------- */
-function memberShell(){
- clear();
- var isAdmin=me.role==='admin'&&me.validation==='valide';
- var head=h('section',{class:'card'});
- var name=nomComplet();
- head.appendChild(h('h1',{text:'Bonjour '+name}));
- head.appendChild(h('p',{class:'sub',text:prevLogin?'Votre dernière connexion date du '+fmtT(prevLogin)+'.':'C’est votre première connexion. Bienvenue.'}));
- var row=h('div',{class:'row'});
- if(isAdmin){var t=h('div',{class:'tabs',role:'tablist'});[['mon','Mon espace'],['adm','Administration']].forEach(function(x){t.appendChild(h('button',{type:'button',role:'tab','aria-selected':tab===x[0]?'true':'false',onclick:function(){tab=x[0];memberShell();},text:x[1]}));});head.appendChild(t);}
- row.appendChild(h('button',{class:'btn',type:'button',onclick:function(){sb.auth.signOut();},text:'Se déconnecter'}));
- head.appendChild(row);app.appendChild(head);
- var vue=h('div',{id:'vue'});app.appendChild(vue);
- if(isAdmin&&tab==='adm')adminView(vue);else monView(vue);
-}
+function nomComplet(){return ((me.prenom||'')+' '+(me.nom||'')).trim()||me.email;}
 function cotisInfo(){
  if(!me.cotisation_jusqu)return {t:'Cotisation non enregistrée',k:'warn',ok:false};
- if(me.cotisation_jusqu>=todayIso())return {t:'À jour jusqu’au '+fmtD(me.cotisation_jusqu),k:'ok',ok:true};
- return {t:'Expirée depuis le '+fmtD(me.cotisation_jusqu),k:'warn',ok:false};
+ if(me.cotisation_jusqu>=todayIso())return {t:'Cotisation à jour jusqu’au '+fmtD(me.cotisation_jusqu),k:'ok',ok:true};
+ return {t:'Cotisation expirée depuis le '+fmtD(me.cotisation_jusqu),k:'warn',ok:false};
 }
-function addM(d,n){var x=new Date(d.getTime());var day=x.getDate();x.setDate(1);x.setMonth(x.getMonth()+n);var last=new Date(x.getFullYear(),x.getMonth()+1,0).getDate();x.setDate(Math.min(day,last));return x;}
-function addD(d,n){var x=new Date(d.getTime());x.setDate(x.getDate()+n);return x;}
-function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function echeance(){
- var out=[],s=me.statut;
- if(EVCS.indexOf(s)>-1){
-  var d=EXD[me.specialite||''];
-  if(!me.specialite)out.push({t:'Indiquez votre spécialité dans votre profil pour voir la date de votre épreuve aux EVC.'});
-  else if(!d)out.push({t:'La date de votre spécialité ne figure pas dans le calendrier du site. Consultez les plannings du CNG.'});
-  else{var n=daysTo(d);var base='Épreuve des EVC 2026 en '+me.specialite;
-   if(n>1)out.push({t:base+' le '+fmtD(d)+', dans '+n+' jours.',n:'Date d’après les plannings du CNG. Vérifiez toujours votre convocation.'});
-   else if(n===1)out.push({t:base+' demain, le '+fmtD(d)+'.',n:'Date d’après les plannings du CNG. Vérifiez toujours votre convocation.'});
-   else if(daysTo(d,'T20:00:00+01:00')>=0)out.push({t:base+' aujourd’hui.'});
-   else out.push({t:'Les épreuves 2026 de votre spécialité sont passées. Les prochaines dates seront publiées par le CNG.'});}
- }
- if(s==='pact'||s==='laureat'){
-  if(!me.date_debut)out.push({t:s==='pact'?'Renseignez la date de début de votre attestation dans votre profil pour obtenir vos échéances.':'Renseignez la date de début de votre PCC dans votre profil pour obtenir vos échéances.'});
-  else{var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(me.date_debut);var d0=new Date(+m[1],+m[2]-1,+m[3]),rows;
-   if(s==='pact')rows=[['Début de l’attestation',d0,'Début de la période de 13 mois.'],['Fin des 13 mois',addD(addM(d0,13),-1),'Le renouvellement est possible une seule fois.'],['Fin maximale (26 mois)',addD(addM(d0,26),-1),'Durée maximale de la PACT, renouvellement compris.']];
-   else rows=[['Début du PCC',d0,'Durée de 2 ans pour les médecins.'],['Saisine anticipée possible',addM(d0,6),'Possible après 6 mois de PCC.'],['Échelon 2 possible',addM(d0,12),'Après un an, avec l’accord du directeur de l’établissement.'],['Dépôt du dossier, repère du CNG',addM(addD(addM(d0,24),-1),-2),'Le CNG indique, pour les lauréats de la session 2023, un dépôt possible deux mois avant la fin du PCC.'],['Fin du PCC',addD(addM(d0,24),-1),'Fin des 2 ans de parcours.']];
-   rows.forEach(function(r){out.push({t:fmtD(iso(r[1]))+' : '+r[0],n:r[2],past:iso(r[1])<todayIso()});});
-   out.push({n:'Dates calculées par le site IPADECC. Ce sont des repères : seules les dates notifiées par le CNG, l’ARS ou votre établissement font foi.',note:true});}
- }
- if(s==='finpcc')out.push({t:'Votre PCC est terminé. Votre dossier relève de la commission nationale d’autorisation d’exercice. Consultez le calendrier des commissions.'});
- if(s==='outremer')out.push({n:'Le dispositif d’autorisation outre-mer est dérogatoire et transitoire. Consultez la rubrique Autorisation d’exercice du site.',note:true});
- if(s==='stock')out.push({t:'Votre dossier relève de l’ancienne procédure du stock, un dispositif transitoire clos. Consultez la rubrique Autorisation d’exercice du site.'});
- return out;
-}
-function nomComplet(){return ((me.prenom||'')+' '+(me.nom||'')).trim()||me.email;}
-function monView(vue){
+function shell(){
+ clear();var adm=me.role==='admin'&&me.validation==='valide';
+ var tabs=[['accueil','Accueil'],['profil','Mon profil'],['securite','Sécurité']];if(adm)tabs.push(['adm','Administration']);
+ if(tabs.map(function(t){return t[0];}).indexOf(tab)<0)tab='accueil';
  var c=cotisInfo();
- var name=nomComplet();
- if(me.validation==='en_attente')vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Adhésion en cours de validation'}),h('p',{text:'Le bureau examine votre demande. Vous pouvez compléter votre profil en attendant.'})]));
- if(me.validation==='refuse')vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Demande non retenue'}),h('p',null,['Votre demande d’adhésion n’a pas été retenue. ',h('a',{href:'index.html#association-contact',text:'Contactez l’association'}),' pour en savoir plus.'])]));
- if(me.validation==='valide'){
-  var g=h('div',{class:'grid'});
-  g.appendChild(h('section',{class:'card'},[h('h2',{text:'Mon adhésion'}),h('dl',null,[h('dt',{text:'Numéro d’adhérent'}),h('dd',{text:String(me.numero)}),h('dt',{text:'Cotisation'}),h('dd',null,[h('span',{class:'pill '+c.k,text:c.t})]),h('dt',{text:'Adresse'}),h('dd',{text:me.email})])]));
-  g.appendChild(h('section',{class:'card'},[h('h2',{text:'Mon parcours'}),h('dl',null,[].concat([h('dt',{text:'Situation'}),h('dd',{text:STATUT[me.statut]||''}),h('dt',{text:'Spécialité'}),h('dd',{text:me.specialite||'Non précisée'})],EVCS.indexOf(me.statut)>-1?[h('dt',{text:'Voie des EVC'}),h('dd',{text:VOIE[me.voie]||'Non précisée'})]:[],ANNEE.indexOf(me.statut)>-1?[h('dt',{text:'Année d’EVC'}),h('dd',{text:me.annee_evc?String(me.annee_evc):'Non précisée'})]:[],DEBUT.indexOf(me.statut)>-1?[h('dt',{text:me.statut==='laureat'?'Début du PCC':'Début de l’attestation'}),h('dd',{text:me.date_debut?fmtD(me.date_debut):'Non précisée'})]:[]))]));
-  vue.appendChild(g);
-  var ech=echeance();
-  var links=[['index.html#calendrier-evc','Calendrier des EVC 2026'],['index.html#calendrier-commissions','Commissions'],['index.html#calendrier-route','Feuille de route'],['index.html#demarches-checklist','Ma checklist de démarches'],['simulateur.html','Simulateur Padhue']];
-  var gl=h('ul',{class:'go'});links.forEach(function(l){gl.appendChild(h('li',null,[h('a',{href:l[0],text:l[1]})]));});
-  var e2=h('section',{class:'card'},[h('h2',{text:'Mes prochaines échéances'})]);
-  var ul=h('ul',{class:'ech'});
-  var notes=[];
-  ech.forEach(function(x){if(x.note){notes.push(x.n);return;}ul.appendChild(h('li',{class:x.past?'past':''},[x.t?h('b',{text:x.t}):null,x.n?h('small',{text:x.n}):null]));});
-  if(ul.children.length)e2.appendChild(ul);else if(!notes.length)e2.appendChild(h('p',{text:'Renseignez votre situation dans votre profil pour voir vos échéances.'}));
-  notes.forEach(function(n){e2.appendChild(h('p',{class:'sub',text:n}));});
-  vue.appendChild(e2);
-  vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Pour avancer'}),gl]));
-  var pr=h('section',{class:'card pr'});
-  pr.appendChild(h('h2',{text:'Attestation d’adhésion'}));
-  if(c.ok){
-   var at=h('div',{class:'attest'},[h('h2',{text:'Attestation d’adhésion'}),
-    h('p',{text:'L’association IPADECC atteste que '+name+' est membre de l’association sous le numéro d’adhérent '+me.numero+'.'}),
-    h('p',{text:'Sa cotisation est à jour jusqu’au '+fmtD(me.cotisation_jusqu)+'.'}),
-    h('p',{text:'Attestation établie le '+fmtD(todayIso())+' pour servir et valoir ce que de droit.'}),
-    h('div',{class:'sig'},[h('p',{text:'Pour l’association'})])]);
-   pr.appendChild(at);
-   pr.appendChild(h('p',null,[h('button',{class:'btn p',type:'button',onclick:function(){window.print();},text:'Imprimer ou enregistrer en PDF'})]));
-  }else pr.appendChild(h('p',{text:'L’attestation est disponible lorsque votre cotisation est à jour.'}));
-  vue.appendChild(pr);
- }
- vue.appendChild(profileCard());vue.appendChild(passCard());vue.appendChild(dataCard());
+ var hero=h('section',{class:'hero'},[h('h1',{text:'Bonjour '+nomComplet()}),
+  h('p',{class:'sub',text:prevLogin?'Votre dernière connexion date du '+fmtT(prevLogin)+'.':'C’est votre première connexion. Bienvenue.'}),
+  h('div',{class:'row'},me.validation==='valide'?[h('span',{class:'pill'},['Adhérent n° '+me.numero]),h('span',{class:'pill '+c.k,text:c.t})]:[h('span',{class:'pill '+(me.validation==='refuse'?'warn':''),text:VALID[me.validation]})]),
+  h('div',{class:'nav',role:'tablist'},tabs.map(function(t){return h('button',{type:'button',role:'tab','aria-selected':tab===t[0]?'true':'false',onclick:function(){tab=t[0];shell();},text:t[1]});}))]);
+ app.appendChild(hero);
+ var vue=h('div',{class:'stack',id:'vue',style:'margin-top:16px'});app.appendChild(vue);
+ if(tab==='accueil')accueil(vue);else if(tab==='profil')profil(vue);else if(tab==='securite')securite(vue);else adminView(vue);
 }
-function profileCard(){
+function accueil(vue){
+ if(me.validation==='en_attente'||me.validation==='refuse'){
+  var refus=me.validation==='refuse';
+  vue.appendChild(h('section',{class:'card'},[h('h2',{text:refus?'Demande non retenue':'Votre adhésion est en cours d’examen'}),
+   refus?h('p',null,['Votre demande d’adhésion n’a pas été retenue. ',h('a',{href:'index.html#association-contact',text:'Contactez l’association'}),' pour en savoir plus.']):
+   h('ul',{class:'wait'},[wait('done','1','Compte créé','Votre adresse est confirmée.'),wait('cur','2','Validation par le bureau','Le bureau examine votre demande. Vous pouvez compléter votre profil en attendant.'),wait('','3','Accès complet','Votre suivi, vos échéances et votre attestation apparaissent ici.')])]));
+  vue.appendChild(completeCard());return;}
+ var e=echeance(me),c=cotisInfo();
+ var nx=h('section',{class:'card'});
+ if(e.next){nx.appendChild(h('div',{class:'next'},[h('div',{class:'big'},[String(e.next.n),h('small',{text:e.next.n>1?'jours':'jour'})]),h('div',null,[h('h2',{text:'Prochaine échéance'}),h('p',{style:'margin:0;font-weight:600',text:e.next.label.charAt(0).toUpperCase()+e.next.label.slice(1)+' le '+e.next.date}),h('p',{class:'sub',text:e.next.sub})])]));}
+ else nx.appendChild(h('div',null,[h('h2',{text:'Votre situation'}),h('p',{style:'margin:0',text:e.text||e.hint||'Aucune échéance à afficher pour le moment.'})]));
+ if(e.progress){nx.appendChild(h('div',{style:'margin-top:16px'},[h('div',{class:'bar',role:'progressbar','aria-valuenow':String(e.progress.pct),'aria-valuemin':'0','aria-valuemax':'100'},[h('i',{style:'width:'+e.progress.pct+'%'})]),h('span',{class:'hint',text:e.progress.label})]));}
+ if(e.hint&&e.next)nx.appendChild(h('p',{class:'hint',text:e.hint}));
+ vue.appendChild(nx);
+ if(e.items.length){var ul=h('ol',{class:'tl'});e.items.forEach(function(x){var li=h('li',{class:x.past?'past':x.nx?'nx':''},[h('b',{text:fmtD(x.d)+' · '+x.t}),h('small',{text:x.n}),x.past?null:h('span',{class:'when',text:dans(daysTo(x.d,'T09:00:00+01:00'))}),x.past?null:h('small',null,[h('a',{href:gcal(x.t,x.d,x.n),target:'_blank',rel:'noopener noreferrer',text:'Ajouter à Google Agenda'})])]);ul.appendChild(li);});
+  vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Mes étapes'}),ul,e.note?h('p',{class:'hint',style:'margin:14px 0 0',text:e.note}):null]));}
+ var cp=completeCard();if(cp)vue.appendChild(cp);
+ var L=[['index.html#calendrier-evc','Calendrier des EVC 2026','cal',EVCS],['index.html#calendrier-commissions','Calendrier des commissions','users',['laureat','finpcc','pact']],['index.html#calendrier-route','Ma feuille de route','road',['pact','laureat','finpcc']],['index.html#demarches-checklist','Ma checklist de démarches','check',null],['simulateur.html','Simulateur Padhue','calc',null],['index.html#glossaire','Glossaire','book',null]];
+ var lk=h('div',{class:'links'});L.forEach(function(x){if(x[3]&&x[3].indexOf(me.statut)<0)return;lk.appendChild(h('a',{href:x[0]},[h('span',{class:'ic'},[ico(x[2])]),x[1]]));});
+ vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Pour avancer'}),lk]));
+ var pr=h('section',{class:'card'},[h('h2',{text:'Attestation d’adhésion'})]);
+ if(c.ok){pr.appendChild(h('div',{class:'attest',id:'att'},[h('h2',{text:'Attestation d’adhésion'}),
+   h('p',{text:'L’association IPADECC atteste que '+nomComplet()+' est membre de l’association sous le numéro d’adhérent '+me.numero+'.'}),
+   h('p',{text:'Sa cotisation est à jour jusqu’au '+fmtD(me.cotisation_jusqu)+'.'}),
+   h('p',{text:'Attestation établie le '+fmtD(todayIso())+' pour servir et valoir ce que de droit.'}),
+   h('div',{class:'sig'},[h('p',{text:'Pour l’association'})])]));
+  pr.appendChild(h('p',null,[h('button',{class:'btn p',type:'button',onclick:function(){window.print();},text:'Imprimer ou enregistrer en PDF'})]));}
+ else pr.appendChild(h('p',{class:'sub',text:'L’attestation est disponible lorsque votre cotisation est à jour.'}));
+ vue.appendChild(pr);
+}
+function wait(cls,n,t,d){return h('li',{class:cls},[h('span',{class:'n',text:n}),h('div',null,[h('b',{text:t}),h('span',{class:'hint',style:'display:block',text:d})])]);}
+function completeCard(){var c=completeness(me);if(c.pct>=100)return null;
+ var card=h('section',{class:'card'},[h('h2',{text:'Votre profil est complet à '+c.pct+' %'}),h('div',{class:'bar',role:'progressbar','aria-valuenow':String(c.pct),'aria-valuemin':'0','aria-valuemax':'100'},[h('i',{style:'width:'+c.pct+'%'})]),
+  h('p',{class:'sub',text:'Plus il est complet, plus vos échéances sont précises. Il manque :'}),h('div',{class:'complete'},c.missing.map(function(x){return h('span',{class:'pill warn',text:x});})),
+  h('p',{style:'margin:14px 0 0'},[h('button',{class:'btn p s',type:'button',onclick:function(){tab='profil';shell();},text:'Compléter mon profil'})])]);return card;}
+function profil(vue){
  var m=h('p',{class:'msg',role:'status'});
  var f=h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
   if(!V('p-prenom')||!V('p-nom')){say(m,'Le prénom et le nom sont obligatoires.','err');return;}
-  var upd=Object.assign({prenom:V('p-prenom'),nom:V('p-nom'),naissance:V('p-nai')||null,statut:V('p-statut'),specialite:V('p-spec')||null},keep('p'));
-  say(m,'Enregistrement…');sb.from('membres').update(upd).eq('id',me.id).select().single().then(function(r){if(r.error){say(m,errTxt(r.error),'err');return;}me=r.data;memberShell();});}},[
+  if(!checkParcours('p'))return;
+  var upd=Object.assign({prenom:V('p-prenom'),nom:V('p-nom'),naissance:V('p-nai')||null},keep('p'));
+  say(m,'Enregistrement…');sb.from('membres').update(upd).eq('id',me.id).select().single().then(function(r){if(r.error){say(m,errTxt(r.error),'err');return;}me=r.data;tab='accueil';shell();});}},[
   h('div',{class:'f2'},[field('Prénom',inp('p-prenom','text',me.prenom,{maxlength:80,autocomplete:'given-name'})),field('Nom',inp('p-nom','text',me.nom,{maxlength:80,autocomplete:'family-name'}))]),
-  h('div',{class:'f2'},[field('Date de naissance',inp('p-nai','date',me.naissance||'',{max:todayIso()})),field('Spécialité',sel('p-spec',specOpts(),me.specialite||'','Non précisée'))]),
-  field('Où en êtes-vous ?',sel('p-statut',statutOpts(),me.statut)),
-  h('div',{class:'f2'},[wrap('p-w-voie',field('Voie des EVC',sel('p-voie',voieOpts(),me.voie||'','Non précisée'))),wrap('p-w-an',field('Année d’EVC',inp('p-an','number',me.annee_evc||'',{min:2000,max:2100,inputmode:'numeric'}))),wrap('p-w-deb',field('Date de début',inp('p-deb','date',me.date_debut||'')))]),
+  field('Date de naissance',inp('p-nai','date',me.naissance||'',{max:todayIso(),autocomplete:'bday'})),
+  parcours('p',{statut:me.statut,specialite:me.specialite||'',voie:me.voie,annee_evc:me.annee_evc,date_debut:me.date_debut},true),
   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer mon profil'})]),m]);
- setTimeout(function(){var e=document.getElementById('p-statut');if(e){e.addEventListener('change',function(){vis('p');});vis('p');}},0);
- return h('section',{class:'card'},[h('h2',{text:'Mon profil'}),f]);
+ vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Mon profil'}),f]));
+ var dm=h('p',{class:'msg',role:'status'}),del=null;
+ var r=h('div',{class:'row'},[h('button',{class:'btn',type:'button',onclick:function(){download('mes-donnees-ipadecc.json',JSON.stringify(me,null,2),'application/json');},text:'Télécharger mes données'})]);
+ if(me.role!=='admin'){del=h('button',{class:'btn d',type:'button',onclick:function(){if(!del.dataset.sure){del.dataset.sure='1';del.textContent='Confirmer la suppression définitive';return;}say(dm,'Suppression…');sb.rpc('supprimer_mon_compte').then(function(x){if(x.error){say(dm,errTxt(x.error),'err');return;}sb.auth.signOut();});},text:'Supprimer mon compte'});r.appendChild(del);}
+ vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Mes données'}),h('p',{class:'sub',style:'margin:0 0 14px',text:'Vous pouvez télécharger une copie de vos données ou supprimer définitivement votre compte.'}),r,dm]));
 }
-function passCard(){
+function securite(vue){
  var m=h('p',{class:'msg',role:'status'});
- return h('section',{class:'card'},[h('h2',{text:'Changer mon mot de passe'}),h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var a=document.getElementById('c-pw').value,b=document.getElementById('c-pw2').value;if(a.length<10){say(m,'Le mot de passe doit compter au moins 10 caractères.','err');return;}if(a!==b){say(m,'Les deux mots de passe ne sont pas identiques.','err');return;}say(m,'Enregistrement…');sb.auth.updateUser({password:a}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');else{say(m,'Mot de passe modifié.','ok');document.getElementById('c-pw').value='';document.getElementById('c-pw2').value='';}});}},[
-  h('div',{class:'f2'},[field('Nouveau mot de passe',inp('c-pw','password',null,{autocomplete:'new-password',minlength:10}),'10 caractères au moins'),field('Confirmer',inp('c-pw2','password',null,{autocomplete:'new-password'}))]),
-  h('div',{class:'row'},[h('button',{class:'btn',type:'submit',text:'Changer le mot de passe'})]),m])]);
-}
-function dataCard(){
- var m=h('p',{class:'msg',role:'status'});var del=null;
- var box=h('section',{class:'card'},[h('h2',{text:'Mes données'}),h('p',{class:'sub',text:'Vous pouvez télécharger une copie de vos données ou supprimer définitivement votre compte.'})]);
- var r=h('div',{class:'row'});
- r.appendChild(h('button',{class:'btn',type:'button',onclick:function(){download('mes-donnees-ipadecc.json',JSON.stringify(me,null,2),'application/json');},text:'Télécharger mes données'}));
- if(me.role!=='admin'){del=h('button',{class:'btn d',type:'button',onclick:function(){
-  if(!del.dataset.sure){del.dataset.sure='1';del.textContent='Confirmer la suppression définitive';return;}
-  say(m,'Suppression…');sb.rpc('supprimer_mon_compte').then(function(x){if(x.error){say(m,errTxt(x.error),'err');return;}sb.auth.signOut();});},text:'Supprimer mon compte'});r.appendChild(del);}
- box.appendChild(r);box.appendChild(m);return box;
+ vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Changer mon mot de passe'}),h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var a=document.getElementById('c-pw').value,b=document.getElementById('c-pw2').value;if(a.length<10){say(m,'Le mot de passe doit compter au moins 10 caractères.','err');return;}if(a!==b){say(m,'Les deux mots de passe ne sont pas identiques.','err');return;}say(m,'Enregistrement…');sb.auth.updateUser({password:a}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');else{say(m,'Mot de passe modifié.','ok');document.getElementById('c-pw').value='';document.getElementById('c-pw2').value='';}});}},[
+  pwField('c-pw','Nouveau mot de passe','new-password',true),pwField('c-pw2','Confirmer','new-password',false),
+  h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Changer le mot de passe'})]),m])]));
+ vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Se déconnecter'}),h('button',{class:'btn',type:'button',onclick:function(){sb.auth.signOut();},text:'Se déconnecter'})]));
 }
 function download(name,text,type){try{var b=new Blob([text],{type:type+';charset=utf-8'});var u=URL.createObjectURL(b);var a=h('a',{href:u,download:name});document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u);},2000);}catch(e){}}
 
 /* ---------- Administration ---------- */
 function adminView(vue){
- var box=h('section',{class:'card'},[h('h2',{text:'Administration des membres'})]);vue.appendChild(box);
+ var box=h('section',{class:'card stack'},[h('h2',{text:'Administration des membres',style:'margin:0'})]);vue.appendChild(box);
  var m=h('p',{class:'msg',role:'status'});box.appendChild(m);say(m,'Chargement…');
  sb.from('membres').select('*').order('numero',{ascending:true}).then(function(r){
   if(r.error){say(m,'Chargement impossible pour le moment.','err');return;}
-  allMembers=r.data||[];say(m,'');drawAdmin(box,m,vue);});
+  allMembers=r.data||[];say(m,'');drawAdmin(box,vue);});
 }
-function drawAdmin(box,m,vue){
- var edit=h('div',{id:'edit'});
- var stats=h('div',{class:'stats'});
- function drawStats(){stats.textContent='';
- var nb=allMembers.length,att=allMembers.filter(function(x){return x.validation==='en_attente';}).length,ok=allMembers.filter(function(x){return x.validation==='valide';}).length,cot=allMembers.filter(function(x){return x.validation==='valide'&&x.cotisation_jusqu&&x.cotisation_jusqu>=todayIso();}).length;
- [[nb,'Comptes'],[att,'En attente'],[ok,'Validés'],[cot,'Cotisation à jour']].forEach(function(s){stats.appendChild(h('div',{class:'stat'},[h('b',{text:String(s[0])}),s[1]]));});}
- drawStats();
- box.appendChild(stats);
+function drawAdmin(box,vue){
+ var flt='';var stats=h('div',{class:'stats'});var chips=h('div',{class:'chips',role:'group','aria-label':'Filtrer par état'});
  var q=h('input',{type:'search',placeholder:'Rechercher un nom, une adresse, une spécialité','aria-label':'Rechercher un membre'});
- var f=sel('flt',[['en_attente','En attente'],['valide','Validés'],['refuse','Refusés']],'','Tous les comptes');f.setAttribute('aria-label','Filtrer par état');
- var ex=h('button',{class:'btn',type:'button',onclick:function(){exportCsv();},text:'Exporter en CSV'});
- box.appendChild(h('div',{class:'bar2'},[q,f,ex]));
- var tw=h('div',{class:'tw'});box.appendChild(tw);box.appendChild(edit);
+ var tw=h('div',{class:'tw'});
+ function count(f){return allMembers.filter(function(x){return !f||x.validation===f;}).length;}
+ function drawStats(){stats.textContent='';var cot=allMembers.filter(function(x){return x.validation==='valide'&&x.cotisation_jusqu&&x.cotisation_jusqu>=todayIso();}).length;
+  [[count(''),'Comptes'],[count('en_attente'),'En attente'],[count('valide'),'Validés'],[cot,'Cotisation à jour']].forEach(function(s){stats.appendChild(h('div',{class:'stat'},[h('b',{text:String(s[0])}),h('span',{text:s[1]})]));});
+  chips.textContent='';[['','Tous'],['en_attente','En attente'],['valide','Validés'],['refuse','Refusés']].forEach(function(c){chips.appendChild(h('button',{type:'button','aria-pressed':flt===c[0]?'true':'false',onclick:function(){flt=c[0];drawStats();list();},text:c[1]+' ('+count(c[0])+')'}));});}
+ function setVal(x,v){sb.from('membres').update({validation:v}).eq('id',x.id).select().single().then(function(r){if(r.error)return;for(var i=0;i<allMembers.length;i++)if(allMembers[i].id===x.id)allMembers[i]=r.data;drawStats();list();});}
  function list(){
-  var t=q.value.trim().toLowerCase(),fl=f.value;
-  var rows=allMembers.filter(function(x){if(fl&&x.validation!==fl)return false;if(!t)return true;return [x.nom,x.prenom,x.email,x.specialite].join(' ').toLowerCase().indexOf(t)>-1;});
-  tw.textContent='';
-  if(!rows.length){tw.appendChild(h('p',{style:'padding:14px;margin:0',text:'Aucun membre ne correspond.'}));return;}
+  var t=q.value.trim().toLowerCase();
+  var rows=allMembers.filter(function(x){if(flt&&x.validation!==flt)return false;if(!t)return true;return [x.nom,x.prenom,x.email,x.specialite].join(' ').toLowerCase().indexOf(t)>-1;});
+  clear(tw);
+  if(!rows.length){tw.appendChild(h('p',{style:'padding:16px;margin:0',text:'Aucun membre ne correspond.'}));return;}
   var tb=h('tbody');
-  rows.forEach(function(x){var c=x.cotisation_jusqu?(x.cotisation_jusqu>=todayIso()?'Jusqu’au '+fmtD(x.cotisation_jusqu):'Expirée'):'Non enregistrée';
-   tb.appendChild(h('tr',null,[h('td',{text:String(x.numero)}),h('td',{text:((x.nom||'')+' '+(x.prenom||'')).trim()||'Sans nom'}),h('td',{text:x.email}),h('td',{text:x.specialite||''}),h('td',null,[h('span',{class:'pill'+(x.validation==='valide'?' ok':x.validation==='en_attente'?' warn':''),text:VALID[x.validation]})]),h('td',{text:c}),h('td',null,[h('button',{class:'btn',type:'button',onclick:function(){openEdit(x);},'aria-label':'Modifier '+((x.nom||'')+' '+(x.prenom||'')).trim(),text:'Modifier'})])]));});
-  tw.appendChild(h('table',null,[h('thead',null,[h('tr',null,['N°','Nom','Adresse','Spécialité','Adhésion','Cotisation',''].map(function(x){return h('th',{text:x});}))]),tb]));
+  rows.forEach(function(x){var nm=((x.nom||'')+' '+(x.prenom||'')).trim()||'Sans nom';var c=x.cotisation_jusqu?(x.cotisation_jusqu>=todayIso()?'Jusqu’au '+fmtD(x.cotisation_jusqu):'Expirée'):'Non enregistrée';
+   var act=h('td',null,[h('div',{class:'row',style:'flex-wrap:nowrap'},[x.validation==='en_attente'?h('button',{class:'btn s p',type:'button',onclick:function(){setVal(x,'valide');},text:'Valider'}):null,h('button',{class:'btn s',type:'button','aria-label':'Modifier '+nm,onclick:function(){openEdit(x);},text:'Modifier'})])]);
+   tb.appendChild(h('tr',null,[h('td',{text:String(x.numero)}),h('td',{text:nm}),h('td',{text:x.email}),h('td',{text:STATUT[x.statut]||''}),h('td',{text:x.specialite||''}),h('td',null,[h('span',{class:'pill'+(x.validation==='valide'?' ok':x.validation==='en_attente'?' warn':''),text:VALID[x.validation]})]),h('td',{text:c}),act]));});
+  tw.appendChild(h('table',null,[h('thead',null,[h('tr',null,['N°','Nom','Adresse','Situation','Spécialité','Adhésion','Cotisation',''].map(function(x){return h('th',{text:x});}))]),tb]));
  }
- q.addEventListener('input',list);f.addEventListener('change',list);list();
+ q.addEventListener('input',list);
+ box.appendChild(stats);box.appendChild(h('div',{class:'bar2'},[q,h('button',{class:'btn',type:'button',onclick:function(){exportCsv();},text:'Exporter en CSV'})]));box.appendChild(chips);box.appendChild(tw);
+ drawStats();list();
  function openEdit(x){
-  edit.textContent='';var mm=h('p',{class:'msg',role:'status'});var del=null;
-  var form=h('form',{novalidate:true,style:'margin-top:18px',onsubmit:function(e){e.preventDefault();save(x,mm);}},[
-   h('h3',{text:'Modifier le membre n° '+x.numero}),
+  var mm=h('p',{class:'msg',role:'status'}),del=null;
+  var ov=h('div',{class:'modal',role:'dialog','aria-modal':'true','aria-label':'Modifier le membre'});
+  function close(){if(ov.parentNode)ov.parentNode.removeChild(ov);document.removeEventListener('keydown',esc);}
+  function esc(e){if(e.key==='Escape')close();}
+  document.addEventListener('keydown',esc);
+  var stSel=h('select',{id:'e-statut'});STATUTS.forEach(function(s){var o=h('option',{value:s[0],text:s[1]});if(x.statut===s[0])o.selected=true;stSel.appendChild(o);});
+  var wr=h('div',{class:'f2'});
+  function cond(){var s=stSel.value;clear(wr);
+   if(EVCS.indexOf(s)>-1){var v=h('select',{id:'e-voie'});[['','Non précisée'],['interne','Voie interne'],['externe','Voie externe']].forEach(function(o){var op=h('option',{value:o[0],text:o[1]});if((x.voie||'')===o[0])op.selected=true;v.appendChild(op);});wr.appendChild(h('label',null,['Voie des EVC',v]));}
+   if(ANNEE.indexOf(s)>-1)wr.appendChild(field('Année d’EVC',inp('e-an','number',x.annee_evc||'',{min:2000,max:2100})));
+   if(DEBUT.indexOf(s)>-1)wr.appendChild(field(s==='laureat'?'Début du PCC':'Début de l’attestation',inp('e-deb','date',x.date_debut||'')));}
+  stSel.addEventListener('change',cond);cond();
+  var spec=inp('e-spec','text',x.specialite||'',{list:'specs',autocomplete:'off'});
+  var val=h('select',{id:'e-val'});[['en_attente',VALID.en_attente],['valide',VALID.valide],['refuse',VALID.refuse]].forEach(function(o){var op=h('option',{value:o[0],text:o[1]});if(x.validation===o[0])op.selected=true;val.appendChild(op);});
+  var form=h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();
+   var sp=V('e-spec');if(sp&&SPECS.indexOf(sp)<0){say(mm,'Choisissez une spécialité de la liste.','err');return;}
+   var s=stSel.value;
+   var upd={prenom:V('e-prenom'),nom:V('e-nom'),naissance:V('e-nai')||null,statut:s,specialite:sp||null,cotisation_jusqu:V('e-cot')||null,validation:V('e-val'),voie:EVCS.indexOf(s)>-1&&V('e-voie')?V('e-voie'):null,annee_evc:ANNEE.indexOf(s)>-1&&V('e-an')?parseInt(V('e-an'),10):null,date_debut:DEBUT.indexOf(s)>-1&&V('e-deb')?V('e-deb'):null};
+   say(mm,'Enregistrement…');
+   sb.from('membres').update(upd).eq('id',x.id).select().single().then(function(r){if(r.error){say(mm,errTxt(r.error),'err');return;}
+    for(var i=0;i<allMembers.length;i++)if(allMembers[i].id===x.id)allMembers[i]=r.data;if(x.id===me.id)me=r.data;
+    say(mm,'Enregistré.','ok');drawStats();list();});}},[
+   h('h2',{text:'Membre n° '+x.numero}),
    h('div',{class:'f2'},[field('Prénom',inp('e-prenom','text',x.prenom,{maxlength:80})),field('Nom',inp('e-nom','text',x.nom,{maxlength:80}))]),
-   h('div',{class:'f2'},[field('Adresse électronique',inp('e-email','email',x.email,{readonly:true,disabled:true})),field('Date de naissance',inp('e-nai','date',x.naissance||''))]),
-   h('div',{class:'f2'},[field('Situation',sel('e-statut',statutOpts(),x.statut)),field('Spécialité',sel('e-spec',specOpts(),x.specialite||'','Non précisée'))]),
-   h('div',{class:'f2'},[wrap('e-w-voie',field('Voie des EVC',sel('e-voie',voieOpts(),x.voie||'','Non précisée'))),wrap('e-w-an',field('Année d’EVC',inp('e-an','number',x.annee_evc||'',{min:2000,max:2100}))),wrap('e-w-deb',field('Date de début',inp('e-deb','date',x.date_debut||'')))]),
-   field('Fin de cotisation',inp('e-cot','date',x.cotisation_jusqu||'')),
-   field('Adhésion',sel('e-val',[['en_attente',VALID.en_attente],['valide',VALID.valide],['refuse',VALID.refuse]],x.validation)),
-   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer'}),h('button',{class:'btn',type:'button',onclick:function(){edit.textContent='';},text:'Fermer'})]),mm]);
+   h('div',{class:'f2'},[field('Adresse électronique',inp('e-email','email',x.email,{disabled:true})),field('Date de naissance',inp('e-nai','date',x.naissance||''))]),
+   h('div',{class:'f2'},[h('label',null,['Situation',stSel]),field('Spécialité',spec)]),wr,
+   h('div',{class:'f2'},[field('Fin de cotisation',inp('e-cot','date',x.cotisation_jusqu||'')),h('label',null,['Adhésion',val])]),
+   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Enregistrer'}),h('button',{class:'btn',type:'button',onclick:close,text:'Fermer'})]),mm]);
   if(x.id!==me.id){del=h('button',{class:'btn d',type:'button',onclick:function(){
    if(!del.dataset.sure){del.dataset.sure='1';del.textContent='Confirmer la suppression définitive';return;}
-   say(mm,'Suppression…');sb.rpc('supprimer_membre',{cible:x.id}).then(function(r){if(r.error){say(mm,errTxt(r.error),'err');return;}allMembers=allMembers.filter(function(y){return y.id!==x.id;});vue.textContent='';adminView(vue);});},text:'Supprimer ce membre'});
+   say(mm,'Suppression…');sb.rpc('supprimer_membre',{cible:x.id}).then(function(r){if(r.error){say(mm,errTxt(r.error),'err');return;}allMembers=allMembers.filter(function(y){return y.id!==x.id;});close();drawStats();list();});},text:'Supprimer ce membre'});
    form.querySelector('.row').appendChild(del);}
-  edit.appendChild(form);var es=document.getElementById('e-statut');es.addEventListener('change',function(){vis('e');});vis('e');form.scrollIntoView({behavior:'smooth',block:'nearest'});
- }
- function save(x,mm){
-  var upd=Object.assign({prenom:V('e-prenom'),nom:V('e-nom'),naissance:V('e-nai')||null,statut:V('e-statut'),specialite:V('e-spec')||null,cotisation_jusqu:V('e-cot')||null,validation:V('e-val')},keep('e'));
-  say(mm,'Enregistrement…');
-  sb.from('membres').update(upd).eq('id',x.id).select().single().then(function(r){if(r.error){say(mm,errTxt(r.error),'err');return;}
-   for(var i=0;i<allMembers.length;i++)if(allMembers[i].id===x.id)allMembers[i]=r.data;
-   if(x.id===me.id)me=r.data;
-   say(mm,'Enregistré.','ok');list();drawStats();});
+  ov.appendChild(h('div',{class:'card'},[form]));ov.addEventListener('click',function(e){if(e.target===ov)close();});document.body.appendChild(ov);
+  var f0=ov.querySelector('input');if(f0)f0.focus();
  }
  function exportCsv(){
-  var cols=['numero','email','nom','prenom','naissance','statut','voie','specialite','annee_evc','validation','cotisation_jusqu','date_debut','derniere_connexion','cree_le'];
+  var cols=['numero','email','nom','prenom','naissance','statut','voie','specialite','annee_evc','date_debut','validation','cotisation_jusqu','derniere_connexion','cree_le'];
   function cell(v){v=v==null?'':String(v);if(/^[=+\-@\t\r]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';}
   var lines=[cols.join(';')].concat(allMembers.map(function(x){return cols.map(function(c){return cell(x[c]);}).join(';');}));
   download('membres-ipadecc.csv','﻿'+lines.join('\r\n'),'text/csv');
