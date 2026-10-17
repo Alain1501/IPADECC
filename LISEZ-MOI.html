@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Mise en route du site IPADECC</title>
+<style>body{font:16px/1.65 system-ui,-apple-system,'Segoe UI',sans-serif;max-width:780px;margin:0 auto;padding:24px 18px 64px;color:#0f1138;background:#f7f7fc}h1{font-size:30px;line-height:1.2}h2{font-size:21px;margin-top:36px;border-top:1px solid #e2e3ef;padding-top:20px}code,pre{background:#eceefa;border-radius:6px;font-family:ui-monospace,Consolas,monospace;font-size:14px}code{padding:2px 6px}pre{padding:14px;overflow-x:auto}li{margin:6px 0}.note{background:#fff1d6;border-radius:10px;padding:12px 16px}</style></head><body>
+<h1>Mise en route du site IPADECC</h1>
+<p>Ce dossier contient le site complet. Il ne dépend plus de Claude. Il se compose de pages fixes à déposer sur GitHub, et d’un service de comptes extérieur pour l’espace membres.</p>
+
+<h2>1. Mettre le site sur GitHub</h2>
+<ol>
+<li>Créez un dépôt GitHub et déposez-y tout le contenu de ce dossier, à la racine.</li>
+<li>Dans le dépôt, ouvrez Settings, puis Pages. Choisissez « Deploy from a branch », la branche <code>main</code> et le dossier <code>/ (root)</code>.</li>
+<li>GitHub publie le site à l’adresse qu’il indique. Quand vous aurez votre nom de domaine, il se branche ensuite dans ce même réglage. Aucune adresse n’est écrite en dur dans le site.</li>
+<li>Activez la double authentification sur votre compte GitHub.</li>
+</ol>
+
+<h2>2. Créer le service de comptes (Supabase)</h2>
+<p>Tant que cette étape n’est pas faite, le lien « Membres » reste masqué sur le site et la page <code>espace.html</code> indique que l’espace n’est pas ouvert.</p>
+<ol>
+<li>Créez un compte sur supabase.com avec votre adresse, un mot de passe fort et la double authentification.</li>
+<li>Créez un projet. Choisissez une région en Europe. Notez le mot de passe de base de données dans un endroit sûr.</li>
+<li>Ouvrez le SQL Editor. Collez tout le contenu du fichier <code>supabase/schema.sql</code>, puis cliquez sur Run. Cela crée la table des membres et toutes les règles de sécurité.</li>
+<li>Ouvrez Settings, puis API Keys. Copiez l’adresse du projet (Project URL) et la clé publique (« publishable », ou « anon » dans l’ancien affichage). Collez ces deux valeurs dans le fichier <code>config.js</code>, entre les guillemets, puis déposez le fichier sur GitHub.</li>
+<li><strong>Ne copiez jamais</strong> la clé « secret » ou « service_role ». Elle donne tous les droits et ne doit apparaître nulle part dans le site.</li>
+<li>Ouvrez la page URL Configuration. Dans « Site URL », mettez l’adresse du site. Dans « Redirect URLs », ajoutez l’adresse complète de <code>espace.html</code>. Sans cela, les liens des courriels (confirmation, nouveau mot de passe) ne reviennent pas au bon endroit.</li>
+<li><strong>Courriels.</strong> Le service d’envoi intégré à Supabase est limité à 2 messages par heure et n’écrit qu’aux membres de l’équipe du projet, selon sa documentation. Avant d’ouvrir l’espace aux adhérents, il faut brancher un service d’envoi de courriels (SMTP) dans les réglages d’authentification. Sans cela, les adhérents ne recevront pas leur courriel de confirmation.</li>
+</ol>
+
+<h2>3. Devenir administrateur</h2>
+<ol>
+<li>Ouvrez <code>espace.html</code> sur le site, cliquez sur « Créer mon compte » et remplissez le formulaire avec votre adresse. Confirmez-la avec le courriel reçu.</li>
+<li>Dans le SQL Editor de Supabase, exécutez la ligne suivante en remplaçant l’adresse par la vôtre.</li>
+</ol>
+<pre>update public.membres set role='admin', validation='valide' where email='votre.adresse@exemple.fr';</pre>
+<ol start="3"><li>Reconnectez-vous. Un onglet « Administration » apparaît. Vous êtes le seul administrateur, et aucun autre membre ne peut se donner ce droit depuis le site.</li></ol>
+
+<h2>4. Fonctionnement au quotidien</h2>
+<ul>
+<li><strong>Inscription.</strong> Chaque personne crée son compte et confirme son adresse. Sa demande reste « en attente » jusqu’à votre validation.</li>
+<li><strong>Administration.</strong> Vous voyez la liste, vous recherchez, vous filtrez, vous modifiez une fiche, vous validez ou refusez, vous saisissez la fin de cotisation, vous supprimez un membre et vous exportez la liste en CSV.</li>
+<li><strong>Créer un membre.</strong> Les membres s’inscrivent eux-mêmes. Pour créer un compte à leur place, utilisez la rubrique Authentication, Users du tableau de bord Supabase. La fiche se crée alors automatiquement.</li>
+<li><strong>Espace du membre.</strong> Il voit son message d’accueil, sa dernière connexion, son numéro d’adhérent, l’état de sa cotisation, sa spécialité, la date de son épreuve ou de sa commission et des liens utiles. Il modifie son profil, change son mot de passe, ou le réinitialise depuis « Mot de passe oublié ».</li>
+<li><strong>Attestation d’adhésion.</strong> Elle est proposée au membre tant que sa cotisation est à jour. Il l’imprime ou l’enregistre en PDF.</li>
+<li><strong>Cotisation.</strong> Le montant n’apparaît nulle part. Vous saisissez seulement la date de fin de cotisation dans la fiche du membre.</li>
+</ul>
+
+<h2>5. À savoir</h2>
+<ul>
+<li class="note">Sur l’offre gratuite, Supabase met un projet en pause après 7 jours de faible activité, selon sa documentation. Les connexions sont alors impossibles jusqu’à la remise en service depuis le tableau de bord. Une offre payante évite cette pause.</li>
+<li>Aucune pièce d’identité n’est demandée ni conservée. Les données collectées sont listées dans le bloc « Protection de vos données » de la page de connexion.</li>
+<li>Chaque membre peut télécharger ses données et supprimer son compte. Vous pouvez aussi supprimer un compte depuis l’administration.</li>
+<li>Prévoyez pour l’association un registre simple des traitements de données personnelles, et vérifiez que le texte du bloc « Protection de vos données » correspond à vos pratiques.</li>
+<li>Les dates d’épreuve affichées dans l’espace du membre viennent des plannings du CNG, comme le calendrier du site. Elles ne se mettent pas à jour toutes seules.</li>
+</ul>
+</body></html>
