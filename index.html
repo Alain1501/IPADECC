@@ -817,6 +817,24 @@ abbr.gl:hover::after,abbr.gl:focus::after{content:attr(data-d);position:absolute
 })();
 </script>
 <script src="config.js"></script>
+<script id="news-dyn">
+(function(){var C=window.IPADECC_CFG;if(!C||!C.url||!C.key||!window.fetch)return;
+var CAT={asso:'Association',evc:'EVC',statuts:'Statuts'},MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function mois(s){var d=new Date(s);return isNaN(d)?'':MOIS[d.getMonth()]+' '+d.getFullYear();}
+fetch(C.url+'/rest/v1/actualites?select=id,categorie,titre,texte,publie_le&order=publie_le.desc&limit=20',{headers:{apikey:C.key}}).then(function(r){return r.ok?r.json():[];}).then(function(L){
+ if(!L||!L.length)return;
+ var box=document.querySelector('#pg-actualites .news');
+ if(box){L.slice().reverse().forEach(function(n){var k=CAT[n.categorie]?n.categorie:'asso';var a=el('article','post');a.setAttribute('data-c',k);a.setAttribute('data-dyn','1');
+  var m=el('div','meta');m.appendChild(el('span','cat',CAT[k]));m.appendChild(el('span',null,mois(n.publie_le)));a.appendChild(m);a.appendChild(el('h3',null,n.titre));
+  if(n.texte){var p=el('p',null,n.texte);p.style.whiteSpace='pre-line';a.appendChild(p);}
+  box.insertBefore(a,box.firstChild);});}
+ var une=document.querySelector('ul.une');
+ if(une){L.slice(0,3).reverse().forEach(function(n){var k=CAT[n.categorie]?n.categorie:'asso';var li=el('li');var a=el('a');a.href='#actualites';a.appendChild(el('span','cat',CAT[k]));a.appendChild(el('b',null,n.titre));var i=el('i','','→');i.setAttribute('aria-hidden','true');a.appendChild(i);li.appendChild(a);une.insertBefore(li,une.firstChild);});
+  while(une.children.length>3)une.removeChild(une.lastChild);}
+ [].forEach.call(document.querySelectorAll('.chip'),function(c){c.addEventListener('click',function(){var f=c.getAttribute('data-f'),n=0;[].forEach.call(document.querySelectorAll('.post'),function(p){var s=f==='all'||p.getAttribute('data-c')===f;p.hidden=!s;if(s)n++;});var z=document.getElementById('nonews');if(z)z.hidden=n>0;});});
+}).catch(function(){});})();
+</script>
 <script>if(window.IPADECC_CFG&&window.IPADECC_CFG.url){[].forEach.call(document.querySelectorAll("[data-esp]"),function(e){e.hidden=false;});}</script>
 <script>if("serviceWorker"in navigator&&location.protocol.indexOf("http")===0){navigator.serviceWorker.register("sw.js").catch(function(){});}</script>
 </body>
