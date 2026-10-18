@@ -19,12 +19,12 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);pa
 h1,h2,h3{font-family:var(--head);line-height:1.12;margin:0;text-wrap:balance}
 a{color:var(--accent)}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:calc(50% - 50vw);padding-inline:max(16px,env(safe-area-inset-left,0px));background:var(--glass);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
-.top>div{max-width:1080px;margin:0 auto;padding:10px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.top>div{max-width:1120px;margin:0 auto;padding:10px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font:800 20px var(--head)}
 .brand .lg{width:50px;display:block}
 .lgo{display:block;width:100%;height:auto;overflow:visible}
 .lgo .f path,.lgo .l{fill:var(--lgn)}.lgo .hv1{fill:var(--lgv)}.lgo .hv2{fill:var(--lgr)}.lgo .ecg path{stroke:var(--lgr);fill:none}.lgo .e0,.lgo .e1{stroke-dasharray:none}.lgo .e0{stroke-width:9;opacity:.8}.lgo .e1{stroke-width:25}.lgo .e2{display:none}
-main{max-width:1080px;margin:0 auto;padding-block:24px 64px;min-width:0}
+main{max-width:1120px;margin:0 auto;padding-block:24px 64px;min-width:0}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:14px;font:600 15px var(--body);text-decoration:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 .btn.p{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:var(--accent-ink)}
@@ -147,6 +147,11 @@ table{border-collapse:collapse;width:100%;min-width:820px;font-size:14.5px}th,td
 .nrow{display:grid;gap:6px;padding:14px 0;border-top:1px solid var(--line)}.nrow:first-child{border-top:0}.nrow .meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13.5px}.nrow p{margin:0;white-space:pre-line}
 .modal{position:fixed;inset:0;z-index:50;background:rgba(10,12,40,.55);display:grid;place-items:center;padding:16px;overflow:auto}
 .modal .card{width:min(640px,100%);max-height:calc(100vh - 32px);overflow:auto}
+.snav{display:flex;gap:2px;margin-left:auto;margin-right:8px}.snav a{padding:9px 9px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}.snav a:hover{background:var(--tint);color:var(--ink)}
+@media(max-width:1000px){.snav{display:none}}
+.sfoot{margin:24px 0 0;margin-inline:calc(50% - 50vw);padding-inline:max(16px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+.sfoot>div{max-width:1120px;margin:0 auto;padding-block:28px 36px;display:grid;gap:14px}
+.sfoot nav{display:flex;flex-wrap:wrap;gap:6px 18px}.sfoot a{color:var(--muted);text-decoration:none}.sfoot a:hover{color:var(--accent);text-decoration:underline}.sfoot p{margin:0;font-size:13px}
 @media(max-width:560px){.top .back{display:none}}
 @media print{body{background:#fff!important}body *{visibility:hidden}#att,#att *{visibility:visible}#att{position:absolute;left:0;top:0;width:100%}}
 </style>
@@ -163,8 +168,9 @@ table{border-collapse:collapse;width:100%;min-width:820px;font-size:14.5px}th,td
 <path class="e0" d="M300,1064 L496,1064 L532,1048 L548,1004 L560,1048 L574,1136 L624,800 L688,1324 L724,1012 L752,1080 L768,1056 L792,1048 L1040,1064" pathLength="1000"/>
 <path class="e1" d="M496,1064 L532,1048 L548,1004 L560,1048 L574,1136 L624,800 L688,1324 L724,1012 L752,1080 L768,1056 L792,1048" pathLength="1000"/>
 <path class="e2" d="M300,1064 L496,1064 L532,1048 L548,1004 L560,1048 L574,1136 L624,800 L688,1324 L724,1012 L752,1080 L768,1056 L792,1048 L1040,1064" pathLength="1000"/>
-</g></svg></span>IPADECC</a><span class="row" style="gap:8px;flex-wrap:nowrap"><span id="topact"></span><a class="btn s back" href="index.html">Retour au site</a></span></div></header>
+</g></svg></span>IPADECC</a><nav class="snav" aria-label="Le site"><a href="index.html#statuts">Statuts</a><a href="index.html#demarches">Démarches</a><a href="index.html#evc">EVC</a><a href="index.html#autorisation">Autorisation</a><a href="index.html#calendrier">Calendrier</a><a href="index.html#actualites">Actualités</a><a href="index.html#ressources">Ressources</a><a href="index.html#association">L’association</a></nav><span class="row" style="gap:8px;flex-wrap:nowrap"><span id="topact"></span><a class="btn s back" href="index.html">Retour au site</a></span></div></header>
 <main id="app" aria-live="polite"></main>
+<footer class="sfoot"><div><nav aria-label="Pied de page"><a href="index.html#statuts">Statuts</a><a href="index.html#demarches">Démarches</a><a href="index.html#evc">EVC</a><a href="index.html#autorisation">Autorisation</a><a href="index.html#calendrier">Calendrier</a><a href="index.html#actualites">Actualités</a><a href="index.html#ressources">Ressources officielles</a><a href="index.html#glossaire">Glossaire</a><a href="index.html#association">L’association</a><a href="index.html#association-contact">Contact</a><a href="simulateur.html">Simulateur Padhue</a></nav><p>© IPADECC. Les informations du site et du simulateur ne remplacent pas l’avis de l’ARS, du CNG ou de la préfecture.</p></div></footer>
 <datalist id="specs"></datalist>
 <script src="config.js"></script>
 <script src="vendor/supabase.js"></script>
@@ -323,7 +329,7 @@ function markLogin(){
 /* ---------- Connexion et inscription ---------- */
 function authView(){
  clear();setTop(false);wz={step:1,d:{statut:'',voie:null,specialite:'',annee_evc:null,date_debut:null}};
- var pitch=h('div',{class:'pitch'},[h('span',{class:'tag',text:'Espace réservé aux adhérents'}),
+ var pitch=h('div',{class:'pitch'},[h('span',{class:'tag',text:'Espace réservé aux membres'}),
   h('h1',null,['Votre parcours, ',h('em',{text:'suivi pas à pas.'})]),
   h('p',{class:'lead',text:'Retrouvez vos échéances, vos dates clés et votre attestation d’adhésion, au même endroit.'}),
   h('ul',{class:'perks'},[
@@ -415,7 +421,7 @@ function shell(){
  var c=cotisInfo();
  var hero=h('section',{class:'hero'},[h('h1',{text:'Bonjour '+nomComplet()}),
   h('p',{class:'sub',text:prevLogin?'Votre dernière connexion date du '+fmtT(prevLogin)+'.':'C’est votre première connexion. Bienvenue.'}),
-  h('div',{class:'row'},me.validation==='valide'?[h('span',{class:'pill'},['Adhérent n° '+me.numero]),h('span',{class:'pill',text:me.categorie||'Membre'}),me.role==='admin'?h('span',{class:'pill warn',text:'Administrateur'}):null,h('span',{class:'pill '+c.k,text:c.t})]:[h('span',{class:'pill '+(me.validation==='refuse'?'warn':''),text:VALID[me.validation]})]),
+  h('div',{class:'row'},me.validation==='valide'?[h('span',{class:'pill'},['Membre n° '+me.numero]),h('span',{class:'pill',text:me.categorie||'Membre'}),me.role==='admin'?h('span',{class:'pill warn',text:'Administrateur'}):null,h('span',{class:'pill '+c.k,text:c.t})]:[h('span',{class:'pill '+(me.validation==='refuse'?'warn':''),text:VALID[me.validation]})]),
   h('div',{class:'nav',role:'tablist'},tabs.map(function(t){return h('button',{type:'button',role:'tab','aria-selected':tab===t[0]?'true':'false',onclick:function(){tab=t[0];shell();},text:t[1]});}))]);
  app.appendChild(hero);
  var vue=h('div',{class:'stack',id:'vue',style:'margin-top:16px'});app.appendChild(vue);
@@ -430,7 +436,7 @@ function accueil(vue){
   vue.appendChild(completeCard());return;}
  var e=echeance(me),c=cotisInfo();
  var bk='ipadecc_bienvenue_'+me.id,seen=false;try{seen=localStorage.getItem(bk)==='1';}catch(x){}
- if(!seen){var bn=h('div',{class:'banner',role:'status'},[h('span',{class:'ic'},[ico('check')]),h('div',null,[h('b',{text:'Bienvenue à IPADECC'}),h('p',{text:'Votre adhésion a été validée par le bureau de l’association. Vous êtes désormais membre, votre numéro d’adhérent est le '+me.numero+'.'}),h('p',{style:'margin-top:10px'},[h('button',{class:'btn s',type:'button',onclick:function(){try{localStorage.setItem(bk,'1');}catch(x){}bn.remove();},text:'Compris'})])])]);vue.appendChild(bn);}
+ if(!seen){var bn=h('div',{class:'banner',role:'status'},[h('span',{class:'ic'},[ico('check')]),h('div',null,[h('b',{text:'Bienvenue à IPADECC'}),h('p',{text:'Votre adhésion a été validée par le bureau de l’association. Vous êtes désormais membre, votre numéro de membre est le '+me.numero+'.'}),h('p',{style:'margin-top:10px'},[h('button',{class:'btn s',type:'button',onclick:function(){try{localStorage.setItem(bk,'1');}catch(x){}bn.remove();},text:'Compris'})])])]);vue.appendChild(bn);}
  var nx=h('section',{class:'card'});
  if(e.next){nx.appendChild(h('div',{class:'next'},[h('div',{class:'big'},[String(e.next.n),h('small',{text:e.next.n>1?'jours':'jour'})]),h('div',null,[h('h2',{text:'Prochaine échéance'}),h('p',{style:'margin:0;font-weight:600',text:e.next.label.charAt(0).toUpperCase()+e.next.label.slice(1)+' le '+e.next.date}),h('p',{class:'sub',text:e.next.sub})])]));}
  else nx.appendChild(h('div',null,[h('h2',{text:'Votre situation'}),h('p',{style:'margin:0',text:e.text||e.hint||'Aucune échéance à afficher pour le moment.'})]));
@@ -445,7 +451,7 @@ function accueil(vue){
  vue.appendChild(h('section',{class:'card'},[h('h2',{text:'Pour avancer'}),lk]));
  var pr=h('section',{class:'card'},[h('h2',{text:'Attestation d’adhésion'})]);
  if(c.ok){pr.appendChild(h('div',{class:'attest',id:'att'},[h('h2',{text:'Attestation d’adhésion'}),
-   h('p',{text:'L’association IPADECC atteste que '+nomComplet()+' est membre de l’association sous le numéro d’adhérent '+me.numero+'.'}),
+   h('p',{text:'L’association IPADECC atteste que '+nomComplet()+' est membre de l’association sous le numéro de membre '+me.numero+'.'}),
    h('p',{text:'Sa cotisation est à jour jusqu’au '+fmtD(me.cotisation_jusqu)+'.'}),
    h('p',{text:'Attestation établie le '+fmtD(todayIso())+' pour servir et valoir ce que de droit.'}),
    h('div',{class:'sig'},[h('p',{text:'Pour l’association'})])]));
