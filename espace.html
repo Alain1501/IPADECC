@@ -123,8 +123,16 @@ details{margin-top:16px}summary{cursor:pointer;font-weight:600}details p,details
 .stat{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}.stat b{display:block;font:800 32px var(--head)}.stat span{color:var(--muted);font-size:14px}
 .chips{display:flex;gap:8px;flex-wrap:wrap}.chips button{font:600 14px var(--body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .bar2{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.bar2 input{max-width:340px}
-.tw{overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+.tw{min-width:0}
 table{border-collapse:collapse;width:100%;min-width:820px;font-size:14.5px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:var(--tint);font-weight:700}tr:last-child td{border-bottom:0}
+.mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.mem{border:1px solid var(--line);border-radius:18px;padding:16px;background:var(--bg);display:grid;gap:12px;min-width:0;align-content:start}
+.mem .mh{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.mem .mh>div{min-width:0}.mem .mh b{display:block;font-size:16px;overflow-wrap:anywhere}.mem .mh .hint{display:block;overflow-wrap:anywhere}
+.md{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 14px;font-size:14.5px;margin:0}.md dt{color:var(--muted)}.md dd{font-weight:600}
+.mem .acts{display:flex;flex-wrap:wrap;gap:8px}
+.btn.s.d{border-color:var(--accent);color:var(--accent)}.btn.s.d.sure{background:var(--accent);color:var(--accent-ink)}
+.banner{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:20px;background:var(--okbg);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent)}
+.banner b{display:block;font-size:17px;font-family:var(--head)}.banner p{margin:4px 0 0;color:var(--ink)}.banner .ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--surface);display:grid;place-items:center}
 .modal{position:fixed;inset:0;z-index:50;background:rgba(10,12,40,.55);display:grid;place-items:center;padding:16px;overflow:auto}
 .modal .card{width:min(640px,100%);max-height:calc(100vh - 32px);overflow:auto}
 @media print{body{background:#fff!important}body *{visibility:hidden}#att,#att *{visibility:visible}#att{position:absolute;left:0;top:0;width:100%}}
@@ -169,6 +177,7 @@ var EVCS=['abroad','ffi','stagiaire','pact','outremer'],ANNEE=['laureat','finpcc
 var YEARS=[2026,2025,2024,2023,2022,2021];
 var ICON={cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>',doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',road:'<path d="M5 21 9 3M19 21 15 3M12 6v3M12 12v3M12 18v2"/>',book:'<path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M5 16a4 4 0 0 1 4-4h10"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 7h6M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01"/>',check:'<path d="m5 12 5 5 9-10"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0M16 4.5a3.5 3.5 0 0 1 0 7M18 20a6 6 0 0 0-3-5"/>',bell:'<path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/>'};
 function ico(n){var s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('class','i');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('aria-hidden','true');s.innerHTML=ICON[n]||'';return s;}
+var CONTACT='ipadeccvsd@gmail.com';
 var app=document.getElementById('app');
 var sb=null,session=null,me=null,recovery=false,tab='accueil',prevLogin=null,loginMarked=false,allMembers=[],wz=null;
 
@@ -184,6 +193,8 @@ function addM(d,n){var x=new Date(d.getTime());var day=x.getDate();x.setDate(1);
 function addD(d,n){var x=new Date(d.getTime());x.setDate(x.getDate()+n);return x;}
 function parseIso(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
 function dans(n){return n>1?'dans '+n+' jours':n===1?'demain':n===0?'aujourd’hui':'passé';}
+function blockedBox(){return h('div',{class:'stack'},[h('h2',{text:'Compte bloqué'}),h('p',{text:'Bonjour, votre compte a été bloqué par le bureau d’IPADECC.'}),h('p',null,['Merci de contacter l’association en envoyant un courriel à ',h('b',{text:CONTACT}),' pour expliquer votre situation.'])]);}
+function ifBlocked(email){return sb.rpc('email_bloque',{adresse:email}).then(function(r){return !!(r&&r.data===true);}).catch(function(){return false;});}
 function errTxt(e){var m=((e&&(e.message||e.code))||'').toLowerCase();
  if(m.indexOf('invalid login')>-1)return 'Adresse ou mot de passe incorrect.';
  if(m.indexOf('not confirmed')>-1)return 'Confirmez d’abord votre adresse avec le courriel reçu.';
@@ -320,8 +331,9 @@ function authView(){
  show('in');
 }
 function perk(i,t,d){return h('li',null,[h('span',{class:'ic'},[ico(i)]),h('div',null,[h('b',{text:t}),h('span',{text:d})])]);}
+function body0(){return document.querySelector('.card .tabs+div')||app;}
 function loginForm(show){var m=h('p',{class:'msg',role:'status'});
- return h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var em=V('l-email'),pw=document.getElementById('l-pw').value;if(!em||!pw){say(m,'Renseignez votre adresse et votre mot de passe.','err');return;}say(m,'Connexion en cours…');sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){if(r.error)say(m,errTxt(r.error),'err');});}},[
+ return h('form',{novalidate:true,onsubmit:function(e){e.preventDefault();var em=V('l-email'),pw=document.getElementById('l-pw').value;if(!em||!pw){say(m,'Renseignez votre adresse et votre mot de passe.','err');return;}say(m,'Connexion en cours…');sb.auth.signInWithPassword({email:em,password:pw}).then(function(r){if(!r.error)return;ifBlocked(em).then(function(b){if(b){clear(body0());body0().appendChild(blockedBox());}else say(m,errTxt(r.error),'err');});});}},[
   field('Adresse électronique',inp('l-email','email',null,{autocomplete:'username',required:true})),
   pwField('l-pw','Mot de passe','current-password',false),
   h('div',{class:'row'},[h('button',{class:'btn p',type:'submit',text:'Se connecter'}),h('button',{class:'btn',type:'button',onclick:function(){show('forgot');},text:'Mot de passe oublié'})]),m]);}
@@ -355,9 +367,10 @@ function wizard(){
      if(pw!==pw2){bad('s-pw2','Les deux mots de passe ne sont pas identiques.');return;}ok1('s-pw2');
      if(!document.getElementById('s-ok').checked){say(m,'Acceptez l’utilisation de vos informations pour continuer.','err');return;}
      say(m,'Création du compte…');
+     ifBlocked(em).then(function(b){if(b){clear(box);box.appendChild(blockedBox());return;}
      sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:location.origin+location.pathname,data:{prenom:d.prenom,nom:d.nom,naissance:d.naissance||'',statut:d.statut,voie:d.voie||'',specialite:d.specialite||'',annee_evc:d.annee_evc||'',date_debut:d.date_debut||'',consentement:'true'}}}).then(function(r){
-      if(r.error){say(m,errTxt(r.error),'err');return;}if(r.data&&r.data.session)return;
-      clear(box);box.appendChild(h('div',{class:'stack'},[h('h2',{text:'Presque terminé'}),h('p',{text:'Un courriel de confirmation vient de vous être envoyé. Cliquez sur le lien qu’il contient, puis connectez-vous. Votre adhésion sera ensuite examinée par le bureau.'}),h('p',{class:'hint',text:'Pensez à regarder dans les courriers indésirables.'})]));});}},[
+      if(r.error){ifBlocked(em).then(function(b2){if(b2){clear(box);box.appendChild(blockedBox());}else say(m,errTxt(r.error),'err');});return;}if(r.data&&r.data.session)return;
+      clear(box);box.appendChild(h('div',{class:'stack'},[h('h2',{text:'Presque terminé'}),h('p',{text:'Un courriel de confirmation vient de vous être envoyé. Cliquez sur le lien qu’il contient, puis connectez-vous. Votre adhésion sera ensuite examinée par le bureau.'}),h('p',{class:'hint',text:'Pensez à regarder dans les courriers indésirables.'})]));});});}},[
     h('h2',{text:'Votre compte'}),
     field('Adresse électronique',inp('s-email','email',null,{autocomplete:'username'}),null,'s-email-e'),
     pwField('s-pw','Mot de passe','new-password',true),pwField('s-pw2','Confirmer le mot de passe','new-password',false),
@@ -402,6 +415,8 @@ function accueil(vue){
    h('ul',{class:'wait'},[wait('done','1','Compte créé','Votre adresse est confirmée.'),wait('cur','2','Validation par le bureau','Le bureau examine votre demande. Vous pouvez compléter votre profil en attendant.'),wait('','3','Accès complet','Votre suivi, vos échéances et votre attestation apparaissent ici.')])]));
   vue.appendChild(completeCard());return;}
  var e=echeance(me),c=cotisInfo();
+ var bk='ipadecc_bienvenue_'+me.id,seen=false;try{seen=localStorage.getItem(bk)==='1';}catch(x){}
+ if(!seen){var bn=h('div',{class:'banner',role:'status'},[h('span',{class:'ic'},[ico('check')]),h('div',null,[h('b',{text:'Bienvenue à IPADECC'}),h('p',{text:'Votre adhésion a été validée par le bureau de l’association. Vous êtes désormais membre, votre numéro d’adhérent est le '+me.numero+'.'}),h('p',{style:'margin-top:10px'},[h('button',{class:'btn s',type:'button',onclick:function(){try{localStorage.setItem(bk,'1');}catch(x){}bn.remove();},text:'Compris'})])])]);vue.appendChild(bn);}
  var nx=h('section',{class:'card'});
  if(e.next){nx.appendChild(h('div',{class:'next'},[h('div',{class:'big'},[String(e.next.n),h('small',{text:e.next.n>1?'jours':'jour'})]),h('div',null,[h('h2',{text:'Prochaine échéance'}),h('p',{style:'margin:0;font-weight:600',text:e.next.label.charAt(0).toUpperCase()+e.next.label.slice(1)+' le '+e.next.date}),h('p',{class:'sub',text:e.next.sub})])]));}
  else nx.appendChild(h('div',null,[h('h2',{text:'Votre situation'}),h('p',{style:'margin:0',text:e.text||e.hint||'Aucune échéance à afficher pour le moment.'})]));
@@ -464,7 +479,7 @@ function adminView(vue){
   allMembers=r.data||[];say(m,'');drawAdmin(box,vue);});
 }
 function drawAdmin(box,vue){
- var flt='';var stats=h('div',{class:'stats'});var chips=h('div',{class:'chips',role:'group','aria-label':'Filtrer par état'});
+ var m=h('p',{class:'msg',role:'status'});var flt='';var stats=h('div',{class:'stats'});var chips=h('div',{class:'chips',role:'group','aria-label':'Filtrer par état'});
  var q=h('input',{type:'search',placeholder:'Rechercher un nom, une adresse, une spécialité','aria-label':'Rechercher un membre'});
  var tw=h('div',{class:'tw'});
  function count(f){return allMembers.filter(function(x){return !f||x.validation===f;}).length;}
@@ -477,15 +492,40 @@ function drawAdmin(box,vue){
   var rows=allMembers.filter(function(x){if(flt&&x.validation!==flt)return false;if(!t)return true;return [x.nom,x.prenom,x.email,x.specialite].join(' ').toLowerCase().indexOf(t)>-1;});
   clear(tw);
   if(!rows.length){tw.appendChild(h('p',{style:'padding:16px;margin:0',text:'Aucun membre ne correspond.'}));return;}
-  var tb=h('tbody');
-  rows.forEach(function(x){var nm=((x.nom||'')+' '+(x.prenom||'')).trim()||'Sans nom';var c=x.cotisation_jusqu?(x.cotisation_jusqu>=todayIso()?'Jusqu’au '+fmtD(x.cotisation_jusqu):'Expirée'):'Non enregistrée';
-   var act=h('td',null,[h('div',{class:'row',style:'flex-wrap:nowrap'},[x.validation==='en_attente'?h('button',{class:'btn s p',type:'button',onclick:function(){setVal(x,'valide');},text:'Valider'}):null,h('button',{class:'btn s',type:'button','aria-label':'Modifier '+nm,onclick:function(){openEdit(x);},text:'Modifier'})])]);
-   tb.appendChild(h('tr',null,[h('td',{text:String(x.numero)}),h('td',{text:nm}),h('td',{text:x.email}),h('td',{text:STATUT[x.statut]||''}),h('td',{text:x.specialite||''}),h('td',null,[h('span',{class:'pill'+(x.validation==='valide'?' ok':x.validation==='en_attente'?' warn':''),text:VALID[x.validation]})]),h('td',{text:c}),act]));});
-  tw.appendChild(h('table',null,[h('thead',null,[h('tr',null,['N°','Nom','Adresse','Situation','Spécialité','Adhésion','Cotisation',''].map(function(x){return h('th',{text:x});}))]),tb]));
+  var grid=h('div',{class:'mlist'});
+  rows.forEach(function(x){
+   var nm=((x.prenom||'')+' '+(x.nom||'')).trim()||'Sans nom';
+   var c=x.cotisation_jusqu?(x.cotisation_jusqu>=todayIso()?'À jour jusqu’au '+fmtD(x.cotisation_jusqu):'Expirée depuis le '+fmtD(x.cotisation_jusqu)):'Non enregistrée';
+   var info=[['Situation',STATUT[x.statut]||'']];
+   if(x.specialite)info.push(['Spécialité',x.specialite]);
+   if(x.voie)info.push(['Voie',VOIE[x.voie]]);
+   if(x.annee_evc)info.push(['Année d’EVC',String(x.annee_evc)]);
+   if(x.date_debut)info.push([x.statut==='laureat'?'Début du PCC':'Début attestation',fmtD(x.date_debut)]);
+   if(x.naissance)info.push(['Naissance',fmtD(x.naissance)]);
+   info.push(['Cotisation',c]);
+   info.push(['Inscrit le',fmtD(x.cree_le)]);
+   if(x.derniere_connexion)info.push(['Dernière connexion',fmtT(x.derniere_connexion)]);
+   var dl=h('dl',{class:'md'});info.forEach(function(r){dl.appendChild(h('dt',{text:r[0]}));dl.appendChild(h('dd',{text:r[1]}));});
+   var acts=h('div',{class:'acts'});
+   if(x.validation==='en_attente')acts.appendChild(h('button',{class:'btn s p',type:'button',onclick:function(){setVal(x,'valide');},text:'Valider'}));
+   acts.appendChild(h('button',{class:'btn s',type:'button','aria-label':'Modifier '+nm,onclick:function(){openEdit(x);},text:'Modifier'}));
+   if(x.id!==me.id){
+    acts.appendChild(sure(x,'Supprimer','Confirmer la suppression',function(done){sb.rpc('supprimer_membre',{cible:x.id}).then(function(r){if(r.error)return done(errTxt(r.error));allMembers=allMembers.filter(function(y){return y.id!==x.id;});drawStats();list();});}));
+    acts.appendChild(sure(x,'Bloquer','Confirmer le blocage',function(done){sb.rpc('bloquer_membre',{cible:x.id}).then(function(r){if(r.error)return done(errTxt(r.error));allMembers=allMembers.filter(function(y){return y.id!==x.id;});drawStats();list();loadBlocked();});}));}
+   var card=h('article',{class:'mem'},[h('div',{class:'mh'},[h('div',null,[h('b',{text:nm}),h('span',{class:'hint',text:'N° '+x.numero+' · '+x.email})]),h('span',{class:'pill'+(x.validation==='valide'?' ok':x.validation==='en_attente'?' warn':''),text:VALID[x.validation]})]),dl,acts]);
+   grid.appendChild(card);});
+  tw.appendChild(grid);
  }
+ function sure(x,lbl,conf,go){var b=h('button',{class:'btn s d',type:'button',text:lbl});var t0=null;
+  b.addEventListener('click',function(){if(!b.dataset.sure){b.dataset.sure='1';b.textContent=conf;b.classList.add('sure');t0=setTimeout(function(){delete b.dataset.sure;b.textContent=lbl;b.classList.remove('sure');},5000);return;}
+   clearTimeout(t0);b.disabled=true;b.textContent='En cours…';go(function(msg){b.disabled=false;delete b.dataset.sure;b.classList.remove('sure');b.textContent=lbl;say(m,msg||'','err');});});return b;}
+ var blk=h('details',{class:'blk'},[h('summary',{text:'Adresses bloquées'})]);var blkBody=h('div',{style:'margin-top:10px'});blk.appendChild(blkBody);
+ function loadBlocked(){sb.rpc('adresses_bloquees').then(function(r){clear(blkBody);var d=(r&&r.data)||[];blk.firstChild.textContent='Adresses bloquées ('+d.length+')';
+  if(!d.length){blkBody.appendChild(h('p',{class:'hint',text:'Aucune adresse bloquée. Une adresse bloquée ne peut plus se connecter ni créer de compte.'}));return;}
+  d.forEach(function(x){blkBody.appendChild(h('div',{class:'row',style:'justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)'},[h('span',{text:x.email+' · bloquée le '+fmtD(x.bloque_le)}),h('button',{class:'btn s',type:'button',onclick:function(){sb.rpc('debloquer_adresse',{adresse:x.email}).then(function(){loadBlocked();});},text:'Débloquer'})]));});});}
  q.addEventListener('input',list);
- box.appendChild(stats);box.appendChild(h('div',{class:'bar2'},[q,h('button',{class:'btn',type:'button',onclick:function(){exportCsv();},text:'Exporter en CSV'})]));box.appendChild(chips);box.appendChild(tw);
- drawStats();list();
+ box.appendChild(stats);box.appendChild(h('div',{class:'bar2'},[q,h('button',{class:'btn',type:'button',onclick:function(){exportCsv();},text:'Exporter en CSV'})]));box.appendChild(chips);box.appendChild(m);box.appendChild(tw);box.appendChild(blk);
+ drawStats();list();loadBlocked();
  function openEdit(x){
   var mm=h('p',{class:'msg',role:'status'}),del=null;
   var ov=h('div',{class:'modal',role:'dialog','aria-modal':'true','aria-label':'Modifier le membre'});
