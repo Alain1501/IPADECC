@@ -624,8 +624,48 @@ footer::before{content:'';position:absolute;left:-100vmax;right:-100vmax;top:0;h
 @keyframes skl{to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){.skl,.pch-b i{animation:none}.path li::after{transition:none}}
 @media print{.toc-w,.fsoc,.mcal,.pch{display:none!important}footer{background:none!important;box-shadow:none!important;clip-path:none!important}footer::before{display:none}}
+
+/* ===== ajouts (3) ===== */
+.pg:not([hidden]){animation:pgin .38s cubic-bezier(.2,.7,.2,1) both}
+@keyframes pgin{from{opacity:0;transform:translateY(8px)}}
+@media (prefers-reduced-motion:reduce){.pg:not([hidden]){animation:none}}
+.qf{border:0;margin:22px 0 0;padding:0;min-width:0}
+.qf legend{font-family:var(--head);font-weight:700;font-size:18px;padding:0;margin-bottom:10px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);cursor:pointer;line-height:1.35;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--accent)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--tint)}
+.qres{margin-top:26px}
+.qres h2{margin-top:0}
+.favl,.qres ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.favl a,.qres li a{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none;font-weight:600;color:var(--ink)}
+.favl a:hover,.qres li a:hover{border-color:var(--accent)}
+.favl a::after,.qres li a::after{content:'→';color:var(--accent)}
+.resume{margin:0 0 14px}
+.resume a{font-weight:600}
+.tbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.vfy{margin:34px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+/* mode lecture */
+html[data-rd="1"] .side,html[data-rd="1"] .toc-w,html[data-rd="1"] .pgtools,html[data-rd="1"] .crumb,html[data-rd="1"] .mcal,html[data-rd="1"] .pch{display:none!important}
+html[data-rd="1"] .pgrid{display:block}
+html[data-rd="1"] .pgbody{max-width:64ch;margin-inline:auto;font-size:1.12em;line-height:1.75}
+html[data-rd="1"] .pgbody .tbl{font-size:.9em}
+/* barre mobile */
+.mbar,.offl{display:none}
+.offl{position:sticky;top:0;z-index:60;padding:8px 16px;background:var(--ink);color:var(--bg);font-size:13.5px;text-align:center}
+.offl:not([hidden]){display:block}
+@media(max-width:700px){
+.mbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:34;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.mbar a,.mbar button{display:flex;align-items:center;justify-content:center;min-height:54px;padding:4px 2px;border:0;background:none;font:600 12px var(--body,inherit);color:var(--muted);text-decoration:none;cursor:pointer;text-align:center}
+.mbar a[aria-current="true"]{color:var(--rc,var(--accent));box-shadow:inset 0 3px 0 var(--accent)}
+body{padding-bottom:70px}
+.accb{bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+.totop{bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+}
+@media print{.mbar,.offl{display:none!important}html .pgbody a[href^="http"]::after{content:" (" attr(href) ")"!important;font-size:.85em;word-break:break-all}.vfy{border-top:1px solid #999;color:#000}body{padding-bottom:0!important}}
 </style>
-<script>try{var r=document.documentElement,p=JSON.parse(localStorage.getItem("ipadecc-acc")||"{}");if(p.fs>1)r.setAttribute("data-fs",p.fs);if(p.hc)r.setAttribute("data-hc","1");if(p.rm)r.setAttribute("data-rm","1");}catch(e){}</script>
+<script>try{var r=document.documentElement,p=JSON.parse(localStorage.getItem("ipadecc-acc")||"{}");if(p.fs>1)r.setAttribute("data-fs",p.fs);if(p.hc)r.setAttribute("data-hc","1");if(p.rm)r.setAttribute("data-rm","1");if(p.rd)r.setAttribute("data-rd","1");}catch(e){}</script>
 </head>
 <body>
 <div class="prog" id="prog" aria-hidden="true"></div><div class="wrap" id="top">
@@ -684,6 +724,7 @@ footer::before{content:'';position:absolute;left:-100vmax;right:-100vmax;top:0;h
 </ul></section>
 <section class="blk"><h2>Le parcours en cinq étapes</h2>
 <ol class="path"><li><a href="#statuts-pact"><b>Exercice provisoire</b><span>Attestation et contrat PACT, 13 mois renouvelables une fois.</span><i aria-hidden="true">→</i></a></li><li><a href="#evc"><b>EVC</b><span>Voie externe ou interne, liste A ou B, quatre présentations au plus.</span><i aria-hidden="true">→</i></a></li><li><a href="#statuts-pa"><b>Praticien associé</b><span>Lauréat, vous entrez en PCC sous ce statut.</span><i aria-hidden="true">→</i></a></li><li><a href="#autorisation-pcc"><b>PCC</b><span>Deux ans pour les médecins, saisine anticipée possible après 6 mois.</span><i aria-hidden="true">→</i></a></li><li><a href="#autorisation-commission"><b>Autorisation</b><span>Saisine de la CNAE, puis inscription à l’Ordre des médecins.</span><i aria-hidden="true">→</i></a></li></ol></section>
+<section class="blk"><div class="help" style="margin-top:0"><div><b>Par où commencer ?</b><span>Deux questions, et on vous indique les pages utiles pour votre situation.</span></div><a class="btn p" href="#commencer">Trouver mes pages</a></div><div id="fav-wrap" hidden><p class="resume" id="resume" hidden></p><div id="fav-box" hidden><h2>Vos pages favorites</h2><ul class="favl" id="favl"></ul><p class="srcnote">Enregistrées uniquement dans ce navigateur.</p></div></div></section>
 <section class="blk"><h2>IPADECC en chiffres</h2><ul class="kpis"><li><b data-n="418">418</b><span>praticiens signataires de la pétition pour la régularisation, en 2023</span></li><li><b data-n="297">297</b><span>praticiens engagés dans la grève de la faim, en 2025</span></li><li><b data-n="22">22</b><span>recommandations dans le rapport du Sénat, en 2026</span></li></ul><p class="allnews"><a class="lk" href="#association-actions">Voir nos actions →</a></p></section>
 <section class="blk"><h2>À la une</h2>
 <ul class="une"><li><a href="#actualites"><span class="cat">Association</span><b>Le simulateur de situation est en ligne</b><i aria-hidden="true">→</i></a></li><li><a href="#actualites"><span class="cat">EVC</span><b>EVC 2026 : épreuves de novembre 2026 à janvier 2027</b><i aria-hidden="true">→</i></a></li><li><a href="#actualites"><span class="cat">Statuts</span><b>Le statut de PACT et sa rémunération</b><i aria-hidden="true">→</i></a></li></ul><p class="allnews"><a class="lk" href="#actualites">Toutes les actualités →</a></p></section>
@@ -821,12 +862,17 @@ footer::before{content:'';position:absolute;left:-100vmax;right:-100vmax;top:0;h
 <h2>Ce que le site enregistre dans votre navigateur</h2><p>Le site n’utilise ni cookie publicitaire ni outil de mesure d’audience. Il enregistre dans votre navigateur, sur votre appareil, vos préférences (thème, taille du texte, contraste, animations) et les cases cochées de vos checklists. Les polices de caractères sont chargées depuis Google Fonts.</p>
 <h2>Accessibilité</h2><p>Le site propose un lien d’accès direct au contenu, une navigation au clavier, un thème sombre, et un bouton « Aa » en bas à gauche pour agrandir le texte, renforcer le contraste et réduire les animations. Il n’a pas fait l’objet d’un audit externe. Si un contenu vous pose problème, écrivez-nous.</p>
 </div></article>
+<article class="pg" id="pg-commencer" data-rub="accueil" hidden>
+<nav class="crumb" aria-label="Fil d’Ariane"><a href="#accueil">Accueil</a><span>Par où commencer ?</span></nav><div class="pgbody"><h1 tabindex="-1">Par où commencer ?</h1><p class="lede">Répondez à deux questions. Les pages utiles s’affichent en dessous. Rien n’est envoyé, tout reste dans votre navigateur.</p>
+<fieldset class="qf"><legend>1. Quelle est votre situation ?</legend><div class="opts"><label class="opt"><input type="radio" name="q1" value="statuts-ffi"><span>Faisant fonction d’interne</span></label><label class="opt"><input type="radio" name="q1" value="statuts-stagiaire"><span>Stagiaire associé</span></label><label class="opt"><input type="radio" name="q1" value="statuts-pact"><span>PACT</span></label><label class="opt"><input type="radio" name="q1" value="statuts-pa"><span>Praticien associé ou parcours de consolidation (PCC)</span></label><label class="opt"><input type="radio" name="q1" value="statuts-outremer"><span>Outre-mer</span></label><label class="opt"><input type="radio" name="q1" value="statuts-nationalite"><span>Je ne sais pas encore, je veux comparer selon ma nationalité</span></label></div></fieldset>
+<fieldset class="qf"><legend>2. Que voulez-vous faire maintenant ?</legend><div class="opts"><label class="opt"><input type="radio" name="q2" value="evc"><span>Préparer ou suivre les EVC</span></label><label class="opt"><input type="radio" name="q2" value="res"><span>Connaître les résultats et l’affectation</span></label><label class="opt"><input type="radio" name="q2" value="aut"><span>Préparer l’autorisation d’exercice</span></label><label class="opt"><input type="radio" name="q2" value="sej"><span>Mon titre de séjour ou mes documents</span></label><label class="opt"><input type="radio" name="q2" value="dat"><span>Voir les dates à retenir</span></label></div></fieldset>
+<div class="qres" id="qres" aria-live="polite"><p class="srcnote">Choisissez une réponse à chaque question.</p></div></div></article>
 <article class="pg" id="pg-introuvable" data-rub="accueil" hidden>
 <nav class="crumb" aria-label="Fil d’Ariane"><a href="#accueil">Accueil</a><span>Page introuvable</span></nav><div class="pgbody"><h1 tabindex="-1">Page introuvable</h1><p class="lede">Cette adresse ne correspond à aucune page du site. Elle a peut-être changé, ou elle contient une faute de frappe.</p><div class="help" style="margin-top:0"><div><b>Chercher dans le site</b><span>Tapez un mot, par exemple PACT, titre de séjour ou adhésion.</span></div><button type="button" class="btn p" id="nf-s">Ouvrir la recherche</button></div><h2>Les rubriques</h2><ul class="tiles"><li><a class="tile" href="#statuts"><b>Statuts</b><small>Faisant fonction d’interne, stagiaire associé, PACT, praticien associé</small><i aria-hidden="true">→</i></a></li><li><a class="tile" href="#demarches"><b>Démarches</b><small>Pièces à fournir, titres de séjour, checklist</small><i aria-hidden="true">→</i></a></li><li><a class="tile" href="#evc"><b>EVC</b><small>Sessions, résultats, textes, annales</small><i aria-hidden="true">→</i></a></li><li><a class="tile" href="#autorisation"><b>Autorisation</b><small>PCC, dépôt du dossier, commission</small><i aria-hidden="true">→</i></a></li><li><a class="tile" href="#calendrier"><b>Calendrier</b><small>Échéances, épreuves, commissions</small><i aria-hidden="true">→</i></a></li><li><a class="tile" href="#association"><b>L’association</b><small>Missions, actions, contact, adhésion</small><i aria-hidden="true">→</i></a></li></ul></div></article>
 </main>
  <footer>
   <div class="fbrand"><span class="flogo" id="flogo" aria-hidden="true"></span><p class="fb-t">Praticiens à diplôme hors Union européenne : statuts, démarches, EVC et autorisation d’exercice, avec la source officielle de chaque information.</p><div class="fsoc"><a href="https://www.facebook.com/share/1CNbJpia7G/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook ↗</a><a href="https://www.instagram.com/ipadecc?psln=bHpua2dmN2ZkbHk0&amp;utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://youtube.com/@ipadecc?si=MyRQt_aBlelTQETB" target="_blank" rel="noopener noreferrer">YouTube ↗</a></div></div>
-  <div class="fcols"><div><p class="fh">Statuts</p><ul><li><a href="#statuts-ffi">Faisant fonction d’interne</a></li><li><a href="#statuts-stagiaire">Stagiaire associé</a></li><li><a href="#statuts-pact">PACT</a></li><li><a href="#statuts-pa">Praticien associé et PCC</a></li><li><a href="#statuts-outremer">Outre-mer</a></li><li><a href="#statuts-nationalite">Selon la nationalité</a></li></ul></div><div><p class="fh">Démarches</p><ul><li><a href="#demarches-evc">Pièces pour les EVC</a></li><li><a href="#demarches-resultats">Résultats et affectation</a></li><li><a href="#demarches-aep">Attestation d’exercice provisoire</a></li><li><a href="#demarches-talent">Carte talent</a></li><li><a href="#demarches-titres">Titres de séjour</a></li><li><a href="#demarches-renouvellement">Renouveler mes documents</a></li><li><a href="#demarches-checklist">Ma checklist</a></li><li><a href="#demarches-faq">Questions fréquentes</a></li></ul></div><div><p class="fh">EVC</p><ul><li><a href="#evc-sessions">Sessions et résultats</a></li><li><a href="#evc-textes">Textes officiels</a></li><li><a href="#evc-qcm">QCM blancs</a></li><li><a href="#evc-interne">Voie interne</a></li><li><a href="#evc-annales">Annales</a></li><li><a href="#evc-contacts">Contacts du CNG</a></li></ul></div><div><p class="fh">Autorisation</p><ul><li><a href="#autorisation-pcc">Parcours de consolidation</a></li><li><a href="#autorisation-dossier">Déposer son dossier</a></li><li><a href="#autorisation-commission">La commission</a></li><li><a href="#autorisation-documents">Documents du CNG</a></li></ul></div><div><p class="fh">Calendrier</p><ul><li><a href="#calendrier-echeances">Compte à rebours</a></li><li><a href="#calendrier-evc">EVC 2026</a></li><li><a href="#calendrier-commissions">Commissions</a></li><li><a href="#calendrier-route">Ma feuille de route</a></li></ul></div><div><p class="fh">L’association</p><ul><li><a href="#association">Qui sommes-nous</a></li><li><a href="#association-actions">Nos actions</a></li><li><a href="#association-contact">Contact</a></li><li><a href="#association-adherer">Adhérer</a></li></ul></div><div><p class="fh">Outils</p><ul><li><a href="simulateur.html">Simulateur Padhue</a></li><li><a href="#actualites">Actualités</a></li><li><a href="#ressources">Ressources officielles</a></li><li><a href="#glossaire">Glossaire</a></li></ul></div></div>
+  <div class="fcols"><div><p class="fh">Statuts</p><ul><li><a href="#statuts-ffi">Faisant fonction d’interne</a></li><li><a href="#statuts-stagiaire">Stagiaire associé</a></li><li><a href="#statuts-pact">PACT</a></li><li><a href="#statuts-pa">Praticien associé et PCC</a></li><li><a href="#statuts-outremer">Outre-mer</a></li><li><a href="#statuts-nationalite">Selon la nationalité</a></li></ul></div><div><p class="fh">Démarches</p><ul><li><a href="#demarches-evc">Pièces pour les EVC</a></li><li><a href="#demarches-resultats">Résultats et affectation</a></li><li><a href="#demarches-aep">Attestation d’exercice provisoire</a></li><li><a href="#demarches-talent">Carte talent</a></li><li><a href="#demarches-titres">Titres de séjour</a></li><li><a href="#demarches-renouvellement">Renouveler mes documents</a></li><li><a href="#demarches-checklist">Ma checklist</a></li><li><a href="#demarches-faq">Questions fréquentes</a></li></ul></div><div><p class="fh">EVC</p><ul><li><a href="#evc-sessions">Sessions et résultats</a></li><li><a href="#evc-textes">Textes officiels</a></li><li><a href="#evc-qcm">QCM blancs</a></li><li><a href="#evc-interne">Voie interne</a></li><li><a href="#evc-annales">Annales</a></li><li><a href="#evc-contacts">Contacts du CNG</a></li></ul></div><div><p class="fh">Autorisation</p><ul><li><a href="#autorisation-pcc">Parcours de consolidation</a></li><li><a href="#autorisation-dossier">Déposer son dossier</a></li><li><a href="#autorisation-commission">La commission</a></li><li><a href="#autorisation-documents">Documents du CNG</a></li></ul></div><div><p class="fh">Calendrier</p><ul><li><a href="#calendrier-echeances">Compte à rebours</a></li><li><a href="#calendrier-evc">EVC 2026</a></li><li><a href="#calendrier-commissions">Commissions</a></li><li><a href="#calendrier-route">Ma feuille de route</a></li></ul></div><div><p class="fh">L’association</p><ul><li><a href="#association">Qui sommes-nous</a></li><li><a href="#association-actions">Nos actions</a></li><li><a href="#association-contact">Contact</a></li><li><a href="#association-adherer">Adhérer</a></li></ul></div><div><p class="fh">Outils</p><ul><li><a href="simulateur.html">Simulateur Padhue</a></li><li><a href="#commencer">Par où commencer ?</a></li><li><a href="#actualites">Actualités</a></li><li><a href="#ressources">Ressources officielles</a></li><li><a href="#glossaire">Glossaire</a></li></ul></div></div>
   <p class="legal">© IPADECC. Les informations du site et du simulateur ne remplacent pas l’avis de l’ARS, du CNG ou de la préfecture. <a href="#mentions-legales">Mentions légales</a></p>
  </footer>
 <button type="button" class="accb" id="accb" aria-expanded="false" aria-controls="accp"><span aria-hidden="true">Aa</span><span class="sronly">Confort de lecture</span></button>
@@ -835,8 +881,11 @@ footer::before{content:'';position:absolute;left:-100vmax;right:-100vmax;top:0;h
  <div class="accr"><span id="acc-fs-l">Taille du texte</span><div class="accg" role="group" aria-labelledby="acc-fs-l"><button type="button" data-fs="1" aria-pressed="true">Normale</button><button type="button" data-fs="2" aria-pressed="false">Grande</button><button type="button" data-fs="3" aria-pressed="false">Très grande</button></div></div>
  <label class="acct"><input type="checkbox" id="acc-hc"> Contraste renforcé</label>
  <label class="acct"><input type="checkbox" id="acc-rm"> Réduire les animations</label>
+ <label class="acct"><input type="checkbox" id="acc-rd"> Mode lecture (texte seul, colonne étroite)</label>
  <button type="button" class="accx" id="acc-reset">Réinitialiser</button>
 </div>
+<nav class="mbar" id="mbar" aria-label="Navigation rapide"><a href="#accueil" data-rub="accueil">Accueil</a><a href="#statuts" data-rub="statuts">Statuts</a><a href="#demarches" data-rub="demarches">Démarches</a><a href="#calendrier" data-rub="calendrier">Calendrier</a><button type="button" id="mbs">Recherche</button></nav>
+<div class="offl" id="offl" role="status" hidden>Vous êtes hors ligne. Les pages déjà consultées restent lisibles, mais les dates et les actualités peuvent ne pas être à jour.</div>
 <div class="sov" id="sov" hidden><div class="sbox" role="dialog" aria-modal="true" aria-label="Rechercher dans le site"><div class="sin"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.500"/><path d="M16 16l4 4"/></svg><input id="sq" type="search" placeholder="Rechercher : PACT, titre de séjour, QCM, adhésion…" autocomplete="off" aria-label="Rechercher"><button type="button" class="sx" id="sx" aria-label="Fermer">Échap</button></div><ul class="sres" id="sres"></ul></div></div><button type="button" class="totop" id="totop" aria-label="Revenir en haut" hidden>↑</button>
 </div>
 
@@ -1106,11 +1155,11 @@ els.forEach(function(e){e.textContent='0';io.observe(e);});})();
 </script>
 <script>
 (function(){
- var $=function(i){return document.getElementById(i);},root=document.documentElement,P={fs:1,hc:0,rm:0};
- try{var q=JSON.parse(localStorage.getItem('ipadecc-acc')||'{}');P.fs=+q.fs||1;P.hc=q.hc?1:0;P.rm=q.rm?1:0;}catch(e){}
- function apply(){if(P.fs>1)root.setAttribute('data-fs',P.fs);else root.removeAttribute('data-fs');if(P.hc)root.setAttribute('data-hc','1');else root.removeAttribute('data-hc');if(P.rm)root.setAttribute('data-rm','1');else root.removeAttribute('data-rm');
+ var $=function(i){return document.getElementById(i);},root=document.documentElement,P={fs:1,hc:0,rm:0,rd:0};
+ try{var q=JSON.parse(localStorage.getItem('ipadecc-acc')||'{}');P.fs=+q.fs||1;P.hc=q.hc?1:0;P.rm=q.rm?1:0;P.rd=q.rd?1:0;}catch(e){}
+ function apply(){if(P.fs>1)root.setAttribute('data-fs',P.fs);else root.removeAttribute('data-fs');if(P.hc)root.setAttribute('data-hc','1');else root.removeAttribute('data-hc');if(P.rm)root.setAttribute('data-rm','1');else root.removeAttribute('data-rm');if(P.rd)root.setAttribute('data-rd','1');else root.removeAttribute('data-rd');
   [].forEach.call(document.querySelectorAll('#accp [data-fs]'),function(b){b.setAttribute('aria-pressed',+b.getAttribute('data-fs')===P.fs?'true':'false');});
-  var h=$('acc-hc'),m=$('acc-rm');if(h)h.checked=!!P.hc;if(m)m.checked=!!P.rm;}
+  var h=$('acc-hc'),m=$('acc-rm'),rd=$('acc-rd');if(h)h.checked=!!P.hc;if(m)m.checked=!!P.rm;if(rd)rd.checked=!!P.rd;}
  function save(){try{localStorage.setItem('ipadecc-acc',JSON.stringify(P));}catch(e){}}
  var b=$('accb'),pn=$('accp');
  if(b&&pn){
@@ -1120,21 +1169,22 @@ els.forEach(function(e){e.textContent='0';io.observe(e);});})();
   [].forEach.call(pn.querySelectorAll('[data-fs]'),function(x){x.addEventListener('click',function(){P.fs=+x.getAttribute('data-fs');apply();save();});});
   $('acc-hc').addEventListener('change',function(){P.hc=this.checked?1:0;apply();save();});
   $('acc-rm').addEventListener('change',function(){P.rm=this.checked?1:0;apply();save();});
-  $('acc-reset').addEventListener('click',function(){P={fs:1,hc:0,rm:0};apply();save();});
+  $('acc-rd').addEventListener('change',function(){P.rd=this.checked?1:0;apply();save();});
+  $('acc-reset').addEventListener('click',function(){P={fs:1,hc:0,rm:0,rd:0};apply();save();});
  }
  apply();
  /* outils de page : copier le lien, imprimer */
  function tools(){
-  var pg=document.querySelector('.pg:not([hidden])');if(!pg||pg.id==='pg-accueil'||pg.querySelector('.pgtools'))return;
+  var pg=document.querySelector('.pg:not([hidden])');if(!pg||pg.id==='pg-accueil'||pg.id==='pg-introuvable'||pg.querySelector('.pgtools'))return;
   var cr=pg.querySelector('.crumb');if(!cr)return;
   var d=document.createElement('div');d.className='pgtools';
   var c=document.createElement('button');c.type='button';c.className='tbtn';c.textContent='Copier le lien de cette page';
   var pr=document.createElement('button');pr.type='button';pr.className='tbtn';pr.textContent='Imprimer ou enregistrer en PDF';
   var m=document.createElement('span');m.className='tmsg';m.setAttribute('role','status');
-  c.addEventListener('click',function(){var u=location.href;function ok(){m.textContent='Lien copié.';setTimeout(function(){m.textContent='';},2500);}function ko(){m.textContent='Copie impossible ici. Copiez l’adresse du navigateur.';}
+  c.addEventListener('click',function(){var u=(/^(www\.)?ipadecc\.fr$/.test(location.hostname))?'https://ipadecc.fr/p/'+pg.id.replace(/^pg-/,''):location.href;function ok(){m.textContent='Lien copié.';setTimeout(function(){m.textContent='';},2500);}function ko(){m.textContent='Copie impossible ici. Copiez l’adresse du navigateur.';}
    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok).catch(ko);}else{ko();}});
   pr.addEventListener('click',function(){window.print();});
-  d.appendChild(c);d.appendChild(pr);d.appendChild(m);cr.parentNode.insertBefore(d,cr.nextSibling);
+  d.appendChild(c);d.appendChild(pr);d.appendChild(m);cr.parentNode.insertBefore(d,cr.nextSibling);document.dispatchEvent(new CustomEvent('pgtools',{detail:pg}));
  }
  window.addEventListener('hashchange',function(){setTimeout(tools,40);});
  tools();
@@ -1187,6 +1237,56 @@ els.forEach(function(e){e.textContent='0';io.observe(e);});})();
   R.appendChild(bx);R.appendChild(cap);R.appendChild(ol);draw();
  }
  chart();
+})();
+</script>
+<script>
+(function(){
+ var $=function(i){return document.getElementById(i);};
+ var VERIF='19 octobre 2026';
+ function rd(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+ function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+ function title(id){var a=$('pg-'+id),h=a&&a.querySelector('h1');return h?h.textContent:id;}
+ /* favoris et reprise */
+ function favs(){var f=rd('ipadecc-fav',[]);return Array.isArray(f)?f.filter(function(i){return $('pg-'+i);}):[];}
+ function home(){
+  var w=$('fav-wrap');if(!w)return;
+  var f=favs(),last=rd('ipadecc-last',null),r=$('resume'),b=$('fav-box'),l=$('favl');
+  r.hidden=!(last&&$('pg-'+last));if(!r.hidden){r.textContent='Reprendre là où vous en étiez : ';var a=document.createElement('a');a.href='#'+last;a.textContent=title(last);r.appendChild(a);}
+  l.textContent='';f.forEach(function(i){var li=document.createElement('li'),a=document.createElement('a');a.href='#'+i;a.textContent=title(i);li.appendChild(a);l.appendChild(li);});
+  b.hidden=!f.length;w.hidden=r.hidden&&b.hidden;
+ }
+ function cur(){var pg=document.querySelector('.pg:not([hidden])');return pg?pg.id.replace(/^pg-/,''):'accueil';}
+ function track(){var id=cur();if(id!=='accueil'&&id!=='introuvable'&&id!=='commencer')wr('ipadecc-last',id);home();
+  var rub=(document.querySelector('.pg:not([hidden])')||{getAttribute:function(){}}).getAttribute('data-rub');
+  [].forEach.call(document.querySelectorAll('#mbar a'),function(a){if(a.getAttribute('data-rub')===rub)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});}
+ window.addEventListener('hashchange',function(){setTimeout(track,30);});
+ document.addEventListener('pgtools',function(e){
+  var pg=e.detail,id=pg.id.replace(/^pg-/,''),d=pg.querySelector('.pgtools');
+  if(d&&!d.querySelector('.favb')){var b=document.createElement('button');b.type='button';b.className='tbtn favb';
+   function paint(){var on=favs().indexOf(id)>=0;b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'Retirer des favoris':'Ajouter aux favoris';}
+   b.addEventListener('click',function(){var f=favs(),i=f.indexOf(id);if(i>=0)f.splice(i,1);else f.push(id);wr('ipadecc-fav',f);paint();home();});
+   paint();d.insertBefore(b,d.querySelector('.tmsg'));}
+  var body=pg.querySelector('.pgbody');
+  if(body&&!body.querySelector('.vfy')){var p=document.createElement('p');p.className='vfy';p.textContent='Dernier contrôle des sources officielles par la veille du site : '+VERIF+'. En cas de doute, la source citée sur la page fait foi.';body.appendChild(p);}
+ });
+ /* par où commencer */
+ var MAP2={evc:[['demarches-evc'],['evc-sessions']],res:[['demarches-resultats']],aut:[['autorisation-pcc'],['autorisation-dossier']],sej:[['demarches-titres'],['demarches-renouvellement']],dat:[['calendrier-echeances'],['calendrier-route']]};
+ function res(){
+  var a=document.querySelector('input[name=q1]:checked'),b=document.querySelector('input[name=q2]:checked'),R=$('qres');if(!R)return;
+  R.textContent='';
+  if(!a||!b){var p=document.createElement('p');p.className='srcnote';p.textContent='Choisissez une réponse à chaque question.';R.appendChild(p);return;}
+  var ids=[a.value];MAP2[b.value].forEach(function(x){ids.push(x[0]);});ids.push('demarches-checklist');
+  var h=document.createElement('h2');h.textContent='Les pages utiles pour vous';R.appendChild(h);
+  var ul=document.createElement('ul');ids.filter(function(v,i){return ids.indexOf(v)===i&&$('pg-'+v);}).forEach(function(i){var li=document.createElement('li'),x=document.createElement('a');x.href='#'+i;x.textContent=title(i);li.appendChild(x);ul.appendChild(li);});
+  R.appendChild(ul);
+  var n=document.createElement('p');n.className='srcnote';n.textContent='Ces pages sont indicatives. La source officielle citée sur chacune fait foi.';R.appendChild(n);
+ }
+ [].forEach.call(document.querySelectorAll('input[name=q1],input[name=q2]'),function(i){i.addEventListener('change',res);});
+ /* barre mobile, hors ligne */
+ var mbs=$('mbs');if(mbs)mbs.addEventListener('click',function(){var s=$('srch');if(s)s.click();});
+ function net(){var o=$('offl');if(o)o.hidden=navigator.onLine!==false;}
+ window.addEventListener('online',net);window.addEventListener('offline',net);net();
+ track();
 })();
 </script>
 <script type="application/json" id="bur-data">[{"id": "b1", "role": "Président", "name": "Dr David Abdelhalim BENSAIDI", "photo": ""}, {"id": "b2", "role": "Vice-président", "name": "Dr Ali Alain ALKHAFAGI", "photo": ""}]</script>
